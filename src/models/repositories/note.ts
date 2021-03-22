@@ -11,6 +11,8 @@ import { Emoji } from '../entities/emoji';
 import { decodeReaction, convertLegacyReactions, convertLegacyReaction } from '../../misc/reaction-lib';
 import parseAcct from '../../misc/acct/parse';
 import { resolveUser } from '../../remote/resolve-user';
+import { parse } from '../../mfm/parse';
+import { toString } from '../../mfm/to-string';
 
 export type PackedNote = SchemaType<typeof packedNoteSchema>;
 
@@ -275,7 +277,8 @@ export class NoteRepository extends Repository<Note> {
 		});
 
 		if (packed.user.isCat && packed.text) {
-			packed.text = nyaize(packed.text);
+			const tokens = packed.text ? parse(packed.text) : [];
+			packed.text = toString(tokens, { doNyaize: true });
 		}
 		//TODO: 2020/10/28 お嬢様口調への変換追加
 		//2021/03/07 準備工事
