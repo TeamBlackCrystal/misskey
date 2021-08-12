@@ -1,6 +1,6 @@
-# Ayuskeyについて
+# About Ayuskey
 
-Ayuskeyは2020年に開発を開始したMisskeyのフォークの一つです。
+Ayuskey is one of Misskey's forks that started development in 2020.
 
 ## About Misskey
 
