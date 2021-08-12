@@ -1205,7 +1205,7 @@ common/views/components/media-image.vue:
   sensitive: NSFW
   click-to-show: Click to show
 common/views/components/account-info.vue:
-  other: others
+  other: Others
   'true': 'Yes'
   'false': 'No
 
