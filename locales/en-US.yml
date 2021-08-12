@@ -172,6 +172,7 @@ common:
     cw-placeholder: Comments for the post (optional)
     username-prompt: Please enter username
     enter-file-name: Edit file name
+    preview: Preview
   weekday-short:
     sunday: S
     monday: M
@@ -1203,7 +1204,12 @@ desktop/views/components/settings.2fa.vue:
 common/views/components/media-image.vue:
   sensitive: NSFW
   click-to-show: Click to show
-common/views/components/account-info.vue: {}
+common/views/components/account-info.vue:
+  other: others
+  'true': 'Yes'
+  'false': 'No
+
+'
 common/views/components/api-settings.vue:
   intro: To access the API, set this token as the key 'i' of request parameters.
   caution: Do not enter this token to any apps nor tell this token to others otherwise
