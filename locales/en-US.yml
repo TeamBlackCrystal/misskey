@@ -381,6 +381,8 @@ common:
   update-available: A new version of Misskey is now available({newer}, the current
     version is {current}). Reload the page to apply updates.
   my-token-regenerated: Your token has been regenerated, so you will be signed out.
+  verified-user: Official account
+  premium-user: Premium user
   hide-password: Hide Password
   show-password: Show Password
   enter-username: Please enter username
@@ -449,6 +451,7 @@ auth/views/index.vue:
   error: Session does not exist.
   sign-in: Please sign in.
 common/views/pages/explore.vue:
+  verified-users: Official account
   pinned-users: Pinned users
   popular-users: Popular users
   recently-updated-users: Recently active users
@@ -1146,6 +1149,7 @@ desktop/views/components/post-form.vue:
   note-failed: Failed to post
   reply-failed: Failed to reply
   renote-failed: Failed to Renote
+  preview: preview
 desktop/views/components/post-form-window.vue:
   note: New Post
   reply: Reply
@@ -1206,6 +1210,7 @@ common/views/components/media-image.vue:
   click-to-show: Click to show
 common/views/components/account-info.vue:
   other: Others
+  statistics: Statistics
   'true': 'Yes'
   'false': 'No
 
