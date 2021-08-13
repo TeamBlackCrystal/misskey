@@ -270,6 +270,7 @@ common:
     reduce-motion: Reduce motion in UI
     this-setting-is-this-device-only: Only for this device
     use-os-default-emojis: Use the OS default Emojis
+    instance-ticker-remote: Show to remote users
     line-width: Line thickness
     line-width-thin: Thin
     line-width-normal: Regular
@@ -361,7 +362,10 @@ common:
     preview: Preview
     home-profile: Home profile
     deck-profile: Deck profile
-    _hasDisconnectedAction: {}
+    _hasDisconnectedAction:
+      reload: Reload automatically
+      notify: Notification only
+      nothing: Do nothing
     room: Room
     _room:
       graphicsQuality: Graphics Quality
@@ -580,6 +584,7 @@ common/views/components/theme.vue:
   base-theme-light: Light
   base-theme-dark: Dark
   find-more-theme: Find more themes
+  find-ayuki-theme: Get the theme from Ayuki Theme Store
   theme-name: Theme name
   preview-created-theme: Preview
   invalid-theme: Not valid theme
@@ -796,7 +801,8 @@ common/views/components/notification-settings.vue:
   auto-watch: Automatically watch out for posts
   auto-watch-desc: Automatically receive notifications about posts you react to, or
     respond to.
-common/views/components/instance.vue: {}
+common/views/components/instance.vue:
+  start: Start
 common/views/components/integration-settings.vue:
   title: Service cooperation
   connect: Connect
@@ -861,12 +867,14 @@ common/views/components/profile-editor.vue:
   avatar: Avatar
   banner: Banner
   is-cat: This account is a Cat
+  is-lady: This account is Lady
   is-bot: This account is a Bot
   is-locked: Follower requests require approval
   careful-bot: Follower requests from bots require approval
   careful-remote: Follower requests from remote require approval
   careful-massive: Massive follow requests pending approval
   auto-accept-followed: Automatically approve follows from the people you follow
+  no-crawle: Reject indexing by crawlers
   isExplorable: Show in explore
   advanced: Other
   privacy: Privacy
@@ -1149,7 +1157,7 @@ desktop/views/components/post-form.vue:
   note-failed: Failed to post
   reply-failed: Failed to reply
   renote-failed: Failed to Renote
-  preview: preview
+  preview: Preview
 desktop/views/components/post-form-window.vue:
   note: New Post
   reply: Reply
@@ -1209,6 +1217,13 @@ common/views/components/media-image.vue:
   sensitive: NSFW
   click-to-show: Click to show
 common/views/components/account-info.vue:
+  registered-date: Account information
+  notes-count: Number of notes
+  replies-count: Number of replies
+  renotes-count: Number of renotes
+  renoted-count: Number of renotes
+  following-count: Number of followers
+  followers-count: Number of followers
   other: Others
   statistics: Statistics
   'true': 'Yes'
@@ -1571,6 +1586,8 @@ admin/views/users.vue:
   silence-confirm: Silence user?
   unmake-silence: Unsilence
   unsilence-confirm: Are you certain that you want to stop silencing this user?
+  mark-admin: Set as administrator
+  marked-admin: I made it an administrator
   update-remote-user: Update information about remote user
   remote-user-updated: The information regarding the remote user has been updated.
   delete-all-files: Delete all files
