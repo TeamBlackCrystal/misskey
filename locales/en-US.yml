@@ -56,7 +56,8 @@ common:
   reload-to-apply-the-setting: You'll need to reload the page to reflect this setting.
     Do you want to reload it now?
   fetching-as-ap-object: Inquiring to fediverse
-  unfollow-confirm: Do you want to unfollow {name}?
+  un
+ -confirm: Do you want to unfollow {name}?
   delete-confirm: Are you sure you want to delete this post?
   signin-required: Please login
   notification-type: Notification Type
@@ -1222,7 +1223,7 @@ common/views/components/account-info.vue:
   replies-count: Number of replies
   renotes-count: Number of renotes
   renoted-count: Number of renotes
-  following-count: Number of followers
+  following-count: Number of follows
   followers-count: Number of followers
   other: Others
   statistics: Statistics
