@@ -288,6 +288,7 @@ export class UserRepository extends Repository<User> {
 				noCrawle: profile!.noCrawle,
 				isExplorable: user.isExplorable,
 				//hasUnreadAnnouncement: this.getHasUnreadAnnouncement(user.id),
+				isDeleted: user.isDeleted,
 				hasUnreadAntenna: this.getHasUnreadAntenna(user.id),
 				//hasUnreadChannel: this.getHasUnreadChannel(user.id),
 				hasUnreadMessagingMessage: this.getHasUnreadMessagingMessage(user.id),

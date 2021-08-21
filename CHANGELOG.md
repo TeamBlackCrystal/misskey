@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - ドキュメント内のgithubへ飛ぶリンクが古いのが修正されました。
 - InBoxのDelayed発生が軽減されました
+- アカウント削除の安定性を向上
 
 ### Changed
 

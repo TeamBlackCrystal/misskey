@@ -10,6 +10,7 @@ type Account = {
 	token: string;
 	isModerator: boolean;
 	isAdmin: boolean;
+	isDeleted: boolean;
 };
 
 const data = localStorage.getItem('account');
