@@ -8,21 +8,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [11.37.1-rei0784-5.15.0] 2021-08-22
+
+- アカウント削除の安定性を向上
+
 ### Added
 
 - pizzaxを部分的に移植
+- Array ActivityStreams typeのサポート
 
 ### Fixed
 
+- dockerのコンテナがビルドできない
 - ドキュメント内のgithubへ飛ぶリンクが古いのが修正されました。
 - InBoxのDelayed発生が軽減されました
-- アカウント削除の安定性を向上
+  - not reacted な Undo.Like がinboxに滞留するのを修正
+  - AP Delate Activityの修正
+  - 存在しないユーザーの削除をリトライしない
+- リモートドライブの不具合修正
+- AP Actorの修正
+- inboxのバグ修正
+- roomの不具合修正
+- 特定条件でログアウトさせられる問題を修正
 
 ### Changed
 
 - 音の鳴らし方がv12と同様になりました。
   - 古い音源は次のバージョンで削除予定です。
 - ActivityPub: ジョブキューの試行タイミングを調整
+- bioと名前の上限を緩和
+- job queueの調整
+
+### Removed
+
+- 不要になったためコンテナ内からvipsを削除
 
 ## [11.37.1-rei0784-5.14.0] - 2021-08-12
 
@@ -75,7 +94,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docker環境においてfilesをマウントするように
 - 内部的な修正をたくさん
 
-[Unreleased]: https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.14.0...HEAD
+[Unreleased]: https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.15.0...HEAD
+[11.37.1-rei0784-5.15.0]: https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.14.0...11.37.1-rei0784-5.15.0
 [11.37.1-rei0784-5.14.0]: https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.14.0-beta.6...11.37.1-rei0784-5.14.0
 [11.37.1-rei0784-5.14.0-beta.6]: https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.14.0-beta.5...11.37.1-rei0784-5.14.0-beta.6
 [11.37.1-rei0784-4.0.0]: https://github.com/TeamOrangeServer/misskey/compare/v3.6.0...v11.37.1-rei0784-4.0.0
