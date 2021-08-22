@@ -25,7 +25,7 @@ if (isDebug) {
 }
 
 gulp.task('build:ts', () => {
-	const tsProject = ts.createProject('./tsconfig.json');
+	const tsProject = ts.createProject('./src/tsconfig.json');
 
 	return tsProject
 		.src()

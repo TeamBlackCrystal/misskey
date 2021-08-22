@@ -4,7 +4,7 @@
 
 import * as fs from 'fs';
 import * as webpack from 'webpack';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import { execSync } from 'child_process';
 const { VueLoaderPlugin } = require('vue-loader');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
