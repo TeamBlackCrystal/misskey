@@ -69,6 +69,7 @@ const defaultDeviceSettings = {
 	enableSoundsInNotifications: true,
 	//soundVolume: 0.5,
 	mediaVolume: 0.5,
+	enableQueueJammed: false,
 	enableSpeech: false,
 	lang: null,
 	appTypeForce: 'auto',

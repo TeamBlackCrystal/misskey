@@ -15,6 +15,9 @@ export const meta = {
 		subject: {
 			validator: $.str,
 		},
+		html: {
+			validator: $.str,
+		},
 		text: {
 			validator: $.str,
 		},
@@ -22,5 +25,5 @@ export const meta = {
 };
 
 export default define(meta, async (ps) => {
-	await sendEmail(ps.to, ps.subject, ps.text);
+	await sendEmail(ps.to, ps.subject, ps.html, ps.text);
 });

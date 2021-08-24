@@ -54,14 +54,25 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
 import { faExclamationTriangle, faTasks } from '@fortawesome/free-solid-svg-icons';
+import * as sound from '../../scripts/sound';
 import define from '../../define-widget';
 import number from '../filters/v12/number';
+
 const widget = define({
 	name: 'job-queue',
 	props: () => ({
-		compact: false
+		compact: {
+			type: 'boolean',
+			default: false
+		},
+
+		sound: {
+			type: 'boolean',
+			default: false,
+		},
 	})
 });
+
 export default defineComponent({
 	extends: widget,
 	data() {
@@ -80,6 +91,7 @@ export default defineComponent({
 				delayed: 0,
 			},
 			prev: {},
+			sound: sound.setVolume(sound.getAudio('syuilo/queue-jammed'), 1),
 			faExclamationTriangle,
 			faTasks,
 		};
@@ -109,6 +121,11 @@ export default defineComponent({
 				this[domain].active = stats[domain].active;
 				this[domain].waiting = stats[domain].waiting;
 				this[domain].delayed = stats[domain].delayed;
+
+				//if (this[domain].waiting > 0 && this.props.sound && this.sound.paused) {
+				if (this[domain].waiting > 0 && this.$store.state.device.enableQueueJammed && this.sound.paused) {
+					this.sound.play();
+				}
 			}
 		},
 		onStatsLog(statsLog) {
