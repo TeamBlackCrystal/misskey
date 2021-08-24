@@ -36,11 +36,15 @@ const version = isProduction ? isTesting ? meta.version + '-' + gitHash : meta.v
 const postcss = {
 	loader: 'postcss-loader',
 	options: {
-		plugins: [
-			require('cssnano')({
-				preset: 'default'
-			})
-		]
+		postcssOptions: {
+			plugins: [
+				[
+					require('cssnano')({
+						preset: 'default'
+					})
+				]
+			]
+		}
 	},
 };
 

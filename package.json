@@ -35,7 +35,8 @@
 	},
 	"resolutions": {
 		"lodash": "^4.17.21",
-		"gulp/gulp-cli/yargs/yargs-parser": "5.0.0-security.0"
+		"gulp/gulp-cli/yargs/yargs-parser": "5.0.0-security.0",
+		"postcss": "8.2.1"
 	},
 	"dependencies": {
 		"@ayuskey/summaly": "2.4.1-rei0784.3",
@@ -195,7 +196,7 @@
 		"parsimmon": "1.18.0",
 		"pg": "8.7.1",
 		"portscanner": "2.2.0",
-		"postcss-loader": "3.0.0",
+		"postcss-loader": "6.1.1",
 		"probe-image-size": "7.2.1",
 		"progress-bar-webpack-plugin": "2.1.0",
 		"promise-limit": "2.7.0",
