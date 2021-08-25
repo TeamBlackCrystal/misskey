@@ -8,8 +8,8 @@ import channels from './channels';
 import { EventEmitter } from 'events';
 import { User } from '../../../models/entities/user';
 import { App } from '../../../models/entities/app';
-import { Users, Followings, Mutings } from '../../../models';
-
+import { Channel as ChannelModel } from '../../../models/entities/channel';
+import { Users, Followings, Mutings, UserProfiles, ChannelFollowings } from '../../../models';
 /**
  * Main stream connection
  */
@@ -17,6 +17,7 @@ export default class Connection {
 	public user?: User;
 	public following: User['id'][] = [];
 	public muting: User['id'][] = [];
+	public followingChannels: ChannelModel['id'][] = [];
 	public app: App;
 	private wsConnection: websocket.connection;
 	public subscriber: EventEmitter;
@@ -24,6 +25,7 @@ export default class Connection {
 	private subscribingNotes: any = {};
 	private followingClock: NodeJS.Timer;
 	private mutingClock: NodeJS.Timer;
+	private followingChannelsClock: NodeJS.Timer;
 
 	constructor(
 		wsConnection: websocket.connection,
@@ -44,6 +46,9 @@ export default class Connection {
 
 			this.updateMuting();
 			this.mutingClock = setInterval(this.updateMuting, 5000);
+
+			this.updateFollowingChannels();
+			this.followingChannelsClock = setInterval(this.updateFollowingChannels, 5000);
 		}
 	}
 
@@ -243,6 +248,18 @@ export default class Connection {
 		this.muting = mutings.map(x => x.muteeId);
 	}
 
+	@autobind
+	private async updateFollowingChannels() {
+		const followings = await ChannelFollowings.find({
+			where: {
+				followerId: this.user!.id
+			},
+			select: ['followeeId']
+		});
+
+		this.followingChannels = followings.map(x => x.followeeId);
+	}
+
 	/**
 	 * ストリームが切れたとき
 	 */
@@ -254,5 +271,6 @@ export default class Connection {
 
 		if (this.followingClock) clearInterval(this.followingClock);
 		if (this.mutingClock) clearInterval(this.mutingClock);
+		if (this.followingChannelsClock) clearInterval(this.followingChannelsClock);
 	}
 }

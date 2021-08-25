@@ -3,6 +3,7 @@
  */
 
 import composeNotification from './compose-notification';
+import { version } from '../config'
 
 // インストールされたとき
 self.addEventListener('install', ev => {

@@ -60,7 +60,7 @@ export class Meta {
 	public enableEmojiReaction: boolean;
 
 	@Column('boolean', {
-		default: false,
+		default: true,
 	})
 	public useStarForReactionFallback: boolean;
 

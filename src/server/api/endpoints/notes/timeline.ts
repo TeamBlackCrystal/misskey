@@ -7,6 +7,7 @@ import { generateVisibilityQuery } from '../../common/generate-visibility-query'
 import { generateMuteQuery } from '../../common/generate-mute-query';
 import { activeUsersChart } from '../../../../services/chart';
 import { Brackets } from 'typeorm';
+import { generateChannelQuery } from '../../common/generate-channel-query';
 
 export const meta = {
 	desc: {
@@ -113,6 +114,7 @@ export default define(meta, async (ps, user) => {
 		.leftJoinAndSelect('note.user', 'user')
 		.setParameters(followingQuery.getParameters());
 
+	generateChannelQuery(query, user);
 	generateVisibilityQuery(query, user);
 	generateMuteQuery(query, user);
 

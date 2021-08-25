@@ -1,43 +1,105 @@
 import { publishMainStream } from '../stream';
 import { Note } from '../../models/entities/note';
 import { User } from '../../models/entities/user';
-import { NoteUnreads } from '../../models';
+import { NoteUnreads, Antennas, AntennaNotes, Users } from '../../models';
+import { Not, IsNull } from 'typeorm';
 
 /**
  * Mark a note as read
  */
-export default (
+export default async function(
 	userId: User['id'],
 	noteId: Note['id']
-) => new Promise<any>(async (resolve, reject) => {
-	// Remove document
-	/*const res = */await NoteUnreads.delete({
-		userId: userId,
-		noteId: noteId
-	});
+) {
+	async function careNoteUnreads() {
+		const exist = await NoteUnreads.findOne({
+			userId: userId,
+			noteId: noteId,
+		});
 
-	// v11 TODO: https://github.com/typeorm/typeorm/issues/2415
-	//if (res.affected == 0) {
-	//	return;
-	//}
+		if (!exist) return;
 
-	const count1 = await NoteUnreads.count({
-		userId: userId,
-		isSpecified: false
-	});
+		// Remove the record
+		await NoteUnreads.delete({
+			userId: userId,
+			noteId: noteId,
+		});
 
-	const count2 = await NoteUnreads.count({
-		userId: userId,
-		isSpecified: true
-	});
+		if (exist.isMentioned) {
+			NoteUnreads.count({
+				userId: userId,
+				isMentioned: true
+			}).then(mentionsCount => {
+				if (mentionsCount === 0) {
+					// 全て既読になったイベントを発行
+					publishMainStream(userId, 'readAllUnreadMentions');
+				}
+			});
+		}
 
-	if (count1 == 0) {
-		// 全て既読になったイベントを発行
-		publishMainStream(userId, 'readAllUnreadMentions');
+		if (exist.isSpecified) {
+			NoteUnreads.count({
+				userId: userId,
+				isSpecified: true
+			}).then(specifiedCount => {
+				if (specifiedCount === 0) {
+					// 全て既読になったイベントを発行
+					publishMainStream(userId, 'readAllUnreadSpecifiedNotes');
+				}
+			});
+		}
+
+		if (exist.noteChannelId) {
+			NoteUnreads.count({
+				userId: userId,
+				noteChannelId: Not(IsNull())
+			}).then(channelNoteCount => {
+				if (channelNoteCount === 0) {
+					// 全て既読になったイベントを発行
+					publishMainStream(userId, 'readAllChannels');
+				}
+			});
+		}
 	}
 
-	if (count2 == 0) {
-		// 全て既読になったイベントを発行
-		publishMainStream(userId, 'readAllUnreadSpecifiedNotes');
+	async function careAntenna() {
+		const beforeUnread = await Users.getHasUnreadAntenna(userId);
+		if (!beforeUnread) return;
+
+		const antennas = await Antennas.find({ userId });
+
+		await Promise.all(antennas.map(async antenna => {
+			const countBefore = await AntennaNotes.count({
+				antennaId: antenna.id,
+				read: false
+			});
+
+			if (countBefore === 0) return;
+
+			await AntennaNotes.update({
+				antennaId: antenna.id,
+				noteId: noteId
+			}, {
+				read: true
+			});
+
+			const countAfter = await AntennaNotes.count({
+				antennaId: antenna.id,
+				read: false
+			});
+
+			if (countAfter === 0) {
+				publishMainStream(userId, 'readAntenna', antenna);
+			}
+		}));
+
+		Users.getHasUnreadAntenna(userId).then(unread => {
+			if (!unread) {
+				publishMainStream(userId, 'readAllAntennas');
+			}
+		});
 	}
-});
+
+	careNoteUnreads();
+	careAntenna();
+}

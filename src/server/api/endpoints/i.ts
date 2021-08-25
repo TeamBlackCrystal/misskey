@@ -26,6 +26,7 @@ export default define(meta, async (ps, user, app) => {
 
 	return await Users.pack(user, user, {
 		detail: true,
+		// TODO: remove
 		includeHasUnreadNotes: true,
 		includeSecrets: isSecure
 	});

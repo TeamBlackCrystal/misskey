@@ -238,6 +238,9 @@
 			</section>
 
 			<section>
+				<ui-switch v-model="enableQueueJammed">{{ $t('@._settings.enable-queue-jammed') }}
+					<template #desc>{{ $t('@._settings.enable-queue-jammed-desc') }}</template>
+				</ui-switch>
 				<ui-switch v-model="enableSpeech">{{ $t('@._settings.enable-speech') }}
 					<template #desc>{{ $t('@._settings.enable-speech-desc') }}</template>
 				</ui-switch>
@@ -468,6 +471,11 @@ export default Vue.extend({
 		enableSoundsInNotifications: {
 			get() { return this.$store.state.device.enableSoundsInNotifications; },
 			set(value) { this.$store.commit('device/set', { key: 'enableSoundsInNotifications', value }); }
+		},
+
+		enableQueueJammed: {
+			get() { return this.$store.state.device.enableQueueJammed; },
+			set(value) { this.$store.commit('device/set', { key: 'enableQueueJammed', value }); }
 		},
 
 		enableSpeech: {
