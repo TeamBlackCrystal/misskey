@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - デフォルトは`262144000B`
 - オブジェクトストレージの`S3ForcePathStyle`を指定できるように
 - 藍ちゃんウィジェット
+- アカウント削除の連合
 
 ### Changed
 
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 一部の条件下(DMなど)で既読がつかない問題を修正
 - アンテナに既読がつくようになりました
 - 空のプッシュ通知が発生しないように
+- アカウント削除の安定性を向上
 
 ## [11.37.1-rei0784-5.16.0] 2021-09-12
 
@@ -70,8 +72,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 不要な音源を削除
 
 ## [11.37.1-rei0784-5.15.0] 2021-08-22
-
-- アカウント削除の安定性を向上
 
 ### Added
 
