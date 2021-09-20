@@ -2,7 +2,6 @@ import $ from 'cafy';
 import * as bcrypt from 'bcryptjs';
 import define from '../../define';
 import { UserProfiles, Users } from '../../../../models';
-import { ensure } from '../../../../prelude/ensure';
 import { doPostSuspend } from '../../../../services/suspend-user';
 //import { publishUserEvent } from '@/services/stream';
 import { createDeleteAccountJob } from '../../../../queue';
