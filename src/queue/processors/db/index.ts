@@ -8,8 +8,8 @@ import { exportUserLists } from './export-user-lists';
 import { importFollowing } from './import-following';
 import { importBlocking } from './import-blocking';
 import { importUserLists } from './import-user-lists';
-import { DbJobData } from '../../type';
 import { deleteAccount } from './delete-account';
+import { DbJobData } from '../../type';
 
 const jobs = {
 	deleteDriveFiles,
