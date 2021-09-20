@@ -4,7 +4,7 @@ import { getJson } from '../../../misc/fetch';
 import { OAuth2 } from 'oauth';
 import config from '../../../config';
 import { publishMainStream } from '../../../services/stream';
-import redis from '../../../db/redis';
+import { redisClient } from '../../../db/redis';
 import { v4 as uuid } from 'uuid';
 import signin from '../common/signin';
 import { fetchMeta } from '../../../misc/fetch-meta';
@@ -101,7 +101,7 @@ router.get('/connect/discord', async ctx => {
 		response_type: 'code'
 	};
 
-	redis.set(userToken, JSON.stringify(params));
+	redisClient.set(userToken, JSON.stringify(params));
 
 	const oauth2 = await getOAuth2();
 	ctx.redirect(oauth2!.getAuthorizeUrl(params));
@@ -117,17 +117,13 @@ router.get('/signin/discord', async ctx => {
 		response_type: 'code'
 	};
 
-	const expires = 1000 * 60 * 60; // 1h
 	ctx.cookies.set('signin_with_discord_session_id', sessid, {
 		path: '/',
-		domain: config.host,
 		secure: config.url.startsWith('https'),
-		httpOnly: true,
-		expires: new Date(Date.now() + expires),
-		maxAge: expires
+		httpOnly: true
 	});
 
-	redis.set(sessid, JSON.stringify(params));
+	redisClient.set(sessid, JSON.stringify(params));
 
 	const oauth2 = await getOAuth2();
 	ctx.redirect(oauth2!.getAuthorizeUrl(params));
@@ -154,7 +150,7 @@ router.get('/dc/cb', async ctx => {
 		}
 
 		const { redirect_uri, state } = await new Promise<any>((res, rej) => {
-			redis.get(sessid, async (_, state) => {
+			redisClient.get(sessid, async (_, state) => {
 				res(JSON.parse(state));
 			});
 		});
@@ -220,7 +216,7 @@ router.get('/dc/cb', async ctx => {
 		}
 
 		const { redirect_uri, state } = await new Promise<any>((res, rej) => {
-			redis.get(userToken, async (_, state) => {
+			redisClient.get(userToken, async (_, state) => {
 				res(JSON.parse(state));
 			});
 		});

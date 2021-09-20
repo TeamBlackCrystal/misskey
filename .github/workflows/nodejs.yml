@@ -31,6 +31,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+    - run: node devtools/diag-environment.js
     - run: yarn install
     - run: yarn build
     - run: cp test/test.yml .config

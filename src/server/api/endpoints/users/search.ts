@@ -12,6 +12,9 @@ export const meta = {
 
 	requireCredential: false as const,
 
+	allowGet: true,
+	cacheSec: 300,
+
 	params: {
 		query: {
 			validator: $.str,

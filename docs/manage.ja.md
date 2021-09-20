@@ -10,5 +10,5 @@ node built/tools/mark-admin (ユーザー名)
 
 例:
 ``` shell
-node built/tools/mark-admin @syuilo
+node built/tools/mark-admin @aki
 ```

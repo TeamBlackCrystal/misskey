@@ -9,6 +9,7 @@ import { makePaginationQuery } from '../../common/make-pagination-query';
 import { generateVisibilityQuery } from '../../common/generate-visibility-query';
 import { activeUsersChart } from '../../../../services/chart';
 import { Brackets } from 'typeorm';
+import { generateChannelQuery } from '../../common/generate-channel-query';
 
 export const meta = {
 	desc: {
@@ -93,8 +94,13 @@ export default define(meta, async (ps, user) => {
 	const query = makePaginationQuery(Notes.createQueryBuilder('note'),
 			ps.sinceId, ps.untilId, ps.sinceDate, ps.untilDate)
 		.andWhere('(note.visibility = \'public\') AND (note.userHost IS NULL)')
-		.leftJoinAndSelect('note.user', 'user');
+		.leftJoinAndSelect('note.user', 'user')
+		.leftJoinAndSelect('note.reply', 'reply')
+		.leftJoinAndSelect('note.renote', 'renote')
+		.leftJoinAndSelect('reply.user', 'replyUser')
+		.leftJoinAndSelect('renote.user', 'renoteUser');
 
+	generateChannelQuery(query, user);
 	generateVisibilityQuery(query, user);
 	if (user) generateMuteQuery(query, user);
 

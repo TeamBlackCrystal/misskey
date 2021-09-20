@@ -2,8 +2,8 @@
 # Misskey configuration
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-#   ┌─────┐
-#───┘ URL └─────────────────────────────────────────────────────
+#      ┌─────┐
+#───┘ URL      └─────────────────────────────────────────────────────
 
 # Final accessible URL seen by a user.
 url: https://example.tld/
@@ -11,8 +11,8 @@ url: https://example.tld/
 # ONCE YOU HAVE STARTED THE INSTANCE, DO NOT CHANGE THE
 # URL SETTINGS AFTER THAT!
 
-#   ┌───────────────┐
-#───┘ Port settings └───────────────────────────────────────────
+#      ┌───────────────┐
+#───┘ Port settings                └───────────────────────────────────────────
 
 #                 +----- https://example.tld/ ------------+
 #   +------+      |+-------------+      +----------------+|
@@ -26,10 +26,11 @@ url: https://example.tld/
 # Listen port
 port: 3000
 
-#   ┌──────────────────────────┐
-#───┘ PostgreSQL configuration └────────────────────────────────
+#      ┌──────────────────────────┐
+#───┘ PostgreSQL configuration                           └────────────────────────────────
 
 db:
+  #host: /var/run/postgresql #unixsocket
   host: localhost
   port: 5432
 
@@ -50,18 +51,19 @@ db:
   # Use PGroonga
   #pgroonga: false
 
-#   ┌─────────────────────┐
-#───┘ Redis configuration └─────────────────────────────────────
+#      ┌─────────────────────┐
+#───┘ Redis configuration                      └─────────────────────────────────────
 
 redis:
+  #path: /var/run/redis/redis-server.sock #unixsocket
   host: localhost
   port: 6379
   #pass: example-pass
   #prefix: example-prefix
   #db: 1
 
-#   ┌─────────────────────────────┐
-#───┘ Elasticsearch configuration └─────────────────────────────
+#      ┌─────────────────────────────┐
+#───┘ Elasticsearch configuration                              └─────────────────────────────
 
 #elasticsearch:
 #  host: localhost
@@ -70,8 +72,8 @@ redis:
 #  user: 
 #  pass: 
 
-#   ┌─────────────────────┐
-#───┘ Sonic configuration └─────────────────────────────
+#      ┌─────────────────────┐
+#───┘ Sonic configuration                      └─────────────────────────────────────
 
 #sonic:
 #  host: localhost
@@ -79,8 +81,8 @@ redis:
 #  pass: example-pass
 
 
-#   ┌───────────────┐
-#───┘ ID generation └───────────────────────────────────────────
+#      ┌───────────────┐
+#───┘ ID generation                └───────────────────────────────────────────
 
 # You can select the ID generation method.
 # You don't usually need to change this setting, but you can
@@ -99,8 +101,8 @@ redis:
 
 id: 'meid'
 
-#   ┌─────────────────────┐
-#───┘ Other configuration └─────────────────────────────────────
+#      ┌─────────────────────┐
+#───┘ Instance configuration                   └─────────────────────────────────────
 
 # Disable Federation: (default: false)
 #disableFederation: true
@@ -127,13 +129,25 @@ autoAdmin: true
 # deliverJobMaxAttempts: 12
 # inboxJobMaxAttempts: 8
 
-# IP address family used for outgoing request (ipv4, ipv6 or dual)
-#outgoingAddressFamily: ipv4
-
 # Syslog option
 #syslog:
 #  host: localhost
 #  port: 514
+
+# Media Proxy
+#mediaProxy: https://example.com/proxy
+
+# Sign to ActivityPub GET request (default: true)
+#signToActivityPubGet: true
+
+# Upload or download file size limits (bytes)
+#maxFileSize: 262144000
+
+#      ┌─────────────────────┐
+#───┘ Network configuration                    └─────────────────────────────────────
+
+# IP address family used for outgoing request (ipv4, ipv6 or dual)
+#outgoingAddressFamily: ipv4
 
 # Proxy for HTTP/HTTPS
 #proxy: http://127.0.0.1:3128
@@ -143,16 +157,17 @@ autoAdmin: true
 #  '192.0.2.8'
 #]
 
+#allowedPrivateNetworks: [
+#  '127.0.0.1/32'
+#]
+
 # Proxy for SMTP/SMTPS
 #proxySmtp: http://127.0.0.1:3128   # use HTTP/1.1 CONNECT
 #proxySmtp: socks4://127.0.0.1:1080 # use SOCKS4
 #proxySmtp: socks5://127.0.0.1:1080 # use SOCKS5
 
-# Media Proxy
-#mediaProxy: https://example.com/proxy
+#      ┌─────────────────────┐
+#───┘ Other configuration                      └─────────────────────────────────────
 
-# Sign to ActivityPub GET request (default: true)
-#signToActivityPubGet: true
-
-# url-preview "Access-Control-Allow-Origin: *" (default: false)
+# url-preview "Access-Control-Allow-Origin: *" (default: false) (for External FE)
 #urlPreviewCors: true

@@ -43,7 +43,7 @@ export async function createNotification(
 	// Create notification
 	const notification = await Notifications.save(data);
 
-	const packed = await Notifications.pack(notification);
+	const packed = await Notifications.pack(notification, {});
 
 	// Publish notification event
 	publishMainStream(notifieeId, 'notification', packed);

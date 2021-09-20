@@ -1,9 +1,12 @@
 import define from '../define';
-import { Notes, Users } from '../../../models';
+import { NoteReactions, Notes, Users } from '../../../models';
 import { federationChart, driveChart } from '../../../services/chart';
 
 export const meta = {
 	requireCredential: false,
+
+	allowGet: true,
+	cacheSec: 600,
 
 	desc: {
 		'en-US': 'Get the instance\'s statistics'
@@ -38,6 +41,16 @@ export const meta = {
 				optional: false as const, nullable: false as const,
 				description: 'The count of all local accounts of this instance.',
 			},
+			reactionsCount: {
+				type: 'number' as const,
+				optional: false as const, nullable: false as const,
+				description: 'The count of all (local/remote) reactions of this instance.',
+			},/*
+			originalReactionsCount: {
+				type: 'number' as const,
+				optional: false as const, nullable: false as const,
+				description: 'The count of all local reactions of this instance.',
+			},*/
 			instances: {
 				type: 'number' as const,
 				optional: false as const, nullable: false as const,
@@ -48,10 +61,13 @@ export const meta = {
 };
 
 export default define(meta, async () => {
-	const [notesCount,
+	const [
+		notesCount,
 		originalNotesCount,
 		usersCount,
 		originalUsersCount,
+		reactionsCount,
+		//originalReactionsCount,
 		instances,
 		driveUsageLocal,
 		driveUsageRemote
@@ -60,6 +76,8 @@ export default define(meta, async () => {
 		Notes.count({ where: { userHost: null }, cache: 3600000 }),
 		Users.count({ cache: 3600000 }),
 		Users.count({ where: { host: null }, cache: 3600000 }),
+		NoteReactions.count({ cache: 3600000 }),
+		//NoteReactions.count({ where: { userHost: null }, cache: 3600000 }),
 		federationChart.getChart('hour', 1).then(chart => chart.instance.total[0]),
 		driveChart.getChart('hour', 1).then(chart => chart.local.totalSize[0]),
 		driveChart.getChart('hour', 1).then(chart => chart.remote.totalSize[0]),
@@ -70,6 +88,8 @@ export default define(meta, async () => {
 		originalNotesCount,
 		usersCount,
 		originalUsersCount,
+		reactionsCount,
+		//originalReactionsCount,
 		instances,
 		driveUsageLocal,
 		driveUsageRemote

@@ -63,7 +63,11 @@ export default define(meta, async (ps, user) => {
 			.where(`'{"${user.id}"}' <@ note.mentions`)
 			.orWhere(`'{"${user.id}"}' <@ note.visibleUserIds`);
 		}))
-		.leftJoinAndSelect('note.user', 'user');
+		.leftJoinAndSelect('note.user', 'user')
+		.leftJoinAndSelect('note.reply', 'reply')
+		.leftJoinAndSelect('note.renote', 'renote')
+		.leftJoinAndSelect('reply.user', 'replyUser')
+		.leftJoinAndSelect('renote.user', 'renoteUser');
 
 	generateVisibilityQuery(query, user);
 	generateMuteQuery(query, user);
@@ -79,9 +83,7 @@ export default define(meta, async (ps, user) => {
 
 	const mentions = await query.take(ps.limit!).getMany();
 
-	for (const note of mentions) {
-		read(user.id, note.id);
-	}
+	read(user.id, mentions);
 
 	return await Notes.packMany(mentions, user);
 });

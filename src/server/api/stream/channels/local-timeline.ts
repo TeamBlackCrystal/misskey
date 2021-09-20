@@ -24,8 +24,9 @@ export default class extends Channel {
 
 	@autobind
 	private async onNote(note: PackedNote) {
-		if ((note.user as PackedUser).host !== null) return;
+		if (note.user.host !== null) return;
 		if (note.visibility !== 'public') return;
+		if (note.channelId != null && !this.followingChannels.has(note.channelId)) return;
 
 		// リプライなら再pack
 		if (note.replyId != null) {
@@ -42,6 +43,8 @@ export default class extends Channel {
 
 		// 流れてきたNoteがミュートしているユーザーが関わるものだったら無視する
 		if (shouldMuteThisNote(note, this.muting)) return;
+
+		this.connection.cacheNote(note);
 
 		this.send('note', note);
 	}

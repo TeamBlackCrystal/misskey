@@ -77,7 +77,12 @@ export default define(meta, async (ps, user) => {
 			ps.sinceId, ps.untilId, ps.sinceDate, ps.untilDate)
 		.andWhere('note.visibility = \'public\'')
 		.andWhere('note.replyId IS NULL')
-		.leftJoinAndSelect('note.user', 'user');
+		.andWhere('note.channelId IS NULL')
+		.leftJoinAndSelect('note.user', 'user')
+		.leftJoinAndSelect('note.reply', 'reply')
+		.leftJoinAndSelect('note.renote', 'renote')
+		.leftJoinAndSelect('reply.user', 'replyUser')
+		.leftJoinAndSelect('renote.user', 'renoteUser');
 
 	if (user) generateMuteQuery(query, user);
 

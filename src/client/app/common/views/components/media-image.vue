@@ -8,14 +8,16 @@
 		</div>
 	</div>
 </div>
-<a class="gqnyydlz" v-else
-	:href="image.url"
-	:title="image.name"
-	@click.prevent="onClick"
->
-	<img-with-blurhash :hash="image.blurhash" :src="url" :alt="image.name" :title="image.name"/>
-	<div class="gif" v-if="image.type === 'image/gif'">GIF</div>
-</a>
+<div class="gqnyydlz" :style="{ background: color }" v-else>
+	<a
+		:href="image.url"
+		:title="image.name"
+		@click.prevent="onClick"
+	>
+		<img-with-blurhash :hash="image.blurhash" :src="url" :alt="image.name" :title="image.name" :cover="false"/>
+		<div class="gif" v-if="image.type === 'image/gif'">GIF</div>
+	</a>
+</div>
 </template>
 
 <script lang="ts">
@@ -23,6 +25,7 @@ import Vue from 'vue';
 import i18n from '../../../i18n';
 import ImageViewer from './image-viewer.vue';
 import { getStaticImageUrl } from '../../../common/scripts/get-static-image-url';
+import { extractAvgColorFromBlurhash } from '../../../common/scripts/extract-avg-color-from-blurhash';
 import ImgWithBlurhash from './img-with-blurhash.vue';
 
 export default Vue.extend({
@@ -41,7 +44,8 @@ export default Vue.extend({
 	},
 	data() {
 		return {
-			hide: true
+			hide: true,
+			color: null,
 		};
 	},
 	computed: {
@@ -50,14 +54,24 @@ export default Vue.extend({
 				? getStaticImageUrl(this.image.thumbnailUrl)
 				: this.image.thumbnailUrl;
 
-			if (this.$store.state.device.loadRemoteMedia || this.$store.state.device.lightmode) {
-				url = null;
-			} else if (this.raw || this.$store.state.device.loadRawImages) {
+			if (this.raw || this.$store.state.device.loadRawImages) {
 				url = this.image.url;
 			}
 
 			return url;
 		}
+	},
+	created() {
+		// Plugin:register_note_view_interruptor を使って書き換えられる可能性があるためwatchする
+		this.$watch('image', () => {
+			this.hide = (this.$store.state.nsfw === 'force') ? true : this.image.isSensitive && (this.$store.state.nsfw !== 'ignore');
+			if (this.image.blurhash) {
+				this.color = extractAvgColorFromBlurhash(this.image.blurhash);
+			}
+		}, {
+			deep: true,
+			immediate: true,
+		});
 	},
 	methods: {
 		onClick() {
@@ -97,27 +111,30 @@ export default Vue.extend({
 				display block
 
 .gqnyydlz
-	display block
-	cursor zoom-in
-	overflow hidden
-	width 100%
-	height 100%
-	background-position center
-	background-size contain
-	background-repeat no-repeat
+	position relative
 
-	> .gif
-		background-color var(--text)
-		border-radius 6px
-		color var(--secondary)
-		display inline-block
-		font-size 14px
-		font-weight bold
-		left 12px
-		opacity .5
-		padding 0 6px
-		text-align center
-		top 12px
-		pointer-events none
+	> .a
+		display block
+		cursor zoom-in
+		overflow hidden
+		width 100%
+		height 100%
+		background-position center
+		background-size contain
+		background-repeat no-repeat
+
+		> .gif
+			background-color var(--text)
+			border-radius 6px
+			color var(--secondary)
+			display inline-block
+			font-size 14px
+			font-weight bold
+			left 12px
+			opacity .5
+			padding 0 6px
+			text-align center
+			top 12px
+			pointer-events none
 
 </style>

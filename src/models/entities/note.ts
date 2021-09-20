@@ -4,6 +4,8 @@ import { App } from './app';
 import { DriveFile } from './drive-file';
 import { id } from '../id';
 
+import { Channel } from './channel';
+
 @Entity()
 @Index('IDX_NOTE_TAGS', { synchronize: false })
 @Index('IDX_NOTE_MENTIONS', { synchronize: false })
@@ -185,6 +187,20 @@ export class Note {
 		default: false
 	})
 	public hasPoll: boolean;
+
+	@Index()
+	@Column({
+		...id(),
+		nullable: true, default: null,
+		comment: 'The ID of source channel.'
+	})
+	public channelId: Channel['id'] | null;
+
+	@ManyToOne(type => Channel, {
+		onDelete: 'CASCADE'
+	})
+	@JoinColumn()
+	public channel: Channel | null;
 
 	@Column('jsonb', {
 		nullable: true, default: null

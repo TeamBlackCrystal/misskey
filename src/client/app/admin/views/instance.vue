@@ -79,6 +79,7 @@
 				<ui-switch v-model="objectStorageUseSSL" :disabled="!useObjectStorage">{{ $t('object-storage-use-ssl') }}</ui-switch>
 				<ui-switch v-model="objectStorageUseProxy" :disabled="!useObjectStorage">{{ $t('object-storage-use-proxy') }}</ui-switch>
 				<ui-switch v-model="objectStorageSetPublicRead" :disabled="!useObjectStorage">{{ $t('object-storage-set-public-read') }}</ui-switch>
+				<ui-switch v-model="objectStorageS3ForcePathStyle" :disabled="!useObjectStorage">{{ $t('object-storage-s3-force-path-style') }}</ui-switch>
 			</template>
 		</section>
 		<section>
@@ -319,8 +320,9 @@ export default Vue.extend({
 			objectStorageAccessKey: null,
 			objectStorageSecretKey: null,
 			objectStorageUseSSL: false,
-			objectStorageUseProxy: false,
+			objectStorageUseProxy: true,
 			objectStorageSetPublicRead: false,
+			objectStorageS3ForcePathStyle: true,
 			faHeadset, faShieldAlt, faGhost, faUserPlus, farEnvelope, faBolt, faThumbtack, faPencilAlt, faSave, faHashtag
 		};
 	},
@@ -388,6 +390,7 @@ export default Vue.extend({
 			this.objectStorageUseSSL = meta.objectStorageUseSSL;
 			this.objectStorageUseProxy = meta.objectStorageUseProxy;
 			this.objectStorageSetPublicRead = meta.objectStorageSetPublicRead;
+			this.objectStorageS3ForcePathStyle = meta.objectStorageS3ForcePathStyle;
 		});
 	},
 
@@ -514,6 +517,7 @@ export default Vue.extend({
 				objectStorageUseSSL: this.objectStorageUseSSL,
 				objectStorageUseProxy: this.objectStorageUseProxy,
 				objectStorageSetPublicRead: this.objectStorageSetPublicRead,
+				objectStorageS3ForcePathStyle: this.objectStorageS3ForcePathStyle,
 			}).then(() => {
 				this.$root.dialog({
 					type: 'success',
