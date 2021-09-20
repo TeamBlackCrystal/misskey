@@ -127,17 +127,18 @@ export class DriveFileRepository extends Repository<DriveFile> {
 			properties: file.properties,
 			url: opts.self ? file.url : this.getPublicUrl(file, false, meta),
 			thumbnailUrl: this.getPublicUrl(file, true, meta),
+			comment: file.comment,
 			folderId: file.folderId,
 			folder: opts.detail && file.folderId ? DriveFolders.pack(file.folderId, {
 				detail: true
 			}) : null,
-			//userId: opts.withUser ? file.userId : null,
+			userId: opts.withUser ? file.userId : null,
 			user: (opts.withUser && file.userId) ? Users.pack(file.userId) : null
 		});
 	}
 
 	public async packMany(
-		files: any[],
+		files: (DriveFile['id'] | DriveFile)[],
 		options?: PackOptions
 	) {
 		const items = await Promise.all(files.map(f => this.pack(f, options)));
@@ -187,19 +188,6 @@ export const packedDriveFileSchema = {
 			description: 'The size of this Drive file. (bytes)',
 			example: 51469
 		},
-		url: {
-			type: 'string' as const,
-			optional: false as const, nullable: true as const,
-			format: 'url',
-			description: 'The URL of this Drive file.',
-		},
-		folderId: {
-			type: 'string' as const,
-			optional: false as const, nullable: true as const,
-			format: 'id',
-			description: 'The parent folder ID of this Drive file.',
-			example: 'xxxxxxxxxx',
-		},
 		isSensitive: {
 			type: 'boolean' as const,
 			optional: false as const, nullable: false as const,
@@ -211,5 +199,59 @@ export const packedDriveFileSchema = {
 			description: 'The blurhash of image.',
 			example: 'ySFzz31U1?=nZO,+JOofR*oHnhjYX6S50J=n]DEol8JEw}R*xaNgXTW=ruxBxbWZS2obe.n~bFaxR%s*aKoIW.WY=}NgOAs*enoIWU',
 		},
+		properties: {
+			type: 'object' as const,
+			optional: false as const, nullable: false as const,
+			properties: {
+				width: {
+					type: 'number' as const,
+					optional: true as const, nullable: false as const,
+					example: 1280
+				},
+				height: {
+					type: 'number' as const,
+					optional: true as const, nullable: false as const,
+					example: 720
+				},
+				avgColor: {
+					type: 'string' as const,
+					optional: true as const, nullable: false as const,
+					example: 'rgb(40,65,87)'
+				}
+			}
+		},
+		url: {
+			type: 'string' as const,
+			optional: false as const, nullable: true as const,
+			format: 'url',
+			description: 'The URL of this Drive file.',
+		},
+		thumbnailUrl: {
+			type: 'string' as const,
+			optional: false as const, nullable: true as const,
+			format: 'url',
+		},
+		comment: {
+			type: 'string' as const,
+			optional: false as const, nullable: true as const
+		},
+		folderId: {
+			type: 'string' as const,
+			optional: false as const, nullable: true as const,
+			format: 'id',
+			description: 'The parent folder ID of this Drive file.',
+			example: 'xxxxxxxxxx',
+		},
+		userId: {
+			type: 'string' as const,
+			optional: false as const, nullable: true as const,
+			format: 'id',
+			example: 'xxxxxxxxxx',
+		},
+		user: {
+			type: 'object' as const,
+			optional: true as const, nullable: true as const,
+			ref: 'User' as const,
+		}
 	},
 };

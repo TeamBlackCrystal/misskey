@@ -549,6 +549,7 @@ const PREFIX = 'miux:';
 		sound_channel: { type: 'syuilo/square-pico', volume: 1 },
 		sound_reversiPutBlack: { type: 'syuilo/kick', volume: 0.3 },
 		sound_reversiPutWhite: { type: 'syuilo/snare', volume: 0.3 },
+		mascot_widget_url: 'https://teamblackcrystal.github.io/mascot-web/?scale=1.5&y=1.1&eyeY=100',
 	};
 
 	public static watchers = [];

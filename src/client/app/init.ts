@@ -353,10 +353,13 @@ Vue.mixin({
 
 console.info(`Misskey v11.37.1 (daybreak)`);
 console.info(`Ayuskey v${version} (${codename})`);
+console.info('%cSTOP', 'color: red; font-size: 100px; font-weight: bold;');
 console.info(
 	`%c${locale['common']['do-not-copy-paste']}`,
 	'color: red; background: yellow; font-size: 16px; font-weight: bold;');
-
+console.info(
+	`%c${locale['common']['if-you-know']} https://github.com/TeamBlackCrystal/misskey`,
+	'font-size: 16px;');
 // BootTimer解除
 window.clearTimeout((window as any).mkBootTimer);
 delete (window as any).mkBootTimer;

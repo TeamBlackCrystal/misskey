@@ -112,7 +112,7 @@ export const packedFollowingSchema = {
 		followee: {
 			type: 'object' as const,
 			optional: true as const, nullable: false as const,
-			ref: 'User',
+			ref: 'User' as const,
 			description: 'The followee.'
 		},
 		followerId: {
@@ -123,7 +123,7 @@ export const packedFollowingSchema = {
 		follower: {
 			type: 'object' as const,
 			optional: true as const, nullable: false as const,
-			ref: 'User',
+			ref: 'User' as const,
 			description: 'The follower.'
 		},
 	}

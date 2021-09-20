@@ -33,6 +33,7 @@ import { addNoteToAntenna } from '../add-note-to-antenna';
 import { deliverToRelays } from '../relay';
 import { normalizeTag } from '../../misc/normalize-tag';
 import { Channel } from '../../models/entities/channel';
+import { getAntennas } from '../../misc/antenna-cache';
 
 type NotificationType = 'reply' | 'renote' | 'quote' | 'mention';
 
@@ -235,22 +236,41 @@ export default async (user: User, data: Option, silent = false) => new Promise<N
 	// Increment notes count (user)
 	incNotesCountOfUser(user);
 
-	// Antenna
-	Antennas.find().then(async antennas => {
-		const followings = await Followings.createQueryBuilder('following')
-			.andWhere(`following.followeeId = :userId`, { userId: note.userId })
-			.getMany();
-
-		const followers = followings.map(f => f.followerId);
-
-		for (const antenna of antennas) {
-			await checkHitAntenna(antenna, note, user, followers).then(async hit => {
-				if (hit) {
-					await addNoteToAntenna(antenna, note, user);
+	// Word mute
+	// TODO: cache
+	/*
+	UserProfiles.find({
+		enableWordMute: true
+	}).then(us => {
+		for (const u of us) {
+			checkWordMute(note, { id: u.userId }, u.mutedWords).then(shouldMute => {
+				if (shouldMute) {
+					MutedNotes.insert({
+						id: genId(),
+						userId: u.userId,
+						noteId: note.id,
+						reason: 'word',
+					});
 				}
-			}).catch(() => {});
+			});
 		}
 	});
+	*/
+
+	// Antenna
+	Followings.createQueryBuilder('following')
+		.andWhere(`following.followeeId = :userId`, { userId: note.userId })
+		.getMany()
+		.then(async followings => {
+			const followers = followings.map(f => f.followerId);
+			for (const antenna of (await getAntennas())) {
+				checkHitAntenna(antenna, note, user, followers).then(hit => {
+					if (hit) {
+						addNoteToAntenna(antenna, note, user);
+					}
+				});
+			}
+		});
 
 	// Channel
 	if (note.channelId) {
@@ -303,10 +323,6 @@ export default async (user: User, data: Option, silent = false) => new Promise<N
 
 		// Pack the note
 		const noteObj = await Notes.pack(note);
-
-		if (user.notesCount === 0) {
-			(noteObj as any).isFirstNote = true;
-		}
 
 		publishNotesStream(noteObj);
 
@@ -412,7 +428,7 @@ export default async (user: User, data: Option, silent = false) => new Promise<N
 			// この処理が行われるのはノート作成後なので、ノートが一つしかなかったら最初の投稿だと判断できる
 			// TODO: とはいえノートを削除して何回も投稿すればその分だけインクリメントされる雑さもあるのでどうにかしたい
 			if (count === 1) {
-				Channels.increment({ id: data.channel.id }, 'usersCount', 1);
+				Channels.increment({ id: data.channel!.id }, 'usersCount', 1);
 			}
 		});
 	}
@@ -432,8 +448,13 @@ async function renderNoteOrRenoteActivity(data: Option, note: Note) {
 }
 
 function incRenoteCount(renote: Note) {
-	Notes.increment({ id: renote.id }, 'renoteCount', 1);
-	Notes.increment({ id: renote.id }, 'score', 1);
+	Notes.createQueryBuilder().update()
+		.set({
+			renoteCount: () => '"renoteCount" + 1',
+			score: () => '"score" + 1'
+		})
+		.where('id = :id', { id: renote.id })
+		.execute();
 }
 
 async function insertNote(user: User, data: Option, tags: string[], emojis: string[], mentionedUsers: User[]) {
@@ -527,7 +548,7 @@ async function insertNote(user: User, data: Option, tags: string[], emojis: stri
 			await Notes.insert(insert);
 		}
 
-		return await Notes.findOneOrFail(insert.id);
+		return insert;
 	} catch (e) {
 		// duplicate key error
 		if (isDuplicateKeyValueError(e)) {
@@ -588,10 +609,13 @@ function saveReply(reply: Note, note: Note) {
 }
 
 function incNotesCountOfUser(user: User) {
-	Users.increment({ id: user.id }, 'notesCount', 1);
-	Users.update({ id: user.id }, {
-		updatedAt: new Date()
-	});
+	Users.createQueryBuilder().update()
+		.set({
+			updatedAt: new Date(),
+			notesCount: () => '"notesCount" + 1'
+		})
+		.where('id = :id', { id: user.id })
+		.execute();
 }
 
 async function extractMentionedUsers(user: User, tokens: ReturnType<typeof parse>): Promise<User[]> {

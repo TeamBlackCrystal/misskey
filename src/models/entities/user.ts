@@ -26,6 +26,17 @@ export class User {
 	})
 	public lastFetchedAt: Date | null;
 
+	@Index()
+	@Column('timestamp with time zone', {
+		nullable: true
+	})
+	public lastActiveDate: Date | null;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public hideOnlineStatus: boolean;
+
 	@Column('varchar', {
 		length: 128,
 		comment: 'The username of the User.'
@@ -40,7 +51,7 @@ export class User {
 	public usernameLower: string;
 
 	@Column('varchar', {
-		length: 128, nullable: true,
+		length: 512, nullable: true,
 		comment: 'The name of the User.'
 	})
 	public name: string | null;

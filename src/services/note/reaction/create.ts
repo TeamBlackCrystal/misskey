@@ -3,7 +3,6 @@ import watch from '../watch';
 import { renderLike } from '../../../remote/activitypub/renderer/like';
 import DeliverManager from '../../../remote/activitypub/deliver-manager';
 import { renderActivity } from '../../../remote/activitypub/renderer';
-import { IdentifiableError } from '../../../misc/identifiable-error';
 import { toDbReaction, decodeReaction } from '../../../misc/reaction-lib';
 import { User, IRemoteUser } from '../../../models/entities/user';
 import { Note } from '../../../models/entities/note';
@@ -14,7 +13,8 @@ import { genId } from '../../../misc/gen-id';
 import { createNotification } from '../../create-notification';
 import deleteReaction from './delete';
 
-export default async (user: User, note: Note, reaction?: string, isDislike = false) => {	
+export default async (user: User, note: Note, reaction?: string, isDislike = false) => {
+	// TODO: cache
 	reaction = await toDbReaction(reaction, user.host);
 
 	const exist = await NoteReactions.findOne({
@@ -47,11 +47,10 @@ export default async (user: User, note: Note, reaction?: string, isDislike = fal
 	await Notes.createQueryBuilder().update()
 		.set({
 			reactions: () => sql,
+			score: () => '"score" + 1'
 		})
 		.where('id = :id', { id: note.id })
 		.execute();
-
-	Notes.increment({ id: note.id }, 'score', 1);
 
 	perUserReactionsChart.update(user, note);
 

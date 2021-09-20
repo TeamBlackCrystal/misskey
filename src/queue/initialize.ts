@@ -1,14 +1,27 @@
 import * as Bull from 'bull';
+import * as Redis from "ioredis";
 import config from '../config';
+
+let redisOpts: Redis.RedisOptions
+
+if (config.redis.path == null) {
+	redisOpts = {
+		port:  config.redis.port,
+		host: config.redis.host,
+		password: config.redis.pass,
+		db: config.redis.db || 0,
+	}
+} else {
+	redisOpts = {
+		path: config.redis.path,
+		password: config.redis.pass,
+		db: config.redis.db || 0,
+	}
+}
 
 export function initialize<T>(name: string, limitPerSec = -1) {
 	return new Bull<T>(name, {
-		redis: {
-			port:  config.redis.port,
-			host: config.redis.host,
-			password: config.redis.pass,
-			db: config.redis.db || 0,
-		},
+		redis: redisOpts,
 		prefix: config.redis.prefix ? `${config.redis.prefix}:queue` : 'queue',
 		limiter: limitPerSec > 0 ? {
 			max: limitPerSec,

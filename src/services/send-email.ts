@@ -10,7 +10,7 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 
 	const iconUrl = `${config.url}/static-assets/ayuskey.png`;
 	//const emailSettingUrl = `${config.url}/settings/email`;
-	const emailSettingUrl = ''
+	const emailSettingUrl = '';
 
 	const enableAuth = meta.smtpUser != null && meta.smtpUser !== '';
 

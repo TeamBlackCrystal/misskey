@@ -214,6 +214,17 @@
 				</ui-select>
 				<ui-switch v-model="roomUseOrthographicCamera">{{ $t('@._settings._room.useOrthographicCamera') }}</ui-switch>
 			</section>
+
+			<section>
+				<header>{{ $t('@._settings.mascot') }}</header>
+				<ui-input v-model="mascotWidgetUrl">{{ $t('@._settings._mascot.widget-url') }}
+					<template #desc>{{ $t('@._settings._mascot.widget-url-desc') }}</template>
+				</ui-input>
+				<!--
+					todo: ボタン押したら保存
+				<ui-button @click="save('mascotWidgetUrl', mascotWidgetUrl)"><fa :icon="faSave"/> {{ $t('@._settings.save') }}</ui-button>
+				-->
+			</section>
 		</ui-card>
 
 		<ui-card>
@@ -640,6 +651,11 @@ export default Vue.extend({
 		roomGraphicsQuality: {
 			get() { return this.$store.state.device.roomGraphicsQuality; },
 			set(value) { this.$store.commit('device/set', { key: 'roomGraphicsQuality', value }); }
+		},
+
+		mascotWidgetUrl: {
+			get() { return ColdDeviceStorage.get('mascot_widget_url'); },
+			set(value) { ColdDeviceStorage.set('mascot_widget_url', value); }
 		},
 
 		games_reversi_showBoardLabels: {

@@ -13,14 +13,14 @@ Feature suggestions and bug reports are filed in https://github.com/TeamOrangeSe
 * **l10n_develop** branch is reserved for localization management.
 
 ## Localization (l10n)
-Misskey uses [Crowdin](https://crowdin.com/project/misskey) for localization management.
-You can improve our translations with your Crowdin account.
-Your changes in Crowdin are automatically submitted as a PR (with the title "New Crowdin translations") to the repository.
-The owner [@syuilo](https://github.com/syuilo) merges the PR into the develop branch before the next release.
+Ayuskey uses [GitLocalize](https://gitlocalize.com/repo/6356) for localization management.
+You can improve our translations with your GitHub account.
+At the administrator's discretion, a PR containing your translation will be created and merged.
+The owner [@sousuke0422](https://github.com/sousuke0422) merges the PR into the develop branch before the next release.
 
-If your language is not listed in Crowdin, please open an issue.
+If your language is not listed in GitLocalize, please open an issue.
 
-![Crowdin](https://d322cqt584bo4o.cloudfront.net/misskey/localized.svg)
+![gitlocalized](https://gitlocalize.com/repo/6356/whole_project/badge.svg)
 
 ## Internationalization (i18n)
 Misskey uses the Vue.js plugin [Vue I18n](https://github.com/kazupon/vue-i18n).

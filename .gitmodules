@@ -1,3 +1,6 @@
 [submodule "e2e"]
 	path = e2e
 	url = https://github.com/TeamBlackCrystal/ayuskey-e2e.git
+[submodule "misskey-assets"]
+	path = misskey-assets
+	url = https://github.com/misskey-dev/assets.git

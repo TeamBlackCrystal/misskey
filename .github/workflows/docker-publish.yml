@@ -25,6 +25,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - name: Run tests
         run: |
@@ -50,6 +52,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      with:
+        submodules: true
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME

@@ -53,12 +53,10 @@ export const meta = {
 			default: null
 		},
 
-		/*
 		channelId: {
 			validator: $.optional.nullable.type(ID),
 			default: null
 		},
-		*/
 	},
 
 	res: {
@@ -94,9 +92,9 @@ export default define(meta, async (ps, me) => {
 
 		if (ps.userId) {
 			query.andWhere('note.userId = :userId', { userId: ps.userId });
-		} /*else if (ps.channelId) {
+		} else if (ps.channelId) {
 			query.andWhere('note.channelId = :channelId', { channelId: ps.channelId });
-		}*/
+		}
 
 		if (sinceRegex.test(ps.query)) {
 			query.andWhere('note.createdAt > :since', {since: `${RegExp.$1}`});

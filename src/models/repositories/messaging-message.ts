@@ -69,7 +69,7 @@ export const packedMessagingMessageSchema = {
 		},
 		user: {
 			type: 'object' as const,
-			ref: 'User',
+			ref: 'User' as const,
 			optional: true as const, nullable: false as const,
 		},
 		text: {
@@ -84,7 +84,7 @@ export const packedMessagingMessageSchema = {
 		file: {
 			type: 'object' as const,
 			optional: true as const, nullable: true as const,
-			ref: 'DriveFile',
+			ref: 'DriveFolder' as const,
 		},
 		recipientId: {
 			type: 'string' as const,
@@ -94,7 +94,7 @@ export const packedMessagingMessageSchema = {
 		recipient: {
 			type: 'object' as const,
 			optional: true as const, nullable: true as const,
-			ref: 'User'
+			ref: 'User' as const,
 		},
 		groupId: {
 			type: 'string' as const,
@@ -104,7 +104,7 @@ export const packedMessagingMessageSchema = {
 		group: {
 			type: 'object' as const,
 			optional: true as const, nullable: true as const,
-			ref: 'UserGroup'
+			ref: 'UserGroup' as const,
 		},
 		isRead: {
 			type: 'boolean' as const,

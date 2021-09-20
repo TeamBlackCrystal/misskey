@@ -1,24 +1,4 @@
-import { packedUserSchema } from '../../../models/repositories/user';
-import { Schema } from '../../../misc/schema';
-import { packedNoteSchema } from '../../../models/repositories/note';
-import { packedUserListSchema } from '../../../models/repositories/user-list';
-import { packedAppSchema } from '../../../models/repositories/app';
-import { packedMessagingMessageSchema } from '../../../models/repositories/messaging-message';
-import { packedNotificationSchema } from '../../../models/repositories/notification';
-import { packedDriveFileSchema } from '../../../models/repositories/drive-file';
-import { packedDriveFolderSchema } from '../../../models/repositories/drive-folder';
-import { packedFollowingSchema } from '../../../models/repositories/following';
-import { packedMutingSchema } from '../../../models/repositories/muting';
-import { packedBlockingSchema } from '../../../models/repositories/blocking';
-import { packedNoteReactionSchema } from '../../../models/repositories/note-reaction';
-import { packedHashtagSchema } from '../../../models/repositories/hashtag';
-import { packedPageSchema } from '../../../models/repositories/page';
-import { packedUserGroupSchema } from '../../../models/repositories/user-group';
-import { packedNoteFavoriteSchema } from '../../../models/repositories/note-favorite';
-import { packedChannelSchema } from '../../../models/repositories/channel';
-
-//何故か無いとだめかも
-import { packedClipSchema } from '../../../models/repositories/clip';
+import { refs, Schema } from '@/misc/schema';
 
 export function convertSchemaToOpenApiSchema(schema: Schema) {
 	const res: any = schema;
@@ -70,23 +50,7 @@ export const schemas = {
 		required: ['error']
 	},
 
-	User: convertSchemaToOpenApiSchema(packedUserSchema),
-	UserList: convertSchemaToOpenApiSchema(packedUserListSchema),
-	UserGroup: convertSchemaToOpenApiSchema(packedUserGroupSchema),
-	App: convertSchemaToOpenApiSchema(packedAppSchema),
-	MessagingMessage: convertSchemaToOpenApiSchema(packedMessagingMessageSchema),
-	Note: convertSchemaToOpenApiSchema(packedNoteSchema),
-	NoteReaction: convertSchemaToOpenApiSchema(packedNoteReactionSchema),
-	NoteFavorite: convertSchemaToOpenApiSchema(packedNoteFavoriteSchema),
-	Notification: convertSchemaToOpenApiSchema(packedNotificationSchema),
-	DriveFile: convertSchemaToOpenApiSchema(packedDriveFileSchema),
-	DriveFolder: convertSchemaToOpenApiSchema(packedDriveFolderSchema),
-	Following: convertSchemaToOpenApiSchema(packedFollowingSchema),
-	Muting: convertSchemaToOpenApiSchema(packedMutingSchema),
-	Blocking: convertSchemaToOpenApiSchema(packedBlockingSchema),
-	Hashtag: convertSchemaToOpenApiSchema(packedHashtagSchema),
-	Page: convertSchemaToOpenApiSchema(packedPageSchema),
-	Channel: convertSchemaToOpenApiSchema(packedChannelSchema),
-
-	Clip: convertSchemaToOpenApiSchema(packedClipSchema),
+	...Object.fromEntries(
+		Object.entries(refs).map(([key, schema]) => [key, convertSchemaToOpenApiSchema(schema)])
+	),
 };

@@ -19,6 +19,7 @@ export type Source = {
 		pgroonga?: boolean;
 	};
 	redis: {
+		path: string;
 		host: string;
 		port: number;
 		pass: string;
@@ -47,6 +48,10 @@ export type Source = {
 	proxy?: string;
 	proxySmtp?: string;
 	proxyBypassHosts?: string[];
+
+	allowedPrivateNetworks?: string[];
+
+	maxFileSize?: number;
 
 	accesslog?: string;
 

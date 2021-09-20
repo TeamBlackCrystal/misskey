@@ -23,6 +23,7 @@
 		"isolatedModules": true,
 		"rootDir": "./",
 		"baseUrl": "./",
+		"outDir": "../built",
 		"paths": {
 			"@/*": ["./*"]
 		},
