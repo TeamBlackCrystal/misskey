@@ -1,8 +1,10 @@
 [JA](README.md) | EN
 
---
+----------------------------------------------------------------
 
-# Ayuskey
+<h1 align="center">Ayuskey</h1>
+
+<div align="center">
 
 [![][e2e-badge]][e2e-link]
 
@@ -10,43 +12,47 @@
 [![][summaly-badge]][summaly-link]
 [![][mfmjs-badge]][mfmjs-link]
 
+Ayuskey, born somewhere in this world, is a fork of Misskey v11.
+Ayuskey instances can interconnect with not only Misskey, but also other decentralised social platrform. Because this free,open-source software floats in the Fediverse. 
+	
+</div>
+	
 ----------------------------------------------------------------
 
-## 公式インスタンス
+## Official Instances
 
 * <https://kr.akirin.xyz>
 * <https://ne.akarinext.org>
 
-## ドキュメント
+## Documents
 
-* [misskeyからの移行](https://github.com/sousuke0422/notes/blob/master/misskey/migrate-misskey-to-ayuskey.md)
+* [Immigration from Misskey(~v11)](https://github.com/sousuke0422/notes/blob/master/misskey/migrate-misskey-to-ayuskey.md)
 * [Ayuskey Hub](https://ayuskey-hub.readthedocs.io/)
 
-## クライアント
-
+## WebClient
 * [TenCha](https://github.com/coke12103/TenCha)
-  * isLadyをサポート
+  * Support for "isLady"
 
-## ライブラリ
+## Library
 
 * [Mi.py](https://github.com/yupix/Mi.py)
-  * **プレビュー版**
-  * bot向けフレームワーク
-  * ayuskey動作保証、misskey(v12)対応
+  * **Preview Version**
+  * Framework for creating a bot
+  * Compatible with Ayuskey and Misskey(v12)
 
 <details>
-<summary>内部</summary>
+<summary>Internal</summary>
 
 * [@ayuskey/summaly](https://github.com/TeamBlackCrystal/summaly)
-  * 微調整が施されたsummaly
+  * summaly is improved a little bit
 
 </details>
 
 ## Contribution
 
-* [コントリビューションガイド](CONTRIBUTING.md)をご確認ください。
-* 翻訳を行い場合は[GitLocalize](https://gitlocalize.com/repo/6356)が利用できます。
-  * プルリクエストを直接送ることも可能です。
+* Please check a [Contribution Guide](CONTRIBUTING.md).
+* If you would like to submit translations, you can use [GitLocalize](https://gitlocalize.com/repo/6356).
+  * You can also send pull requests to this repo without new strings and words.
 
 ### Collaborators
 
