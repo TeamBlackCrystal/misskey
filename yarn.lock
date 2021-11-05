@@ -43,10 +43,10 @@
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.13.9.tgz#ca34cb95e1c2dd126863a84465ae8ef66114be99"
   integrity sha512-nEUfRiARCcaVo3ny3ZQjURjHQZUo/JkEw7rLlSZy/psWGnvwXFtPcr6jb7Yb41DVW5LTe6KRq9LGleRNsg1Frw==
 
-"@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2":
-  version "7.15.3"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.15.3.tgz#2e1c2880ca118e5b2f9988322bd8a7656a32502b"
-  integrity sha512-OvwMLqNXkCXSz1kSm58sEsNuhqOx/fKpnUnKnFB5v8uDda5bLNEHNgKPvhDN6IU0LDcnHQ90LlJ0Q6jnyBSIBA==
+"@babel/runtime@^7.16.0", "@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3":
+  version "7.16.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.0.tgz#e27b977f2e2088ba24748bf99b5e1dece64e4f0b"
+  integrity sha512-Nht8L0O8YCktmsDV6FqFue7vQLRx3Hb0B37lS5y0jDRqRxlBG4wIJHnf9/bgSE2UyipKFA01YtS+npRdTWBUyw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -2115,14 +2115,13 @@ braces@^3.0.1, braces@~3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
-broadcast-channel@4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/broadcast-channel/-/broadcast-channel-4.2.0.tgz#9ca93a23a31036266c2c9b0f8f55bd21594b8f82"
-  integrity sha512-XX9yNnIy/v2T+HR5EKIH7ziM2mYTefsrzZ2lkCmFZxwCDG7Ns7HLIooUXA114sCeFRJ4MEXEgdMapxfPDh9Xkg==
+broadcast-channel@4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/broadcast-channel/-/broadcast-channel-4.4.0.tgz#a0e508b7c7540659515ec3a7c86b75b1aea1ef9a"
+  integrity sha512-25UGbuDUqVnMVy+wEFT2eSDWBVncpxiHnGmFqb1r4lYNuC7YUN7gcsXQlTUlaHsP51leOQ007K+d44aN0qrGtg==
   dependencies:
-    "@babel/runtime" "^7.7.2"
+    "@babel/runtime" "^7.16.0"
     detect-node "^2.1.0"
-    js-sha3 "0.8.0"
     microseconds "0.2.0"
     nano-time "1.0.0"
     oblivious-set "1.0.0"
@@ -6315,11 +6314,6 @@ js-levenshtein@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/js-levenshtein/-/js-levenshtein-1.1.6.tgz#c6cee58eb3550372df8deb85fad5ce66ce01d59d"
   integrity sha512-X2BB11YZtrRqY4EnQcLX5Rh373zbK4alC1FW7D7MBhL2gtcC17cTnr6DmfHZeS0s2rTHjUTMMHfG7gO8SSdw+g==
-
-js-sha3@0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/js-sha3/-/js-sha3-0.8.0.tgz#b9b7a5da73afad7dedd0f8c463954cbde6818840"
-  integrity sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q==
 
 js-stringify@^1.0.2:
   version "1.0.2"
