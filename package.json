@@ -63,7 +63,7 @@
 		"@types/gulp-mocha": "0.0.33",
 		"@types/gulp-rename": "2.0.1",
 		"@types/gulp-replace": "1.1.0",
-		"@types/ioredis": "4.28.1",
+		"@types/ioredis": "4.28.2",
 		"@types/is-url": "1.2.30",
 		"@types/js-yaml": "4.0.5",
 		"@types/jsdom": "16.2.13",
