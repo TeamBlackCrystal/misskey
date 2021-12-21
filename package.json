@@ -66,7 +66,7 @@
 		"@types/ioredis": "4.28.5",
 		"@types/is-url": "1.2.30",
 		"@types/js-yaml": "4.0.5",
-		"@types/jsdom": "16.2.13",
+		"@types/jsdom": "16.2.14",
 		"@types/jsonld": "1.5.6",
 		"@types/katex": "0.11.1",
 		"@types/koa": "2.13.4",
