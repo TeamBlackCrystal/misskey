@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - クライアント: メンションにユーザーのアバターを表示するように
 - インスタンスプロフィールレンダリング ready
-- カスタム絵文字エクスポート機能
+- 猫耳動かす AS-3
 
 ### Fixed
 

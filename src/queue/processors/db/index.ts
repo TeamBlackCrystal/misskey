@@ -1,7 +1,5 @@
 import * as Bull from 'bull';
-import { DbJobData } from '../../types';
 import { deleteDriveFiles } from './delete-drive-files';
-import { exportCustomEmojis } from './export-custom-emojis';
 import { exportNotes } from './export-notes';
 import { exportFollowing } from './export-following';
 import { exportMute } from './export-mute';
@@ -11,10 +9,10 @@ import { importFollowing } from './import-following';
 import { importBlocking } from './import-blocking';
 import { importUserLists } from './import-user-lists';
 import { deleteAccount } from './delete-account';
+import { DbJobData } from '../../types';
 
 const jobs = {
 	deleteDriveFiles,
-	exportCustomEmojis,
 	exportNotes,
 	exportFollowing,
 	exportMute,
