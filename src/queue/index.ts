@@ -13,6 +13,7 @@ import { DriveFile } from '../models/entities/drive-file';
 import { getJobInfo } from './get-job-info';
 import { IActivity } from '../remote/activitypub/type';
 import { dbQueue, deliverQueue, inboxQueue, objectStorageQueue } from './queues';
+import { ThinUser } from './types';
 
 function renderError(e: Error): any {
 	return {
@@ -105,6 +106,15 @@ export function createDeleteDriveFilesJob(user: ILocalUser) {
 	}, {
 		removeOnComplete: true,
 		removeOnFail: true
+	});
+}
+
+export function createExportCustomEmojisJob(user: ILocalUser) {
+	return dbQueue.add('exportCustomEmojis', {
+		user: user,
+	}, {
+		removeOnComplete: true,
+		removeOnFail: true,
 	});
 }
 

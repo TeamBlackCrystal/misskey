@@ -35,16 +35,20 @@ export async function exportNotes(job: Bull.Job<DbUserJobData>, done: any): Prom
 
 	const stream = fs.createWriteStream(path, { flags: 'a' });
 
-	await new Promise((res, rej) => {
-		stream.write('[', err => {
-			if (err) {
-				logger.error(err);
-				rej(err);
-			} else {
-				res();
-			}
+	const write = (text: string): Promise<void> => {
+		return new Promise<void>((res, rej) => {
+			stream.write(text, err => {
+				if (err) {
+					logger.error(err);
+					rej(err);
+				} else {
+					res();
+				}
+			});
 		});
-	});
+	};
+
+	await write('[');
 
 	let exportedNotesCount = 0;
 	let cursor: any = null;
@@ -74,16 +78,8 @@ export async function exportNotes(job: Bull.Job<DbUserJobData>, done: any): Prom
 				poll = await Polls.findOne({ noteId: note.id }).then(ensure);
 			}
 			const content = JSON.stringify(serialize(note, poll));
-			await new Promise((res, rej) => {
-				stream.write(exportedNotesCount === 0 ? content : ',\n' + content, err => {
-					if (err) {
-						logger.error(err);
-						rej(err);
-					} else {
-						res();
-					}
-				});
-			});
+			const isFirst = exportedNotesCount === 0;
+			await write(isFirst ? content : ',\n' + content);
 			exportedNotesCount++;
 		}
 
@@ -94,16 +90,7 @@ export async function exportNotes(job: Bull.Job<DbUserJobData>, done: any): Prom
 		job.progress(exportedNotesCount / total);
 	}
 
-	await new Promise((res, rej) => {
-		stream.write(']', err => {
-			if (err) {
-				logger.error(err);
-				rej(err);
-			} else {
-				res();
-			}
-		});
-	});
+	await write(']');
 
 	stream.end();
 	logger.succ(`Exported to: ${path}`);
