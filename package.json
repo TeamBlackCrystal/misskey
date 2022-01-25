@@ -134,7 +134,7 @@
 		"chalk": "4.1.2",
 		"cli-highlight": "2.1.11",
 		"commander": "4.1.0",
-		"concurrently": "6.5.1",
+		"concurrently": "7.0.0",
 		"content-disposition": "0.5.4",
 		"crc-32": "1.2.0",
 		"cross-env": "7.0.3",
