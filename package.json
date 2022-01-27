@@ -115,7 +115,7 @@
 		"@types/websocket": "1.0.4",
 		"@types/ws": "8.2.2",
 		"@typescript-eslint/parser": "5.10.1",
-		"@vue/composition-api": "1.4.4",
+		"@vue/composition-api": "1.4.5",
 		"abort-controller": "3.0.0",
 		"animejs": "3.2.1",
 		"apexcharts": "3.33.0",
