@@ -19,6 +19,7 @@ import { genId } from '../../misc/gen-id';
 import { isDuplicateKeyValueError } from '../../misc/is-duplicate-key-value-error';
 import * as S3 from 'aws-sdk/clients/s3';
 import { getS3 } from './s3';
+import { FILE_TYPE_BROWSERSAFE } from '@/const';
 
 const logger = driveLogger.createSubLogger('register', 'yellow');
 
@@ -195,6 +196,7 @@ export async function generateAlts(path: string, type: string, generateWeb: bool
  */
 async function upload(key: string, stream: fs.ReadStream | Buffer, type: string, filename?: string) {
 	if (type === 'image/apng') type = 'image/png';
+	if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = 'application/octet-stream';
 
 	const meta = await fetchMeta();
 
