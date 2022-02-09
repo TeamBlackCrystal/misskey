@@ -3233,10 +3233,10 @@ date-fns@^2.16.1:
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.23.0.tgz#4e886c941659af0cf7b30fafdd1eaa37e88788a9"
   integrity sha512-5ycpauovVyAk0kXNZz6ZoB9AYMZB4DObse7P3BPWmyEjXNORTI8EJ6X0uaSAq4sCHzM1uajzrkr6HnsLQpxGXA==
 
-dateformat@4.5.1:
-  version "4.5.1"
-  resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-4.5.1.tgz#c20e7a9ca77d147906b6dc2261a8be0a5bd2173c"
-  integrity sha512-OD0TZ+B7yP7ZgpJf5K2DIbj3FZvFvxgFUuaqA/V5zTjAtAAXZ1E8bktHxmAGs4x5b7PflqA9LeQ84Og7wYtF7Q==
+dateformat@5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-5.0.2.tgz#0f275609b02e3306ff76d6a2067a6ebb98e6114b"
+  integrity sha512-h9vywpuz+ReixnJTwFx5JLtZpS8eLCbRm8shwwKkCKOZA547N6yoMtD3W91Z6+NFZ8wOaZlcaCcK/w+kELhSVg==
 
 de-indent@^1.0.2:
   version "1.0.2"
