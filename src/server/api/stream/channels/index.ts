@@ -11,6 +11,7 @@ import messaging from './messaging';
 import messagingIndex from './messaging-index';
 import drive from './drive';
 import hashtag from './hashtag';
+import channel from './channel';
 import apLog from './ap-log';
 import admin from './admin';
 import gamesReversi from './games/reversi';
@@ -31,6 +32,7 @@ export default {
 	drive,
 	hashtag,
 	apLog,
+	channel,
 	admin,
 	gamesReversi,
 	gamesReversiGame

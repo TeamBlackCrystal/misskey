@@ -121,6 +121,10 @@ export default Vue.extend({
 				this.sensitive = !!info.sensitive;
 				this.fetching = false;
 				this.player = info.player;
+				if (this.tweetId && this.player) this.player.url = null;
+				if (this.player && this.player.url != null && this.thumbnail == null) {
+					this.thumbnail = 'data:image/gif;base64,R0lGODlhAQABAGAAACH5BAEKAP8ALAAAAAABAAEAAAgEAP8FBAA7';
+				}
 			})
 		});
 
@@ -204,10 +208,13 @@ export default Vue.extend({
 			width 100px
 			height 100%
 			background-position center
-			background-size cover
+			background-size contain
+			background-repeat no-repeat
 			display flex
 			justify-content center
 			align-items center
+			border-right var(--urlPreviewBorder) solid 1px
+			background-color var(--urlPreviewBorder)
 
 			> button
 				font-size 3.5em

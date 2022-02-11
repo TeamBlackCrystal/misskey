@@ -5,7 +5,7 @@ import define from '../define';
 import { fetchMeta } from '../../../misc/fetch-meta';
 import { Emojis } from '../../../models';
 import { getConnection } from 'typeorm';
-import redis from '../../../db/redis';
+import { redisClient } from '@/db/redis';
 import { DB_MAX_NOTE_TEXT_LENGTH } from '../../../misc/hard-limits';
 
 export const meta = {
@@ -19,6 +19,9 @@ export const meta = {
 	tags: ['meta'],
 
 	requireCredential: false,
+
+	allowGet: true,
+	cacheSec: 60,
 
 	params: {
 		detail: {
@@ -120,6 +123,7 @@ export default define(meta, async (ps, me) => {
 		description: instance.description,
 		langs: instance.langs,
 		ToSUrl: instance.ToSUrl,
+		ToSTextUrl: instance.ToSTextUrl,
 		repositoryUrl: instance.repositoryUrl,
 		feedbackUrl: instance.feedbackUrl,
 
@@ -128,7 +132,7 @@ export default define(meta, async (ps, me) => {
 		os: os.platform(),
 		node: process.version,
 		psql: await getConnection().query('SHOW server_version').then(x => x[0].server_version),
-		redis: redis.server_info.redis_version,
+		redis: redisClient.server_info.redis_version,
 
 		cpu: {
 			model: os.cpus()[0].model,
@@ -144,6 +148,8 @@ export default define(meta, async (ps, me) => {
 		driveCapacityPerRemoteUserMb: instance.remoteDriveCapacityMb,
 		cacheRemoteFiles: instance.cacheRemoteFiles,
 		proxyRemoteFiles: instance.proxyRemoteFiles,
+		enableHcaptcha: false,
+		hcaptchaSiteKey: null,
 		enableRecaptcha: instance.enableRecaptcha,
 		recaptchaSiteKey: instance.recaptchaSiteKey,
 		swPublickey: instance.swPublicKey,
@@ -174,12 +180,14 @@ export default define(meta, async (ps, me) => {
 			localTimeLine: !instance.disableLocalTimeline,
 			globalTimeLine: !instance.disableGlobalTimeline,
 			elasticsearch: config.elasticsearch ? true : false,
+			hcaptcha: false,
 			recaptcha: instance.enableRecaptcha,
 			objectStorage: instance.useObjectStorage,
 			twitter: instance.enableTwitterIntegration,
 			github: instance.enableGithubIntegration,
 			discord: instance.enableDiscordIntegration,
 			serviceWorker: instance.enableServiceWorker,
+			miauth: false,
 		};
 	}
 
@@ -216,6 +224,7 @@ export default define(meta, async (ps, me) => {
 		response.objectStorageUseSSL = instance.objectStorageUseSSL;
 		response.objectStorageUseProxy = instance.objectStorageUseProxy;
 		response.objectStorageSetPublicRead = instance.objectStorageSetPublicRead;
+		response.objectStorageS3ForcePathStyle = instance.objectStorageS3ForcePathStyle;
 	}
 
 	return response;

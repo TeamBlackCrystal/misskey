@@ -3,7 +3,7 @@ import Channel from '../channel';
 import { Notes, UserListJoinings, UserLists } from '../../../../models';
 import shouldMuteThisNote from '../../../../misc/should-mute-this-note';
 import { User } from '../../../../models/entities/user';
-import { PackedNote } from '../../../../models/repositories/note';
+import { Packed } from '@/misc/schema';
 
 export default class extends Channel {
 	public readonly chName = 'userList';
@@ -46,7 +46,7 @@ export default class extends Channel {
 	}
 
 	@autobind
-	private async onNote(note: PackedNote) {
+	private async onNote(note: Packed<'Note'>) {
 		if (!this.listUsers.includes(note.userId)) return;
 
 		if (['followers', 'specified'].includes(note.visibility)) {

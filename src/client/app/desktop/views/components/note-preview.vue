@@ -85,4 +85,6 @@ export default Vue.extend({
 					padding 0
 					color var(--subNoteText)
 
+	&.preview
+		max-width 540px
 </style>

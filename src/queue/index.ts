@@ -1,8 +1,7 @@
-import * as Queue from 'bull';
 import * as httpSignature from 'http-signature';
 
 import config from '../config';
-import { ILocalUser } from '../models/entities/user';
+import { ILocalUser, User } from '../models/entities/user';
 import { program } from '../argv';
 
 import processDeliver from './processors/deliver';
@@ -12,24 +11,8 @@ import procesObjectStorage from './processors/object-storage';
 import { queueLogger } from './logger';
 import { DriveFile } from '../models/entities/drive-file';
 import { getJobInfo } from './get-job-info';
-import { DbJobData, DeliverJobData, InboxJobData, ObjectStorageJobData } from './type';
 import { IActivity } from '../remote/activitypub/type';
-
-function initializeQueue<T>(name: string, limitPerSec = -1) {
-	return new Queue<T>(name, {
-		redis: {
-			port: config.redis.port,
-			host: config.redis.host,
-			password: config.redis.pass,
-			db: config.redis.db || 0,
-		},
-		prefix: config.redis.prefix ? `${config.redis.prefix}:queue` : 'queue',
-		limiter: limitPerSec > 0 ? {
-			max: limitPerSec * 5,
-			duration: 5000
-		} : undefined
-	});
-}
+import { dbQueue, deliverQueue, inboxQueue, objectStorageQueue } from './queues';
 
 function renderError(e: Error): any {
 	return {
@@ -38,11 +21,6 @@ function renderError(e: Error): any {
 		name: e?.name
 	};
 }
-
-export const deliverQueue = initializeQueue<DeliverJobData>('deliver', config.deliverJobPerSec || 128);
-export const inboxQueue = initializeQueue<InboxJobData>('inbox', config.inboxJobPerSec || 16);
-export const dbQueue = initializeQueue<DbJobData>('db');
-export const objectStorageQueue = initializeQueue<ObjectStorageJobData>('objectStorage');
 
 const deliverLogger = queueLogger.createSubLogger('deliver');
 const inboxLogger = queueLogger.createSubLogger('inbox');
@@ -85,9 +63,12 @@ export function deliver(user: ILocalUser, content: any, to: string) {
 	if (config.disableFederation) return;
 
 	if (content == null) return null;
+	if (to == null) return null;
 
 	const data = {
-		user,
+		user: {
+			id: user.id
+		},
 		content,
 		to
 	};
@@ -95,8 +76,7 @@ export function deliver(user: ILocalUser, content: any, to: string) {
 	return deliverQueue.add(data, {
 		attempts: config.deliverJobMaxAttempts || 12,
 		backoff: {
-			type: 'exponential',
-			delay: 60 * 1000
+			type: 'apBackoff'
 		},
 		removeOnComplete: true,
 		removeOnFail: true
@@ -112,8 +92,7 @@ export function inbox(activity: IActivity, signature: httpSignature.IParsedSigna
 	return inboxQueue.add(data, {
 		attempts: config.inboxJobMaxAttempts || 8,
 		backoff: {
-			type: 'exponential',
-			delay: 60 * 1000
+			type: 'apBackoff'
 		},
 		removeOnComplete: true,
 		removeOnFail: true
@@ -198,6 +177,16 @@ export function createImportUserListsJob(user: ILocalUser, fileId: DriveFile['id
 	return dbQueue.add('importUserLists', {
 		user: user,
 		fileId: fileId
+	}, {
+		removeOnComplete: true,
+		removeOnFail: true
+	});
+}
+
+export function createDeleteAccountJob(user: User, opts: { soft?: boolean } = {}) {
+	return dbQueue.add('deleteAccount', {
+		user: user,
+		soft: opts.soft
 	}, {
 		removeOnComplete: true,
 		removeOnFail: true

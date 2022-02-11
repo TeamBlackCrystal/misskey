@@ -3,14 +3,11 @@
  */
 
 import * as gulp from 'gulp';
-import * as ts from 'gulp-typescript';
-const sourcemaps = require('gulp-sourcemaps');
 import tslint from 'gulp-tslint';
 const stylus = require('gulp-stylus');
-import * as rimraf from 'rimraf';
-import * as chalk from 'chalk';
-import * as rename from 'gulp-rename';
-import * as mocha from 'gulp-mocha';
+import rimraf from 'rimraf';
+import chalk from 'chalk';
+import rename from 'gulp-rename';
 const replace = require('gulp-replace');
 const cleanCSS = require('gulp-clean-css');
 const terser = require('gulp-terser');
@@ -25,18 +22,6 @@ if (isDebug) {
 	console.warn(chalk.yellow.bold('         built script will not be compressed.'));
 }
 
-gulp.task('build:ts', () => {
-	const tsProject = ts.createProject('./tsconfig.json');
-
-	return tsProject
-		.src()
-		.pipe(sourcemaps.init())
-		.pipe(tsProject())
-		.on('error', () => {})
-		.pipe(sourcemaps.write('.', { includeContent: false, sourceRoot: '../built' }))
-		.pipe(gulp.dest('./built/'));
-});
-
 gulp.task('build:copy:views', () =>
 	gulp.src('./src/server/web/views/**/*').pipe(gulp.dest('./built/server/web/views'))
 );
@@ -46,7 +31,7 @@ gulp.task('build:copy:fonts', () =>
 );
 
 gulp.task('build:copy:docs', () =>
-	gulp.src('./src/docs/*.md').pipe(gulp.dest('./built/docs/'))
+	gulp.src('./src/docs/*/*.md').pipe(gulp.dest('./built/docs/'))
 );
 
 gulp.task('build:copy', gulp.parallel('build:copy:views', 'build:copy:fonts', 'build:copy:docs', () =>
@@ -75,16 +60,6 @@ gulp.task('format', () =>
 		}))
 		.pipe(tslint.report())
 );
-
-gulp.task('mocha', () =>
-	gulp.src('./test/**/*.ts')
-		.pipe(mocha({
-			exit: true,
-			require: 'ts-node/register'
-		} as any))
-);
-
-gulp.task('test', gulp.task('mocha'));
 
 gulp.task('clean', cb =>
 	rimraf('./built', cb)
@@ -138,7 +113,6 @@ gulp.task('build:client', gulp.parallel(
 ));
 
 gulp.task('build', gulp.parallel(
-	'build:ts',
 	'build:copy',
 	'build:client',
 	'doc'

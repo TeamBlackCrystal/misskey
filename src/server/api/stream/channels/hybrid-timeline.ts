@@ -3,8 +3,7 @@ import shouldMuteThisNote from '../../../../misc/should-mute-this-note';
 import Channel from '../channel';
 import { fetchMeta } from '../../../../misc/fetch-meta';
 import { Notes } from '../../../../models';
-import { PackedNote } from '../../../../models/repositories/note';
-import { PackedUser } from '../../../../models/repositories/user';
+import { Packed } from '@/misc/schema';
 
 export default class extends Channel {
 	public readonly chName = 'hybridTimeline';
@@ -21,12 +20,16 @@ export default class extends Channel {
 	}
 
 	@autobind
-	private async onNote(note: PackedNote) {
-		// 自分自身の投稿 または その投稿のユーザーをフォローしている または 全体公開のローカルの投稿 の場合だけ
+	private async onNote(note: Packed<'Note'>) {
+		// チャンネルの投稿ではなく、自分自身の投稿 または
+		// チャンネルの投稿ではなく、その投稿のユーザーをフォローしている または
+		// チャンネルの投稿ではなく、全体公開のローカルの投稿 または
+		// フォローしているチャンネルの投稿 の場合だけ
 		if (!(
-			this.user!.id === note.userId ||
-			this.following.includes(note.userId) ||
-			((note.user as PackedUser).host == null && note.visibility === 'public')
+			(note.channelId == null && this.user!.id === note.userId) ||
+			(note.channelId == null && this.following.has(note.userId)) ||
+			(note.channelId == null && (note.user.host == null && note.visibility === 'public')) ||
+			(note.channelId != null && this.followingChannels.has(note.channelId))
 		)) return;
 
 		if (['followers', 'specified'].includes(note.visibility)) {
@@ -54,6 +57,8 @@ export default class extends Channel {
 
 		// 流れてきたNoteがミュートしているユーザーが関わるものだったら無視する
 		if (shouldMuteThisNote(note, this.muting)) return;
+
+		this.connection.cacheNote(note);
 
 		this.send('note', note);
 	}

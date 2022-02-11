@@ -496,6 +496,10 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus" scoped>
+select
+	border-radius 16px
+	transition 2s
+
 .qvgidhudpqhjttdhxubzuyrhyzgslujw
 	display block
 	flex 1

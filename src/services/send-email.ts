@@ -1,19 +1,16 @@
 import * as nodemailer from 'nodemailer';
 import { fetchMeta } from '../misc/fetch-meta';
 import Logger from './logger';
-import config from '../config';
+import config from '../config/index';
 
 export const logger = new Logger('email');
 
 export async function sendEmail(to: string, subject: string, html: string, text: string) {
 	const meta = await fetchMeta(true);
 
-	//const iconUrl = `${config.url}/static-assets/mi-white.png`;
-	// とりあえずfaviconを使う
-	const iconUrl = `${config.url}/assets/favicon.png`
-	meta.logoImageUrl = iconUrl
-	// TODO: 設定を実装
+	const iconUrl = `${config.url}/static-assets/ayuskey.png`;
 	//const emailSettingUrl = `${config.url}/settings/email`;
+	const emailSettingUrl = '';
 
 	const enableAuth = meta.smtpUser != null && meta.smtpUser !== '';
 
@@ -37,84 +34,29 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 			subject: subject,
 			text: text,
 			html: `<!doctype html>
-			<html>
+			<html style="background: #eee;">
 				<head>
 					<meta charset="utf-8">
 					<title>${ subject }</title>
-					<style>
-						html {
-							background: #eee;
-						}
-
-						body {
-							padding: 16px;
-							margin: 0;
-							font-family: sans-serif;
-							font-size: 14px;
-						}
-
-						a {
-							text-decoration: none;
-							color: #86b300;
-						}
-						a:hover {
-							text-decoration: underline;
-						}
-
-						main {
-							max-width: 500px;
-							margin: 0 auto;
-							background: #fff;
-							color: #555;
-						}
-							main > header {
-								padding: 32px;
-								background: #86b300;
-							}
-								main > header > img {
-									max-width: 128px;
-									max-height: 28px;
-									vertical-align: bottom;
-								}
-							main > article {
-								padding: 32px;
-							}
-								main > article > h1 {
-									margin: 0 0 1em 0;
-								}
-							main > footer {
-								padding: 32px;
-								border-top: solid 1px #eee;
-							}
-
-						nav {
-							box-sizing: border-box;
-							max-width: 500px;
-							margin: 16px auto 0 auto;
-							padding: 0 32px;
-						}
-							nav > a {
-								color: #888;
-							}
-					</style>
+					
 				</head>
-				<body>
-					<main>
-						<header>
-							<img src="${ meta.logoImageUrl || meta.iconUrl || iconUrl }"/>
+				<body style="padding: 16px; margin: 0; font-family: sans-serif; font-size: 14px;">
+					<main style="max-width: 500px; margin: 0 auto; background: #fff; color: #555;">
+						<header style="padding: 32px; background: #26D9B4;">
+							<img src="${ meta.logoImageUrl || meta.iconUrl || iconUrl }" style="max-width: 128px; max-height: 28px; vertical-align: bottom;"/>
 						</header>
-						<article>
-							<h1>${ subject }</h1>
+						<article style="padding: 32px;">
+							<h1 style="margin: 0 0 1em 0;">${ subject }</h1>
 							<div>${ html }</div>
 						</article>
+						<footer style="padding: 32px; border-top: solid 1px #eee;">
 						<!--
-						<footer>
 							<a href="${ emailSettingUrl }">${ 'Email setting' }</a>
-						</footer>
 						-->
+						</footer>
 					</main>
-					<nav>
-						<a href="${ config.url }">${ config.host }</a>
+					<nav style="box-sizing: border-box; max-width: 500px; margin: 16px auto 0 auto; padding: 0 32px;">
+						<a href="${ config.url }" style="text-decoration: none; color: #888;">${ config.host }</a>
 					</nav>
 				</body>
 			</html>

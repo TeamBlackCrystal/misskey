@@ -16,8 +16,10 @@ export type Source = {
 		pass: string;
 		disableCache?: boolean;
 		extra?: { [x: string]: string };
+		pgroonga?: boolean;
 	};
 	redis: {
+		path: string;
 		host: string;
 		port: number;
 		pass: string;
@@ -47,6 +49,10 @@ export type Source = {
 	proxySmtp?: string;
 	proxyBypassHosts?: string[];
 
+	allowedPrivateNetworks?: string[];
+
+	maxFileSize?: number;
+
 	accesslog?: string;
 
 	clusterLimit?: number;
@@ -71,6 +77,8 @@ export type Source = {
 
 	signToActivityPubGet?: boolean;
 	urlPreviewCors?: boolean;
+
+	searchFalse?: boolean;
 };
 
 /**

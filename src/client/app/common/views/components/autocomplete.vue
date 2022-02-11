@@ -268,19 +268,45 @@ export default Vue.extend({
 					return;
 				}
 
-				const matched = [];
+				const matched: any[] = [];
 				const max = 30;
 
+				/*
 				this.emojiDb.some(x => {
 					if (x.name.startsWith(this.q) && !x.aliasOf && !matched.some(y => y.emoji == x.emoji)) matched.push(x);
 					return matched.length == max;
-				});
+				});*/
+
+				// 完全一致
+				if (matched.length < max) {
+					this.emojiDb.some(x => {
+						if (x.name === this.q && !matched.some(y => y.emoji == x.emoji)) matched.push(x);
+						return matched.length == max;
+					});
+				}
+
+				// カスタム絵文字マッチ
+				if (matched.length < max) {
+					this.emojiDb.some(x => {
+						if (x.name.includes(this.q) && x.isCustomEmoji && !x.aliasOf && !matched.some(y => y.emoji == x.emoji)) matched.push(x);
+						return matched.length == max;
+					});
+				}
+
+				if (matched.length < max) {
+					this.emojiDb.some(x => {
+						if (x.name.startsWith(this.q) && !x.aliasOf && !matched.some(y => y.emoji == x.emoji)) matched.push(x);
+						return matched.length == max;
+					});
+				}
+
 				if (matched.length < max) {
 					this.emojiDb.some(x => {
 						if (x.name.startsWith(this.q) && !matched.some(y => y.emoji == x.emoji)) matched.push(x);
 						return matched.length == max;
 					});
 				}
+
 				if (matched.length < max) {
 					this.emojiDb.some(x => {
 						if (x.name.includes(this.q) && !matched.some(y => y.emoji == x.emoji)) matched.push(x);

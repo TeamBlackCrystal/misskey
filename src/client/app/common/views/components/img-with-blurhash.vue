@@ -1,15 +1,15 @@
 <template>
-<div class="xubzgfgb" :title="title">
+<div class="xubzgfgb" :class="{ cover }" :title="title">
 	<canvas ref="canvas" :width="size" :height="size" :title="title" v-if="!loaded"/>
 	<img v-if="src" :src="src" :title="title" :alt="alt" @load="onLoad"/>
 </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from '@vue/composition-api';
 import { decode } from 'blurhash';
 
-export default Vue.extend({
+export default defineComponent({
 	props: {
 		src: {
 			type: String,
@@ -35,6 +35,11 @@ export default Vue.extend({
 			required: false,
 			default: 64
 		},
+		cover: {
+			type: Boolean,
+			required: false,
+			default: true,
+		}
 	},
 
 	data() {
@@ -44,11 +49,12 @@ export default Vue.extend({
 	},
 
 	mounted() {
-		if (this.hash) { this.draw(); }
+		this.draw();
 	},
 
 	methods: {
 		draw() {
+			if (this.hash == null) return;
 			const pixels = decode(this.hash, this.size, this.size);
 			const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
 			const imageData = ctx!.createImageData(this.size, this.size);
@@ -63,19 +69,32 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="stylus" scoped>
-.xubzgfgb
-	width 100%
-	height 100%
+<style lang="scss" scoped>
+.xubzgfgb {
+	position: relative;
+	width: 100%;
+	height: 100%;
 
-	> canvas
-		width 100%
-		height 100%
-		object-fit cover
+	> canvas,
+	> img {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
 
-	> img
-		width 100%
-		height 100%
-		object-fit cover
+	> canvas {
+		position: absolute;
+		object-fit: cover;
+	}
 
+	> img {
+		object-fit: contain;
+	}
+
+	&.cover {
+		> img {
+			object-fit: cover;
+		}
+	}
+}
 </style>

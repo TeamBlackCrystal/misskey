@@ -140,6 +140,7 @@ export default Vue.extend({
 
 	.mk-post-form-window--body
 		.notePreview
+				max-width 540px
 				margin 16px 22px
 
 </style>

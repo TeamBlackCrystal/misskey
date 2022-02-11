@@ -13,14 +13,14 @@ Feature suggestions and bug reports are filed in https://github.com/TeamOrangeSe
 * **l10n_develop** branch is reserved for localization management.
 
 ## Localization (l10n)
-Misskey uses [Crowdin](https://crowdin.com/project/misskey) for localization management.
-You can improve our translations with your Crowdin account.
-Your changes in Crowdin are automatically submitted as a PR (with the title "New Crowdin translations") to the repository.
-The owner [@syuilo](https://github.com/syuilo) merges the PR into the develop branch before the next release.
+Ayuskey uses [GitLocalize](https://gitlocalize.com/repo/6356) for localization management.
+You can improve our translations with your GitHub account.
+At the administrator's discretion, a PR containing your translation will be created and merged.
+The owner [@sousuke0422](https://github.com/sousuke0422) merges the PR into the develop branch before the next release.
 
-If your language is not listed in Crowdin, please open an issue.
+If your language is not listed in GitLocalize, please open an issue.
 
-![Crowdin](https://d322cqt584bo4o.cloudfront.net/misskey/localized.svg)
+![gitlocalized](https://gitlocalize.com/repo/6356/whole_project/badge.svg)
 
 ## Internationalization (i18n)
 Misskey uses the Vue.js plugin [Vue I18n](https://github.com/kazupon/vue-i18n).
@@ -270,6 +270,14 @@ npx ts-node ./node_modules/typeorm/cli.js migration:generate -n 変更の名前
 ```
 
 作成されたスクリプトは不必要な変更を含むため除去してください。
+
+<!--
+### コネクションには`markRaw`せよ
+**Vueのコンポーネントのdataオプションとして**misskey.jsのコネクションを設定するとき、必ず`markRaw`でラップしてください。インスタンスが不必要にリアクティブ化されることで、misskey.js内の処理で不具合が発生するとともに、パフォーマンス上の問題にも繋がる。なお、Composition APIを使う場合はこの限りではない(リアクティブ化はマニュアルなため)。
+-->
+
+### JSONのimportに気を付けよう
+TypeScriptでjsonをimportすると、tscでコンパイルするときにそのjsonファイルも一緒にdistディレクトリに吐き出されてしまう。この挙動により、意図せずファイルの書き換えが発生することがあるので、jsonをimportするときは書き換えられても良いものかどうか確認すること。書き換えされて欲しくない場合は、importで読み込むのではなく、`fs.readFileSync`などの関数を使って読み込むようにすればよい。
 
 ## その他
 ### HTMLのクラス名で follow という単語は使わない

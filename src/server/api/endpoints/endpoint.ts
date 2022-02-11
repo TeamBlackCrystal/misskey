@@ -21,6 +21,7 @@ export default define(meta, async (ps) => {
 		params: Object.entries(ep.meta.params || {}).map(([k, v]) => ({
 			name: k,
 			type: v.validator.name === 'ID' ? 'String' : v.validator.name
-		}))
+		})),
+		limit: ep.meta.limit
 	};
 });

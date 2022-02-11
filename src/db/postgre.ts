@@ -49,13 +49,19 @@ import { Page } from '../models/entities/page';
 import { PageLike } from '../models/entities/page-like';
 import { ModerationLog } from '../models/entities/moderation-log';
 import { UsedUsername } from '../models/entities/used-username';
+import { Announcement } from '../models/entities/announcement';
+import { AnnouncementRead } from '../models/entities/announcement-read';
 import { Clip } from '../models/entities/clip';
 import { ClipNote } from '../models/entities/clip-note';
 import { Antenna } from '../models/entities/antenna';
 import { AntennaNote } from '../models/entities/antenna-note';
 import { Relay } from '../models/entities/relay';
+import { Channel } from '../models/entities/channel';
+import { ChannelFollowing } from '../models/entities/channel-following';
+import { ChannelNotePining } from '../models/entities/channel-note-pining';
 import { RegistryItem } from '../models/entities/registry-item';
 import { PasswordResetRequest } from '../models/entities/password-reset-request';
+import { ClientOpts } from 'redis';
 
 const sqlLogger = dbLogger.createSubLogger('sql', 'white', false);
 
@@ -92,6 +98,8 @@ class MyCustomLogger implements Logger {
 }
 
 export const entities = [
+	Announcement,
+	AnnouncementRead,
 	Meta,
 	Instance,
 	App,
@@ -142,10 +150,32 @@ export const entities = [
 	ReversiGame,
 	ReversiMatching,
 	Relay,
+	Channel,
+	ChannelFollowing,
+	ChannelNotePining,
 	RegistryItem,
 	PasswordResetRequest,
 	...charts as any
 ];
+
+let redisOpts: ClientOpts
+
+if (config.redis.path == null) {
+	redisOpts = {
+		host: config.redis.host,
+		port: config.redis.port,
+		password: config.redis.pass,
+		prefix: `${config.redis.prefix}:query:`,
+		db: config.redis.db || 0
+	}
+} else {
+	redisOpts = {
+		path: config.redis.path,
+		password: config.redis.pass,
+		prefix: `${config.redis.prefix}:query:`,
+		db: config.redis.db || 0
+	}
+}
 
 export function initDb(justBorrow = false, sync = false, log = false, forceRecreate = false) {
 	if (!forceRecreate) {
@@ -167,13 +197,7 @@ export function initDb(justBorrow = false, sync = false, log = false, forceRecre
 		dropSchema: process.env.NODE_ENV === 'test' && !justBorrow,
 		cache: !config.db.disableCache ? {
 			type: 'redis',
-			options: {
-				host: config.redis.host,
-				port: config.redis.port,
-				password: config.redis.pass,
-				prefix: `${config.redis.prefix}:query:`,
-				db: config.redis.db || 0
-			}
+			options: redisOpts
 		} : false,
 		logging: log,
 		logger: log ? new MyCustomLogger() : undefined,

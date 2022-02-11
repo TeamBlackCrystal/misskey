@@ -9,6 +9,7 @@ import Progress from './common/scripts/loading';
 
 import Err from './common/views/components/connect-failed.vue';
 import Stream from './common/scripts/stream';
+import { query } from '../../prelude/url';
 
 //#region api requests
 let spinner = null;
@@ -143,7 +144,7 @@ export default class MiOS extends EventEmitter {
 			// When success
 			.then(res => {
 				// When failed to authenticate user
-				if (res.status !== 200 && res.status < 500) {
+				if (res.status >= 400 && res.status < 500) {
 					return this.signout();
 				}
 
@@ -381,9 +382,11 @@ export default class MiOS extends EventEmitter {
 	 * Misskey APIにリクエストします
 	 * @param endpoint エンドポイント名
 	 * @param data パラメータ
+	 * @param silent spinnerを表示しないか
+	 * @param anonGet 匿名GETしてキャッシュ対象にするか
 	 */
 	@autobind
-	public api(endpoint: string, data: { [x: string]: any } = {}, silent = false): Promise<{ [x: string]: any }> {
+	public api(endpoint: string, data: { [x: string]: any } = {}, silent = false, anonGet = false): Promise<{ [x: string]: any }> {
 		if (!silent) {
 			if (++pending === 1) {
 				spinner = document.createElement('div');
@@ -415,8 +418,18 @@ export default class MiOS extends EventEmitter {
 				this.requests.push(req);
 			}
 
-			// Send request
-			fetch(endpoint.indexOf('://') > -1 ? endpoint : `${apiUrl}/${endpoint}`, {
+			let url = endpoint.indexOf('://') > -1 ? endpoint : `${apiUrl}/${endpoint}`;
+
+			if (anonGet && data) {
+				delete data.i;
+				const q = query(data);
+				url = `${url}${ q ? '?' + q : q }`;
+			}
+
+			const fetchPromise = anonGet ? fetch(url, {
+				method: 'GET',
+				credentials: 'omit'
+			}) : fetch(url, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -424,8 +437,11 @@ export default class MiOS extends EventEmitter {
 				body: JSON.stringify(data),
 				credentials: endpoint === 'signin' ? 'include' : 'omit',
 				cache: 'no-cache'
-			}).then(async (res) => {
-				const body = res.status === 204 ? null : await res.json();
+			});
+
+			// Send request
+			fetchPromise.then(async (res) => {
+				const body = res.status === 204 ? null : await res.json().catch(() => null);
 
 				if (this.debug) {
 					req.status = res.status;
@@ -437,7 +453,7 @@ export default class MiOS extends EventEmitter {
 				} else if (res.status === 204) {
 					resolve();
 				} else {
-					reject(body.error);
+					reject(body ? body.error : `${res.status} ${res.statusText}`);
 				}
 			}).catch(reject);
 		});
@@ -469,14 +485,14 @@ export default class MiOS extends EventEmitter {
 				return;
 			}
 
-			const expire = 1000 * 60; // 1min
+			const expire = 1000 * 60 * 5;
 
 			// forceが有効, meta情報を保持していない or 期限切れ
 			if (force || this.meta == null || Date.now() - this.meta.chachedAt.getTime() > expire) {
 				this.isMetaFetching = true;
 				const meta = await this.api('meta', {
 					detail: false
-				});
+				}, false, !force);	// forceでない限りは匿名GET
 				this.meta = {
 					data: meta,
 					chachedAt: new Date()

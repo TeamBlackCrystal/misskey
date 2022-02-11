@@ -1,8 +1,10 @@
+import * as fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import * as os from 'os';
 import * as cluster from 'cluster';
 import * as chalk from 'chalk';
 import * as portscanner from 'portscanner';
-import * as isRoot from 'is-root';
 
 import Logger from '../services/logger';
 import loadConfig from '../config/load';
@@ -11,7 +13,12 @@ import { lessThan } from '../prelude/array';
 import { program } from '../argv';
 import { showMachineInfo } from '../misc/show-machine-info';
 import { initDb } from '../db/postgre';
-import * as meta from '../meta.json';
+
+//const _filename = fileURLToPath(import.meta.url);
+const _filename = __filename;
+const _dirname = dirname(_filename);
+
+const meta = JSON.parse(fs.readFileSync(`${_dirname}/../meta.json`, 'utf-8'));
 
 const logger = new Logger('core', 'cyan');
 const bootLogger = logger.createSubLogger('boot', 'magenta', false);
@@ -64,6 +71,11 @@ function greet() {
 
 	bootLogger.info('Welcome to Misskey!');
 	bootLogger.info(`Misskey v${meta.version}`, null, true);
+}
+
+function isRoot() {
+	// maybe process.getuid will be undefined under not POSIX environment (e.g. Windows)
+	return process.getuid != null && process.getuid() === 0;
 }
 
 /**

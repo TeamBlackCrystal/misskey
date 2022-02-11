@@ -4,6 +4,7 @@ import { genId } from '../../../../misc/gen-id';
 import { Antennas, UserLists, UserGroupJoinings } from '../../../../models';
 import { ID } from '../../../../misc/cafy-id';
 import { ApiError } from '../../error';
+import { publishInternalEvent } from '../../../../services/stream';
 
 export const meta = {
 	tags: ['antennas'],
@@ -97,7 +98,7 @@ export default define(meta, async (ps, user) => {
 		}
 	}
 
-	const antenna = await Antennas.save({
+	const antenna = await Antennas.insert({
 		id: genId(),
 		createdAt: new Date(),
 		userId: user.id,
@@ -112,7 +113,9 @@ export default define(meta, async (ps, user) => {
 		withReplies: ps.withReplies,
 		withFile: ps.withFile,
 		notify: ps.notify,
-	});
+	}).then(x => Antennas.findOneOrFail(x.identifiers[0]));
+
+	publishInternalEvent('antennaCreated', antenna);
 
 	return await Antennas.pack(antenna);
 });

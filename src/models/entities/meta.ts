@@ -60,7 +60,7 @@ export class Meta {
 	public enableEmojiReaction: boolean;
 
 	@Column('boolean', {
-		default: false,
+		default: true,
 	})
 	public useStarForReactionFallback: boolean;
 
@@ -294,6 +294,12 @@ export class Meta {
 
 	@Column('varchar', {
 		length: 512,
+		nullable: true
+	})
+	public ToSTextUrl: string | null;
+
+	@Column('varchar', {
+		length: 512,
 		default: 'https://github.com/TeamOrangeServer/misskey',
 		nullable: false
 	})
@@ -372,4 +378,9 @@ export class Meta {
 		default: false,
 	})
 	public objectStorageSetPublicRead: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public objectStorageS3ForcePathStyle: boolean;
 }

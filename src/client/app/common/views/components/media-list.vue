@@ -1,13 +1,13 @@
 <template>
-<div class="mk-media-list">
+<div class="hoawjimk">
 	<template v-for="media in mediaList.filter(media => !previewable(media))">
 		<x-banner :media="media" :key="media.id"/>
 	</template>
 	<div v-if="mediaList.filter(media => previewable(media)).length > 0" class="gird-container">
-		<div :data-count="mediaList.filter(media => previewable(media)).length" ref="grid">
+		<div :data-count="mediaList.filter(media => previewable(media)).length" ref="gallery">
 			<template v-for="media in mediaList">
 				<mk-media-video :video="media" :key="media.id" v-if="media.type.startsWith('video')"/>
-				<x-image :image="media" :key="media.id" v-else-if="media.type.startsWith('image')" :raw="raw"/>
+				<x-image class="image" :data-id="media.id" :image="media" :key="media.id" v-else-if="media.type.startsWith('image')" :raw="raw"/>
 			</template>
 		</div>
 	</div>
@@ -15,11 +15,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent, onMounted, PropType, ref } from '@vue/composition-api';
+import PhotoSwipeLightbox from 'photoswipe/dist/photoswipe-lightbox.esm.js';
+import PhotoSwipe from 'photoswipe/dist/photoswipe.esm.js';
+import 'photoswipe/dist/photoswipe.css';
 import XBanner from './media-banner.vue';
 import XImage from './media-image.vue';
 
-export default Vue.extend({
+export default defineComponent({
 	components: {
 		XBanner,
 		XImage
@@ -32,25 +35,51 @@ export default Vue.extend({
 			default: false
 		}
 	},
-	mounted() {
-		//#region for Safari bug
-		if (this.$refs.grid) {
-			this.$refs.grid.style.height = this.$refs.grid.clientHeight ? `${this.$refs.grid.clientHeight}px`
-				: this.$store.state.device.inDeckMode ? '128px' : this.$root.isMobile ? '173px' : '287px';
-		}
-		//#endregion
+	setup(props) {
+		const gallery = ref(null);
+		onMounted(() => {
+			const lightbox = new PhotoSwipeLightbox({
+				dataSource: props.mediaList.filter(media => media.type.startsWith('image')).map(media => ({
+					src: media.url,
+					w: media.properties.width,
+					h: media.properties.height,
+					alt: media.name,
+				})),
+				gallery: gallery.value,
+				children: '.image',
+				thumbSelector: '.image',
+				pswpModule: PhotoSwipe
+			});
+			lightbox.on('itemData', (e) => {
+				const { itemData } = e;
+				// element is children
+				const { element } = itemData;
+				const id = element.dataset.id;
+				const file = props.mediaList.find(media => media.id === id);
+				itemData.src = file.url;
+				itemData.w = Number(file.properties.width);
+				itemData.h = Number(file.properties.height);
+				itemData.msrc = file.thumbnailUrl;
+				itemData.thumbCropped = true;
+			});
+			lightbox.init();
+		});
+		//const previewable = (file: misskey.entities.DriveFile): boolean => {
+		const previewable = (file): boolean => {
+			return file.type.startsWith('video') || file.type.startsWith('image');
+		};
+		return {
+			previewable,
+			gallery,
+		};
 	},
-	methods: {
-		previewable(file) {
-			return (file.type.startsWith('video') || file.type.startsWith('image')) && file.thumbnailUrl;
-		}
-	}
 });
 </script>
 
 <style lang="stylus" scoped>
-.mk-media-list
+.hoawjimk 
 	> .gird-container
+		position: relative;
 		width 100%
 		margin-top 4px
 

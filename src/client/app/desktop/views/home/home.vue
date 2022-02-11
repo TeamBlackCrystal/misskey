@@ -27,9 +27,11 @@
 						<option value="hashtags">{{ $t('@.widgets.hashtags') }}</option>
 						<option value="posts-monitor">{{ $t('@.widgets.posts-monitor') }}</option>
 						<option value="server">{{ $t('@.widgets.server') }}</option>
+						<option value="job-queue">{{ $t('@.widgets.queue') }} v12</option>
 						<option value="queue">{{ $t('@.widgets.queue') }}</option>
 						<option value="nav">{{ $t('@.widgets.nav') }}</option>
 						<option value="tips">{{ $t('@.widgets.tips') }}</option>
+						<option value="aichan">{{ $t('@.widgets.ai') }}</option>
 					</select>
 					<button @click="addWidget">{{ $t('add') }}</button>
 				</div>

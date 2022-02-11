@@ -120,7 +120,7 @@ export default Vue.extend({
 			this.$root.api('admin/emoji/update', {
 				id: emoji.id,
 				name: emoji.name,
-				category: emoji.category,
+				category: emoji.category || undefined,
 				url: emoji.url,
 				aliases: emoji.aliases.split(' ').filter(x => x.length > 0)
 			}).then(() => {

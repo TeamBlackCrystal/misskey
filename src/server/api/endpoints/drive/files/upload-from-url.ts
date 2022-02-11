@@ -4,6 +4,7 @@ import * as ms from 'ms';
 import uploadFromUrl from '../../../../../services/drive/upload-from-url';
 import define from '../../../define';
 import { DriveFiles } from '../../../../../models';
+import { DB_MAX_IMAGE_COMMENT_LENGTH } from '@/misc/hard-limits';
 
 export const meta = {
 	desc: {
@@ -41,6 +42,14 @@ export const meta = {
 			}
 		},
 
+		comment: {
+			validator: $.optional.nullable.str.max(DB_MAX_IMAGE_COMMENT_LENGTH),
+			default: null,
+			desc: {
+				'ja-JP': 'コメント (INOP)'
+			}
+		},
+
 		force: {
 			validator: $.optional.bool,
 			default: false,
@@ -52,5 +61,6 @@ export const meta = {
 };
 
 export default define(meta, async (ps, user) => {
+	//todo: ps.comment
 	return await DriveFiles.pack(await uploadFromUrl(ps.url, user, ps.folderId, null, ps.isSensitive, ps.force), { self: true });
 });

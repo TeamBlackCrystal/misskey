@@ -3,6 +3,7 @@ import { ID } from '../../../../misc/cafy-id';
 import define from '../../define';
 import { ApiError } from '../../error';
 import { Antennas } from '../../../../models';
+import { publishInternalEvent } from '../../../../services/stream';
 
 export const meta = {
 	tags: ['antennas'],
@@ -37,4 +38,6 @@ export default define(meta, async (ps, user) => {
 	}
 
 	await Antennas.delete(antenna.id);
+
+	publishInternalEvent('antennaDeleted', antenna);
 });

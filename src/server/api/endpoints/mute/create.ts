@@ -6,6 +6,7 @@ import { getUser } from '../../common/getters';
 import { genId } from '../../../../misc/gen-id';
 import { Mutings, NoteWatchings } from '../../../../models';
 import { Muting } from '../../../../models/entities/muting';
+import { publishUserEvent } from '../../../../services/stream';
 
 export const meta = {
 	desc: {
@@ -75,12 +76,14 @@ export default define(meta, async (ps, user) => {
 	}
 
 	// Create mute
-	await Mutings.save({
+	await Mutings.insert({
 		id: genId(),
 		createdAt: new Date(),
 		muterId: muter.id,
 		muteeId: mutee.id,
 	} as Muting);
+
+	publishUserEvent(user.id, 'mute', mutee);
 
 	NoteWatchings.delete({
 		userId: muter.id,

@@ -2,12 +2,14 @@ import autobind from 'autobind-decorator';
 import { v4 as uuid } from 'uuid';
 import * as THREE from 'three';
 import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 import { Furniture, RoomInfo } from './furniture';
 import { query as urlQuery } from '../../../../../prelude/url';
@@ -250,8 +252,8 @@ export class Room {
 		//#region Username
 		const name = user.username;
 
-		new THREE.FontLoader().load('/assets/fonts/helvetiker_regular.typeface.json', font => {
-			const nameGeometry = new THREE.TextGeometry(name, {
+		new FontLoader().load('/assets/fonts/helvetiker_regular.typeface.json', font => {
+			const nameGeometry = new TextGeometry(name, {
 				size: 0.5,
 				height: 0,
 				curveSegments: 8,
@@ -627,6 +629,7 @@ export class Room {
 		this.isTransformMode = true;
 		this.furnitureControl.setMode(type);
 		this.furnitureControl.attach(this.selectedObject);
+		this.controls.enableZoom = false;
 	}
 
 	/**
@@ -636,6 +639,7 @@ export class Room {
 	public exitTransformMode() {
 		this.isTransformMode = false;
 		this.furnitureControl.detach();
+		this.controls.enableZoom = true;
 	}
 
 	/**
@@ -771,6 +775,7 @@ export class Room {
 		window.cancelAnimationFrame(this.renderFrameRequestId);
 
 		this.controls.dispose();
+		// todo: 改修が必要
 		this.scene.dispose();
 	}
 }

@@ -101,7 +101,9 @@ export default Vue.extend({
 		right -72px
 		width 300px
 		background $bgcolor
-		border-radius 4px
+		border-radius 16px
+		padding 16px
+		backdrop-filter blur(10px)
 		box-shadow 0 1px 4px rgba(#000, 0.25)
 
 		&:before

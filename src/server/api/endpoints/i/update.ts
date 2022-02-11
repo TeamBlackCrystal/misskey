@@ -1,6 +1,6 @@
 import $ from 'cafy';
 import { ID } from '../../../../misc/cafy-id';
-import { publishMainStream } from '../../../../services/stream';
+import { publishMainStream, publishUserEvent } from '../../../../services/stream';
 import acceptAllFollowRequests from '../../../../services/following/requests/accept-all';
 import { publishToFollowers } from '../../../../services/i/update';
 import define from '../../define';
@@ -97,6 +97,13 @@ export const meta = {
 			validator: $.optional.bool,
 			desc: {
 				'ja-JP': 'isExplorable'
+			}
+		},
+
+		hideOnlineStatus: {
+			validator: $.optional.bool,
+			desc: {
+				'ja-JP': 'オンライン状態を隠すか否か'
 			}
 		},
 
@@ -224,8 +231,10 @@ export default define(meta, async (ps, user, app) => {
 	if (ps.avatarId !== undefined) updates.avatarId = ps.avatarId;
 	if (ps.bannerId !== undefined) updates.bannerId = ps.bannerId;
 	if (ps.mutingNotificationTypes !== undefined) profileUpdates.mutingNotificationTypes = ps.mutingNotificationTypes as typeof notificationTypes[number][];
+	//TODO: ===を使う
 	if (typeof ps.isLocked == 'boolean') updates.isLocked = ps.isLocked;
 	if (typeof ps.isExplorable == 'boolean') updates.isExplorable = ps.isExplorable;
+	if (typeof ps.hideOnlineStatus == 'boolean') updates.hideOnlineStatus = ps.hideOnlineStatus;
 	if (typeof ps.isBot == 'boolean') updates.isBot = ps.isBot;
 	if (typeof ps.carefulBot == 'boolean') profileUpdates.carefulBot = ps.carefulBot;
 	if (typeof ps.carefulMassive == 'boolean') profileUpdates.carefulMassive = ps.carefulMassive;
@@ -316,6 +325,7 @@ export default define(meta, async (ps, user, app) => {
 
 	// Publish meUpdated event
 	publishMainStream(user.id, 'meUpdated', iObj);
+	//publishUserEvent(user.id, 'updateUserProfile', await UserProfiles.findOne(user.id));
 
 	// 鍵垢を解除したとき、溜まっていたフォローリクエストがあるならすべて承認
 	if (user.isLocked && ps.isLocked === false) {

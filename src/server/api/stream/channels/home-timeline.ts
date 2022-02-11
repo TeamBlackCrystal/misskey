@@ -2,7 +2,7 @@ import autobind from 'autobind-decorator';
 import shouldMuteThisNote from '../../../../misc/should-mute-this-note';
 import Channel from '../channel';
 import { Notes } from '../../../../models';
-import { PackedNote } from '../../../../models/repositories/note';
+import { Packed } from '@/misc/schema';
 
 export default class extends Channel {
 	public readonly chName = 'homeTimeline';
@@ -16,9 +16,13 @@ export default class extends Channel {
 	}
 
 	@autobind
-	private async onNote(note: PackedNote) {
-		// その投稿のユーザーをフォローしていなかったら弾く
-		if (this.user!.id !== note.userId && !this.following.includes(note.userId)) return;
+	private async onNote(note: Packed<'Note'>) {
+		if (note.channelId) {
+			if (!this.followingChannels.has(note.channelId)) return;
+		} else {
+			// その投稿のユーザーをフォローしていなかったら弾く
+			if ((this.user!.id !== note.userId) && !this.following.has(note.userId)) return;
+		}
 
 		if (['followers', 'specified'].includes(note.visibility)) {
 			note = await Notes.pack(note.id, this.user!, {
@@ -45,6 +49,8 @@ export default class extends Channel {
 
 		// 流れてきたNoteがミュートしているユーザーが関わるものだったら無視する
 		if (shouldMuteThisNote(note, this.muting)) return;
+
+		this.connection.cacheNote(note);
 
 		this.send('note', note);
 	}

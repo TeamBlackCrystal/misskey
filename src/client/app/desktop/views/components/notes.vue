@@ -42,6 +42,8 @@ import shouldMuteNote from '../../../common/scripts/should-mute-note';
 import paging from '../../../common/scripts/paging';
 import { getSpeechName, getSpeechText } from '../../../../../misc/get-note-speech';
 
+import * as sound from '../../../common/scripts/sound';
+
 const displayLimit = 30;
 
 export default Vue.extend({
@@ -71,13 +73,10 @@ export default Vue.extend({
 				if (self.isScrollTop()) {
 					// サウンドを再生する
 					if (self.$store.state.device.enableSounds && self.$store.state.device.enableSoundsInTimeline && !silent) {
-						const sound = new Audio(note.userId === self.$store.state.i.id
-						? `${config.url}/assets/up.mp3`
-						: `${config.url}/assets/down.mp3`);
-						sound.volume = self.$store.state.device.soundVolume;
-						sound.play();
+						sound.play(note.userId === self.$store.state.i.id ? 'noteMy' : 'note');
 					}
 				}
+
 				if (self.$store.state.device.enableSpeech && (note.cw || note.text && !silent)) {
 					const name = getSpeechName(note);
 					const nameUttr = new SpeechSynthesisUtterance(name);

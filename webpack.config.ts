@@ -4,8 +4,8 @@
 
 import * as fs from 'fs';
 import * as webpack from 'webpack';
-import * as chalk from 'chalk';
-import rndstr from 'rndstr';
+import chalk from 'chalk';
+import { execSync } from 'child_process';
 const { VueLoaderPlugin } = require('vue-loader');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -21,24 +21,28 @@ class WebpackOnBuildPlugin {
 
 const isProduction = process.env.NODE_ENV == 'production';
 const isTesting = process.env.RK_MODE == 'testing';
+let gitHash;
 
 const constants = require('./src/const.json');
 
 const locales = require('./locales');
 const meta = require('./package.json');
 const codename = meta.codename;
-
-const version = isProduction ? isTesting ? meta.version + '-' + rndstr({ length: 8, chars: '0-9a-z' }) : meta.version : meta.version + '-' + rndstr({ length: 8, chars: '0-9a-z' });
+if (!isProduction || isTesting) gitHash = execSync('git rev-parse HEAD').toString().replace(/\r?\n/g, '').slice(0, 8);
+//const version = isProduction ? isTesting ? meta.version + '-' + rndstr({ length: 8, chars: '0-9a-z' }) : meta.version : meta.version + '-' + rndstr({ length: 8, chars: '0-9a-z' });
+const version = isProduction ? isTesting ? meta.version + '-' + gitHash : meta.version : meta.version + '-' + gitHash;
 //const version = isProduction ? meta.version : meta.version + '-' + rndstr({ length: 8, chars: '0-9a-z' });
 
 const postcss = {
 	loader: 'postcss-loader',
 	options: {
-		plugins: [
-			require('cssnano')({
-				preset: 'default'
-			})
-		]
+		postcssOptions: {
+			plugins: [
+				require('cssnano')({
+					preset: 'default'
+				})
+			]
+		}
 	},
 };
 
@@ -50,7 +54,7 @@ module.exports = {
 		dev: './src/client/app/dev/script.ts',
 		auth: './src/client/app/auth/script.ts',
 		admin: './src/client/app/admin/script.ts',
-		sw: './src/client/app/sw.js'
+		sw: './src/client/app/sw/sw.js'
 	},
 	module: {
 		rules: [{
@@ -209,6 +213,8 @@ module.exports = {
 			'.js', '.ts', '.json'
 		],
 		alias: {
+			'@client': __dirname + '/src/client/app',
+			'@': __dirname + '/src',
 			'const.styl': __dirname + '/src/client/const.styl'
 		}
 	},

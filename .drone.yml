@@ -1,0 +1,32 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: Node16 CI
+  image: node:16-alpine3.13
+  command: 
+    - apk add --no-cache autoconf automake file g++ gcc libc-dev libtool make nasm pkgconfig python3 zlib-dev vips-dev vips
+    - NODE_ENV=production yarn install
+    - NODE_ENV=production yarn build
+    #- cp test/test.yml .config
+    #- yarn test
+
+---
+kind: pipeline
+name: default
+
+steps:
+- name: test
+  image: docker:dind
+  volumes:
+  - name: dockersock
+    path: /var/run/docker.sock
+  commands:
+  - docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
+volumes:
+- name: dockersock
+  host:
+    path: /var/run/docker.sock

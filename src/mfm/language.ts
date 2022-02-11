@@ -106,6 +106,7 @@ export const mfmLanguage = P.createLanguage({
 		r.link,
 		r.emoji,
 		r.fn,
+		r.fn2,
 		r.text
 	),
 	bigger: r => P.regexp(/^\*\*\*\*([\s\S]+?)\*\*\*\*/, 1).map(x => createTree('bigger', r.inline.atLeast(1).tryParse(x), {})),
@@ -267,6 +268,32 @@ export const mfmLanguage = P.createLanguage({
 	fn: r => {
 		return P.seqObj(
 			P.string('['), ['fn', P.regexp(/[^\s\n\[\]]+/)] as any, P.string(' '), P.optWhitespace, ['text', P.regexp(/[^\n\[\]]+/)] as any, P.string(']'),
+		).map((x: any) => {
+			let name = x.fn;
+			const args = {};
+			const separator = x.fn.indexOf('.');
+			if (separator > -1) {
+				name = x.fn.substr(0, separator);
+				for (const arg of x.fn.substr(separator + 1).split(',')) {
+					const kv = arg.split('=');
+					if (kv.length === 1) {
+						// @ts-ignore
+						args[kv[0]] = true;
+					} else {
+						// @ts-ignore
+						args[kv[0]] = kv[1];
+					}
+				}
+			}
+			return createTree('fn', r.inline.atLeast(1).tryParse(x.text), {
+				name,
+				args
+			});
+		});
+	},
+	fn2: r => {
+		return P.seqObj(
+			P.string('$['), ['fn', P.regexp(/[^\s\n\[\]]+/)] as any, P.string(' '), P.optWhitespace, ['text', P.regexp(/[^\n\[\]]+/)] as any, P.string(']'),
 		).map((x: any) => {
 			let name = x.fn;
 			const args = {};

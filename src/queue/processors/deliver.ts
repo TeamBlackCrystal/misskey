@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as Bull from 'bull';
 import request from '../../remote/activitypub/request';
 import { registerOrFetchInstanceDoc } from '../../services/register-or-fetch-instance-doc';
@@ -7,11 +8,10 @@ import { instanceChart } from '../../services/chart';
 import { fetchInstanceMetadata } from '../../services/fetch-instance-metadata';
 import { fetchMeta } from '../../misc/fetch-meta';
 import { toPuny } from '../../misc/convert-host';
-import { DeliverJobData } from '../type';
+import { DeliverJobData } from '../types';
+import { StatusError } from '@/misc/fetch';
 
 const logger = new Logger('deliver');
-
-let latest: string | null = null;
 
 export default async (job: Bull.Job<DeliverJobData>) => {
 	const { host } = new URL(job.data.to);
@@ -34,10 +34,6 @@ export default async (job: Bull.Job<DeliverJobData>) => {
 	}
 
 	try {
-		if (latest !== (latest = JSON.stringify(job.data.content, null, 2))) {
-			logger.debug(`delivering ${latest}`);
-		}
-
 		await request(job.data.user, job.data.to, job.data.content);
 
 		// Update stats
@@ -60,16 +56,16 @@ export default async (job: Bull.Job<DeliverJobData>) => {
 		registerOrFetchInstanceDoc(host).then(i => {
 			Instances.update(i.id, {
 				latestRequestSentAt: new Date(),
-				latestStatus: res != null && res.hasOwnProperty('statusCode') ? res.statusCode : null,
+				latestStatus: res instanceof StatusError ? res.statusCode : null,
 				isNotResponding: true
 			});
 
 			instanceChart.requestSent(i.host, false);
 		});
 
-		if (res != null && res.hasOwnProperty('statusCode')) {
+		if (res instanceof StatusError) {
 			// 4xx
-			if (res.statusCode >= 400 && res.statusCode < 500) {
+			if (res.isClientError) {
 				// HTTPステータスコード4xxはクライアントエラーであり、それはつまり
 				// 何回再送しても成功することはないということなのでエラーにはしないでおく
 				return `${res.statusCode} ${res.statusMessage}`;

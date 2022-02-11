@@ -1,6 +1,7 @@
 <template>
 <router-link class="ldlomzub" :to="url" v-user-preview="canonical" v-if="url.startsWith('/')">
 	<span class="me" v-if="isMe">{{ $t('@.you') }}</span>
+	<img class="avator" v-if="!isMe && avator != null" :src="avator"/>
 	<span class="main">
 		<span class="username">@{{ username }}</span>
 		<span class="host" :class="{ fade: $store.state.settings.contrastedAcct }" v-if="(host != localHost) || $store.state.settings.showFullAcct">@{{ toUnicode(host) }}</span>
@@ -17,8 +18,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import i18n from '../../../i18n';
-import { toUnicode } from 'punycode';
+import { toUnicode } from 'punycode/';
 import { host as localHost } from '../../../config';
+import { wellKnownServices } from '../../../../../well-known-services';
 
 export default Vue.extend({
 	i18n: i18n(),
@@ -30,6 +32,10 @@ export default Vue.extend({
 		host: {
 			type: String,
 			required: true
+		},
+		customEmojis: {
+			required: false,
+			default: () => []
 		}
 	},
 	data() {
@@ -39,13 +45,11 @@ export default Vue.extend({
 	},
 	computed: {
 		url(): string {
-			switch (this.host) {
-				case 'twitter.com':
-				case 'github.com':
-				case 'gitlab.com':
-					return `https://${this.host}/${this.username}`;
-				default:
-					return `/${this.canonical}`;
+			const wellKnown = wellKnownServices.find(x => x[0] === this.host);
+			if (wellKnown) {
+				return wellKnown[1](this.username);
+			} else {
+				return `/${this.canonical}`;
 			}
 		},
 		canonical(): string {
@@ -56,6 +60,10 @@ export default Vue.extend({
 				`@${this.username}@${toUnicode(this.host)}` === `@${this.$store.state.i.username}@${toUnicode(localHost)}`.toLowerCase()
 			);
 		},
+		avator(): string {
+			const ascii = `@${this.username}` + (this.host != localHost ? `@${this.host}` : '');
+			return `/avatar/${ascii}`
+		}
 	},
 	methods: {
 		toUnicode
@@ -80,6 +88,13 @@ export default Vue.extend({
 			padding 0 4px
 			border solid var(--lineWidth) var(--mfmMention)
 			border-radius 0 4px 4px 0
+
+	> .avator
+		//width: 1.5em;
+		height 1.25em
+		margin: 0 0.2em;
+		vertical-align: bottom;
+		border-radius: 100%;
 
 	> .main
 		> .host.fade

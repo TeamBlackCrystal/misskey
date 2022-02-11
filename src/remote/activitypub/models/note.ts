@@ -17,7 +17,7 @@ import { deliverQuestionUpdate } from '../../../services/note/polls/update';
 import { extractDbHost, toPuny } from '../../../misc/convert-host';
 import { Emojis, Polls, MessagingMessages } from '../../../models';
 import { Note } from '../../../models/entities/note';
-import { IObject, getOneApId, getApId, validPost, IPost, isEmoji } from '../type';
+import { IObject, getOneApId, getApId, validPost, IPost, isEmoji, getApType } from '../type';
 import { Emoji } from '../../../models/entities/emoji';
 import { genId } from '../../../misc/gen-id';
 import { fetchMeta } from '../../../misc/fetch-meta';
@@ -29,6 +29,7 @@ import { extractApMentions } from './mention';
 import DbResolver from '../db-resolver';
 import extractEmojisFromMfm from '../../../misc/extract-emojis';
 import { parse } from '../../../mfm/parse';
+import { StatusError } from '@/misc/fetch';
 
 const logger = apLogger;
 
@@ -39,8 +40,8 @@ export function validateNote(object: any, uri: string) {
 		return new Error('invalid Note: object is null');
 	}
 
-	if (!validPost.includes(object.type)) {
-		return new Error(`invalid Note: invalid object type ${object.type}`);
+	if (!validPost.includes(getApType(object))) {
+		return new Error(`invalid Note: invalid object type ${getApType(object)}`);
 	}
 
 	if (object.id && extractDbHost(object.id) !== expectHost) {
@@ -180,7 +181,7 @@ export async function createNote(value: string | IObject, resolver?: Resolver, s
 				}
 			} catch (e) {
 				return {
-					status: e.statusCode >= 400 && e.statusCode < 500 ? 'permerror' : 'temperror'
+					status: (e instanceof StatusError && e.isClientError) ? 'permerror' : 'temperror'
 				};
 			}
 		};
@@ -220,15 +221,6 @@ export async function createNote(value: string | IObject, resolver?: Resolver, s
 
 		if (note.name) {
 			return await tryCreateVote(note.name, poll.choices.findIndex(x => x === note.name));
-		}
-
-		// 後方互換性のため
-		if (text) {
-			const m = text.match(/(\d+)$/);
-
-			if (m) {
-				return await tryCreateVote(m[0], Number(m[1]));
-			}
 		}
 	}
 
@@ -306,6 +298,10 @@ export async function resolveNote(value: string | IObject, resolver?: Resolver):
 			return exist;
 		}
 		//#endregion
+
+		if (uri.startsWith(config.url)) {
+			throw new StatusError('cannot resolve local note', 400, 'cannot resolve local note');
+		}
 
 		// リモートサーバーからフェッチしてきて登録
 		// ここでuriの代わりに添付されてきたNote Objectが指定されていると、サーバーフェッチを経ずにノートが生成されるが

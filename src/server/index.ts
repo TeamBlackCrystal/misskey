@@ -21,10 +21,12 @@ import apiServer from './api';
 import { sum } from '../prelude/array';
 import Logger from '../services/logger';
 import { program } from '../argv';
-import { UserProfiles } from '../models';
+import { UserProfiles, Users } from '../models';
 import { networkChart } from '../services/chart';
 import { genAvatar } from '../misc/gen-avatar';
 import { createTemp } from '../misc/create-temp';
+//import { parseAcct } from '@/misc/acct';
+import parseAcct from '@/misc/acct/parse';
 
 export const serverLogger = new Logger('server', 'gray', false);
 
@@ -73,7 +75,24 @@ router.use(activityPub.routes());
 router.use(nodeinfo.routes());
 router.use(wellKnown.routes());
 
-router.get('/avatar/:x', async ctx => {
+router.get('/avatar/@:acct', async ctx => {
+	const { username, host } = parseAcct(ctx.params.acct);
+	const user = await Users.findOne({
+		usernameLower: username.toLowerCase(),
+		host: host === config.host ? null : host,
+		isSuspended: false
+	});
+
+	if (user) {
+		ctx.set('Cache-Control', 'public, max-age=300');
+		ctx.redirect(Users.getAvatarUrl(user));
+	} else {
+		ctx.set('Cache-Control', 'public, max-age=300');
+		ctx.redirect('/static-assets/user-unknown.png');
+	}
+});
+
+router.get('/random-avatar/:x', async ctx => {
 	const [temp] = await createTemp();
 	await genAvatar(ctx.params.x, fs.createWriteStream(temp));
 	ctx.set('Content-Type', 'image/png');

@@ -354,6 +354,13 @@ export const meta = {
 			}
 		},
 
+		ToSTextUrl: {
+			validator: $.optional.nullable.str,
+			desc: {
+				'ja-JP': '利用規約(プレーンテキスト)のURL'
+			}
+		},
+
 		repositoryUrl: {
 			validator: $.optional.str,
 			desc: {
@@ -414,7 +421,11 @@ export const meta = {
 
 		objectStorageSetPublicRead: {
 			validator: $.optional.bool
-		}
+		},
+
+		objectStorageS3ForcePathStyle: {
+			validator: $.optional.bool
+		},
 	}
 };
 
@@ -613,6 +624,10 @@ export default define(meta, async (ps, me) => {
 		set.ToSUrl = ps.ToSUrl;
 	}
 
+	if (ps.ToSTextUrl !== undefined) {
+		set.ToSTextUrl = ps.ToSTextUrl;
+	}
+
 	if (ps.repositoryUrl !== undefined) {
 		set.repositoryUrl = ps.repositoryUrl;
 	}
@@ -667,6 +682,10 @@ export default define(meta, async (ps, me) => {
 
 	if (ps.objectStorageSetPublicRead !== undefined) {
 		set.objectStorageSetPublicRead = ps.objectStorageSetPublicRead;
+	}
+
+	if (ps.objectStorageS3ForcePathStyle !== undefined) {
+		set.objectStorageS3ForcePathStyle = ps.objectStorageS3ForcePathStyle;
 	}
 
 	await getConnection().transaction(async transactionalEntityManager => {

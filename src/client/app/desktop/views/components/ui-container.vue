@@ -63,7 +63,7 @@ export default Vue.extend({
 		background var(--face)
 
 		&.round
-			border-radius 6px
+			border-radius 12px
 
 		&.shadow
 			box-shadow 0 3px 8px rgba(0, 0, 0, 0.2)

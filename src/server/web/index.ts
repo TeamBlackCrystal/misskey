@@ -20,7 +20,7 @@ import parseAcct from '../../misc/acct/parse';
 import getNoteSummary from '../../misc/get-note-summary';
 import { ensure } from '../../prelude/ensure';
 import { getConnection } from 'typeorm';
-import redis from '../../db/redis';
+import { redisClient } from '../../db/redis';
 
 const env = process.env.NODE_ENV;
 
@@ -304,18 +304,34 @@ router.get('/info', async ctx => {
 	const emojis = await Emojis.find({
 		where: { host: null }
 	});
+
+	//const proxyAccount = meta.proxyAccountId ? await Users.pack(meta.proxyAccountId).catch(() => null) : null;
+
 	await ctx.render('info', {
 		version: config.version,
 		machine: os.hostname(),
 		os: os.platform(),
 		node: process.version,
 		psql: await getConnection().query('SHOW server_version').then(x => x[0].server_version),
-		redis: redis.server_info.redis_version,
+		redis: redisClient.server_info.redis_version,
 		cpu: {
 			model: os.cpus()[0].model,
 			cores: os.cpus().length
 		},
 		emojis: emojis,
+		meta: meta,
+		//proxyAccountName: proxyAccount ? proxyAccount.username : null,
+		originalUsersCount: await Users.count({ host: null }),
+		originalNotesCount: await Notes.count({ userHost: null })
+	});
+});
+
+router.get('/_info_card_', async ctx => {
+	const meta = await fetchMeta(true);
+
+	await ctx.render('info-card', {
+		version: config.version,
+		host: config.host,
 		meta: meta,
 		originalUsersCount: await Users.count({ host: null }),
 		originalNotesCount: await Notes.count({ userHost: null })
@@ -327,6 +343,10 @@ const override = (source: string, target: string, depth: number = 0) =>
 
 router.get('/othello', async ctx => ctx.redirect(override(ctx.URL.pathname, 'games/reversi', 1)));
 router.get('/reversi', async ctx => ctx.redirect(override(ctx.URL.pathname, 'games')));
+
+router.get('/flush', async ctx => {
+	await ctx.render('flush');
+});
 
 // streamingに非WebSocketリクエストが来た場合にbase htmlをキャシュ付きで返すと、Proxy等でそのパスがキャッシュされておかしくなる
 router.get('/streaming', async ctx => {

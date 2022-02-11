@@ -4,6 +4,7 @@ import { publishDriveStream } from '../../../../../services/stream';
 import define from '../../../define';
 import { ApiError } from '../../../error';
 import { DriveFiles, DriveFolders } from '../../../../../models';
+import { DB_MAX_IMAGE_COMMENT_LENGTH } from '@/misc/hard-limits';
 
 export const meta = {
 	desc: {
@@ -52,7 +53,7 @@ export const meta = {
 		},
 
 		comment: {
-			validator: $.optional.nullable.str,
+			validator: $.optional.nullable.str.max(DB_MAX_IMAGE_COMMENT_LENGTH),
 			default: undefined as any,
 			desc: {
 				'ja-JP': 'コメント'

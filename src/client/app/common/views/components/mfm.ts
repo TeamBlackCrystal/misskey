@@ -8,8 +8,10 @@ import { concat, sum } from '../../../../../prelude/array';
 import MkFormula from './formula.vue';
 import MkCode from './code.vue';
 import MkGoogle from './google.vue';
+import MkSparkle from './sparkle.vue';
 import { host } from '../../../config';
 import { preorderF, countNodesF } from '../../../../../prelude/tree';
+import { h } from '@vue/composition-api';
 
 function sumTextsLength(ts: MfmForest): number {
 	const textNodes = preorderF(ts).filter(n => n.type === 'text');
@@ -264,6 +266,27 @@ export default Vue.component('misskey-flavored-markdown', {
 							return [createElement('span', {
 								attrs: {
 									class: '_mfm_blur_'
+								}
+							}, genEl(token.children))];
+						}
+						case 'sparkle': {
+							if (this.$store.state.settings.disableAnimatedMfm) {
+								return genEl(token.children);
+							}
+							let count = token.node.props.args.count ? parseInt(token.node.props.args.count) : 10;
+							if (count > 100) {
+								count = 100;
+							}
+							const speed = token.node.props.args.speed ? parseFloat(token.node.props.args.speed) : 1;
+							/*
+							return h(MkSparkle, {
+								count, speed,
+							}, genEl(token.children));
+							*/
+							return [createElement(MkSparkle, {
+								props: {
+									count,
+									speed
 								}
 							}, genEl(token.children))];
 						}

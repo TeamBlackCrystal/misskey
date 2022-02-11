@@ -17,6 +17,7 @@
 				</header>
 				<div class="text">
 					<mfm v-if="note.text" :text="note.cw != null ? note.cw : note.text" :author="note.user" :custom-emojis="note.emojis"/>
+					<mk-media-list v-if="note.files.length > 0" :media-list="note.files"/>
 				</div>
 			</div>
 		</div>

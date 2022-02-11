@@ -5,6 +5,8 @@ export const meta = {
 
 	tags: ['meta'],
 
+	allowGet: true,
+
 	params: {
 	},
 

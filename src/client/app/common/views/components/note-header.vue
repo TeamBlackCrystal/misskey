@@ -5,10 +5,10 @@
 		<mk-user-name :user="note.user"/>
 	</router-link>
 	<span class="is-premium" v-if="note.user.isPremium"><fa icon="crown"/></span>
-	<span class="is-admin" v-if="note.user.isAdmin">admin</span>
-	<span class="is-bot" v-if="note.user.isBot">bot</span>
-	<span class="is-cat" v-if="note.user.isCat">cat</span>
-	<span class="is-lady" v-if="note.user.isLady">lady</span>
+	<span class="is-admin" v-if="note.user.isAdmin" :title="$t('@.admin-user')">admin</span>
+	<span class="is-bot" v-if="note.user.isBot" :title="$t('@.bot-user')">bot</span>
+	<span class="is-cat" v-if="note.user.isCat" :title="$t('@.cat-user')">cat</span>
+	<span class="is-lady" v-if="note.user.isLady" :title="$t('@.lady-user')">lady</span>
 	<span class="username"><mk-acct :user="note.user"/></span>
 	<span class="is-verified" v-if="note.user.isVerified" :title="$t('@.verified-user')"><fa icon="star"/></span>
 	<div class="info">

@@ -88,6 +88,7 @@ export default Vue.extend({
 
 <style lang="stylus" scoped>
 .mk-user-preview
+	backdrop-filter blur(10px)
 	position absolute
 	z-index 2048
 	margin-top -8px

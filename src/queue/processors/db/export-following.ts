@@ -4,11 +4,11 @@ import * as fs from 'fs';
 
 import { queueLogger } from '../../logger';
 import addFile from '../../../services/drive/add-file';
-import dateFormat = require('dateformat');
+import * as dateFormat from 'dateformat';
 import { getFullApAccount } from '../../../misc/convert-host';
 import { Users, Followings } from '../../../models';
 import { MoreThan } from 'typeorm';
-import { DbUserJobData } from '../../type';
+import { DbUserJobData } from '../../types';
 
 const logger = queueLogger.createSubLogger('export-following');
 

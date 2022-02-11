@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 15.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
 
     services:
       postgres:
@@ -26,11 +26,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run: NODE_ENV=production yarn install
-    - run: NODE_ENV=production yarn build
+        cache: 'yarn'
+    - run: node devtools/diag-environment.js
+    - run: yarn install
+    - run: yarn build
     - run: cp test/test.yml .config
     - run: yarn test

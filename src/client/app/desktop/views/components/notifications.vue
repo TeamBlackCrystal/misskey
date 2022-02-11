@@ -158,12 +158,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import i18n from '../../../i18n';
+import * as sound from '../../../common/scripts/sound';
 import getNoteSummary from '../../../../../misc/get-note-summary';
 import paging from '../../../common/scripts/paging';
-import * as config from '../../../config';
 
 export default Vue.extend({
-	i18n: i18n(),
+	i18n: i18n('desktop/views/components/notifications.vue'),
 
 	mixins: [
 		paging({
@@ -230,9 +230,7 @@ export default Vue.extend({
 
 			// サウンドを再生する
 			if (this.$store.state.device.enableSounds && this.$store.state.device.enableSoundsInNotifications) {
-				const sound = new Audio(`${config.url}/assets/pope2.mp3`);
-				sound.volume = this.$store.state.device.soundVolume;
-				sound.play();
+				sound.play('notification');
 			}
 		}
 	}

@@ -52,7 +52,7 @@
 				<li>
 					<router-link to="/i/follow-requests">
 						<i><fa :icon="['far', 'envelope']" fixed-width/></i>
-						<span>{{ $t('follow-requests') }}<i v-if="$store.state.i.pendingReceivedFollowRequestsCount">{{ $store.state.i.pendingReceivedFollowRequestsCount }}</i></span>
+						<span>{{ $t('follow-requests') }}<i v-if="$store.state.i.pendingReceivedFollowRequestsCount">{{ $t(`follow-request-${$store.state.i.pendingReceivedFollowRequestsCount}`) }}</i></span>
 						<i><fa icon="angle-right"/></i>
 					</router-link>
 				</li>
@@ -175,7 +175,6 @@ export default Vue.extend({
 		},
 	},
 	mounted() {
-		console.log(this.$store.state.device.darkmode)
 		if (this.$store.state.device.darkmode == true) { // ダークテーマが有効の場合のみblurを強化
 			this.$set(this.menublur_style, 'backdrop-filter', 'blur(2em)');
 		} else {

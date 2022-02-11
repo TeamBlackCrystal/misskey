@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as parse5 from 'parse5';
 import treeAdapter = require('parse5/lib/tree-adapters/default');
 import { urlRegex, urlRegexFull } from './prelude';

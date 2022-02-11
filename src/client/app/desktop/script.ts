@@ -10,7 +10,7 @@ import './style.styl';
 import './style.scss';
 
 import init from '../init';
-import composeNotification from '../common/scripts/compose-notification';
+import composeNotification from '../sw/compose-notification';
 
 import MkHome from './views/home/home.vue';
 import MkSelectDrive from './views/pages/selectdrive.vue';

@@ -1,5 +1,5 @@
 import * as Koa from 'koa';
-import summaly from 'summaly';
+import summaly from '@ayuskey/summaly';
 import { fetchMeta } from '../../misc/fetch-meta';
 import Logger from '../../services/logger';
 import config from '../../config';

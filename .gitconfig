@@ -1,0 +1,10 @@
+[gitflow "branch"]
+	master = v11-lts
+	develop = develop
+[gitflow "prefix"]
+	feature = feat/
+	bugfix = fix/
+	release = release/
+	hotfix = fix/
+	support = chore/
+	versiontag =  

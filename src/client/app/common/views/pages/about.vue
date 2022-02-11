@@ -10,8 +10,12 @@
 		<template #header><fa :icon="faServer"/> {{ $t('basic') }}</template>
 		<div class="items" v-if="meta">
 			<div class="item">
-				<div class="key">Misskey</div>
+				<div class="key">Ayuskey</div>
 				<div class="value">v{{ meta.version }}</div>
+			</div>
+			<div class="item">
+				<div class="key">Misskey</div>
+				<div class="value">v11.37.1</div>
 			</div>
 			<div class="item" v-if="meta.maintainer && meta.maintainer.name">
 				<div class="key">{{ $t('maintainerName') }}</div>

@@ -194,6 +194,15 @@
 			</section>
 
 			<section>
+				<header>{{ $t('@._settings.hasDisconnectedAction') }}</header>
+				<ui-select v-model="hasDisconnectedAction">
+					<option value="reload">{{ $t('@._settings._hasDisconnectedAction.reload') }}</option>
+					<option value="notify">{{ $t('@._settings._hasDisconnectedAction.notify') }}</option>
+					<option value="nothing">{{ $t('@._settings._hasDisconnectedAction.nothing') }}</option>
+				</ui-select>
+			</section>
+
+			<section>
 				<header>{{ $t('@._settings.room') }}</header>
 				<ui-select v-model="roomGraphicsQuality">
 					<template #label>{{ $t('@._settings._room.graphicsQuality') }}</template>
@@ -204,6 +213,17 @@
 					<option value="cheep">{{ $t('@._settings._room._graphicsQuality.cheep') }}</option>
 				</ui-select>
 				<ui-switch v-model="roomUseOrthographicCamera">{{ $t('@._settings._room.useOrthographicCamera') }}</ui-switch>
+			</section>
+
+			<section>
+				<header>{{ $t('@._settings.mascot') }}</header>
+				<ui-input v-model="mascotWidgetUrl">{{ $t('@._settings._mascot.widget-url') }}
+					<template #desc>{{ $t('@._settings._mascot.widget-url-desc') }}</template>
+				</ui-input>
+				<!--
+					todo: ボタン押したら保存
+				<ui-button @click="save('mascotWidgetUrl', mascotWidgetUrl)"><fa :icon="faSave"/> {{ $t('@._settings.save') }}</ui-button>
+				-->
 			</section>
 		</ui-card>
 
@@ -229,6 +249,9 @@
 			</section>
 
 			<section>
+				<ui-switch v-model="enableQueueJammed">{{ $t('@._settings.enable-queue-jammed') }}
+					<template #desc>{{ $t('@._settings.enable-queue-jammed-desc') }}</template>
+				</ui-switch>
 				<ui-switch v-model="enableSpeech">{{ $t('@._settings.enable-speech') }}
 					<template #desc>{{ $t('@._settings.enable-speech-desc') }}</template>
 				</ui-switch>
@@ -356,6 +379,8 @@ import XRegEdit from './regedit.vue';
 import MkReactionPicker from '../reaction-picker.vue';
 
 import { url, version } from '../../../../config';
+import { ColdDeviceStorage } from '../../../../store';
+import * as sound from '../../../../common/scripts/sound';
 import checkForUpdate from '../../../scripts/check-for-update';
 import { formatTimeString } from '../../../../../../misc/format-time-string';
 import { faSave, faEye } from '@fortawesome/free-regular-svg-icons';
@@ -459,14 +484,19 @@ export default Vue.extend({
 			set(value) { this.$store.commit('device/set', { key: 'enableSoundsInNotifications', value }); }
 		},
 
+		enableQueueJammed: {
+			get() { return this.$store.state.device.enableQueueJammed; },
+			set(value) { this.$store.commit('device/set', { key: 'enableQueueJammed', value }); }
+		},
+
 		enableSpeech: {
 			get() { return this.$store.state.device.enableSpeech; },
 			set(value) { this.$store.commit('device/set', { key: 'enableSpeech', value }); }
 		},
 
 		soundVolume: {
-			get() { return this.$store.state.device.soundVolume; },
-			set(value) { this.$store.commit('device/set', { key: 'soundVolume', value }); }
+			get() { return ColdDeviceStorage.get('sound_masterVolume'); },
+			set(value) { ColdDeviceStorage.set('sound_masterVolume', value); }
 		},
 
 		debug: {
@@ -608,6 +638,11 @@ export default Vue.extend({
 			set(value) { this.$store.dispatch('settings/set', { key: 'iLikeSushi', value }); }
 		},
 
+		hasDisconnectedAction: {
+			get() { return this.$store.state.device.hasDisconnectedAction; },
+			set(value) { this.$store.commit('device/set', { key: 'hasDisconnectedAction', value }); }
+		},
+
 		roomUseOrthographicCamera: {
 			get() { return this.$store.state.device.roomUseOrthographicCamera; },
 			set(value) { this.$store.commit('device/set', { key: 'roomUseOrthographicCamera', value }); }
@@ -616,6 +651,11 @@ export default Vue.extend({
 		roomGraphicsQuality: {
 			get() { return this.$store.state.device.roomGraphicsQuality; },
 			set(value) { this.$store.commit('device/set', { key: 'roomGraphicsQuality', value }); }
+		},
+
+		mascotWidgetUrl: {
+			get() { return ColdDeviceStorage.get('mascot_widget_url'); },
+			set(value) { ColdDeviceStorage.set('mascot_widget_url', value); }
 		},
 
 		games_reversi_showBoardLabels: {
@@ -733,9 +773,7 @@ export default Vue.extend({
 			});
 		},
 		soundTest() {
-			const sound = new Audio(`${url}/assets/waon.mp3`);
-			sound.volume = this.$store.state.device.soundVolume;
-			sound.play();
+			sound.play('chatBg');
 		},
 		pastedFileNamePreview() {
 			return `${formatTimeString(new Date(), this.pastedFileName).replace(/{{number}}/g, `1`)}.png`

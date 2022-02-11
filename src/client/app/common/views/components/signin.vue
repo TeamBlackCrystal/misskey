@@ -16,6 +16,7 @@
 		<p v-if="meta && meta.enableTwitterIntegration" style="margin: 8px 0;"><a :href="`${apiUrl}/signin/twitter`"><fa :icon="['fab', 'twitter']"/> {{ $t('signin-with-twitter') }}</a></p>
 		<p v-if="meta && meta.enableGithubIntegration"  style="margin: 8px 0;"><a :href="`${apiUrl}/signin/github`"><fa :icon="['fab', 'github']"/> {{ $t('signin-with-github') }}</a></p>
 		<p v-if="meta && meta.enableDiscordIntegration" style="margin: 8px 0;"><a :href="`${apiUrl}/signin/discord`"><fa :icon="['fab', 'discord']"/> {{ $t('signin-with-discord') /* TODO: Make these layouts better */ }}</a></p>
+		<p style="margin: 8px 0;"><a @click="onFlush">{{ $t('@.flush') }}</a></p>
 	</div>
 	<div class="2fa-signin" v-if="totpLogin" :class="{ securityKeys: user && user.securityKeys }">
 		<div v-if="user && user.securityKeys" class="twofa-group tap-group">
@@ -52,7 +53,7 @@ import Vue from 'vue';
 import i18n from '../../../i18n';
 import { apiUrl, host } from '../../../config';
 import { toUnicode } from 'punycode';
-import { hexifyAB } from '../../scripts/2fa';
+import { hexifyAB, byteify } from '../../scripts/2fa';
 
 export default Vue.extend({
 	i18n: i18n('common/views/components/signin.vue'),
@@ -103,14 +104,9 @@ export default Vue.extend({
 			this.queryingKey = true;
 			return navigator.credentials.get({
 				publicKey: {
-					challenge: Buffer.from(
-						this.challengeData.challenge
-							.replace(/\-/g, '+')
-							.replace(/_/g, '/'),
-							'base64'
-					),
+					challenge: byteify(this.challengeData.challenge, 'base64'),
 					allowCredentials: this.challengeData.securityKeys.map(key => ({
-						id: Buffer.from(key.id, 'hex'),
+						id: byteify(key.id, 'hex'),
 						type: 'public-key',
 						transports: ['usb', 'nfc', 'ble', 'internal']
 					})),
@@ -187,10 +183,13 @@ export default Vue.extend({
 				});
 			}
 		},
-
 		resetPassword() {
 			this.$modal.show('resetPassword');
-		}
+		},
+		onFlush() {
+			const r = confirm('ブラウザに保存されたキャッシュをクリアしますか？');
+			if (r) location.href = '/flush';
+		},
 	}
 });
 </script>

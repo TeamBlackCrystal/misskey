@@ -80,7 +80,7 @@
 		radioBorder: 'rgba(0, 0, 0, 0.4)',
 		inputBorder: 'rgba(0, 0, 0, 0.42)',
 		inputLabel: 'rgba(0, 0, 0, 0.54)',
-		inputText: '#000',
+		inputText: '#222',
 
 		buttonBg: 'rgba(0, 0, 0, 0.05)',
 		buttonHoverBg: 'rgba(0, 0, 0, 0.1)',

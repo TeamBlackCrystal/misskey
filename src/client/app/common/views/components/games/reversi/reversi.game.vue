@@ -81,6 +81,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import i18n from '../../../../../i18n';
+import * as sound from '../../../../scripts/sound';
 import * as CRC32 from 'crc-32';
 import Reversi, { Color } from '../../../../../../../games/reversi/core';
 import { url } from '../../../../../config';
@@ -234,9 +235,7 @@ export default Vue.extend({
 
 			// サウンドを再生する
 			if (this.$store.state.device.enableSounds) {
-				const sound = new Audio(`${url}/assets/reversi-put-me.mp3`);
-				sound.volume = this.$store.state.device.soundVolume;
-				sound.play();
+				sound.play(this.myColor ? 'reversiPutBlack' : 'reversiPutWhite');
 			}
 
 			this.connection.send('set', {
@@ -257,9 +256,7 @@ export default Vue.extend({
 
 			// サウンドを再生する
 			if (this.$store.state.device.enableSounds && x.color != this.myColor) {
-				const sound = new Audio(`${url}/assets/reversi-put-you.mp3`);
-				sound.volume = this.$store.state.device.soundVolume;
-				sound.play();
+				sound.play(x.color ? 'reversiPutBlack' : 'reversiPutWhite');
 			}
 		},
 

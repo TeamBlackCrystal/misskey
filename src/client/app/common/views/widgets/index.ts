@@ -32,3 +32,5 @@ Vue.component('mkw-hashtags', wHashtags);
 Vue.component('mkw-instance', wInstance);
 Vue.component('mkw-post-form', wPostForm);
 Vue.component('mkw-queue', () => import('./queue.vue').then(m => m.default));
+Vue.component('mkw-job-queue', () => import('./job-queue.vue').then(m => m.default));
+Vue.component('mkw-aichan', () => import('./aichan.vue').then(m => m.default));

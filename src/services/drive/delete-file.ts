@@ -60,10 +60,10 @@ export async function deleteFileSync(file: DriveFile, isExpired = false) {
 		await Promise.all(promises);
 	}
 
-	postProcess(file, isExpired);
+	await postProcess(file, isExpired);
 }
 
-function postProcess(file: DriveFile, isExpired = false) {
+async function postProcess(file: DriveFile, isExpired = false) {
 	// リモートファイル期限切れ削除後は直リンクにする
 	if (isExpired && file.userHost !== null && file.uri != null) {
 		DriveFiles.update(file.id, {
@@ -71,14 +71,14 @@ function postProcess(file: DriveFile, isExpired = false) {
 			url: file.uri,
 			thumbnailUrl: null,
 			webpublicUrl: null,
-			size: 0,
+			storedInternal: false,
 			// ローカルプロキシ用
 			accessKey: uuid(),
 			thumbnailAccessKey: 'thumbnail-' + uuid(),
 			webpublicAccessKey: 'webpublic-' + uuid(),
 		});
 	} else {
-		DriveFiles.delete(file.id);
+		await DriveFiles.delete(file.id);
 	}
 
 	// 統計を更新

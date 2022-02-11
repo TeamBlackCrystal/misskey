@@ -22,6 +22,7 @@ common:
   application-authorization: "アプリの連携"
   close: "閉じる"
   do-not-copy-paste: "ここにコードを入力したり張り付けたりしないでください。アカウントが不正利用される可能性があります。"
+  if-you-know: "何をしているのか把握している場合は一緒に開発しませんか？"
   load-more: "もっと読み込む"
   enter-password: "パスワードを入力してください"
   2fa: "二段階認証"
@@ -87,6 +88,7 @@ common:
   followers: "フォロワー"
   favorites: "お気に入り"
   aboutInstance: "このインスタンスについて"
+  flush: "キャッシュをクリア"
 
   permissions:
     "read:account": "アカウントの情報を見る"
@@ -115,6 +117,10 @@ common:
     "write:page-likes": "ページのいいねを操作する"
     "read:user-groups": "ユーザーグループを見る"
     "write:user-groups": "ユーザーグループを操作する"
+    "read:channels": "チャンネルを見る"
+    "write:channels": "チャンネルを操作する"
+    "read:registry": "**レジストリを見る**"
+    "write:registry": "**レジストリを操作する**"
 
   empty-timeline-info:
     follow-users-to-make-your-timeline: "ユーザーをフォローすると投稿がタイムラインに表示されます。"
@@ -306,6 +312,8 @@ common:
     enable-sounds-desc: "投稿やメッセージを送受信したときなどにサウンドを再生します。この設定はブラウザに記憶されます。"
     enable-sounds-timeline: "タイムライン"
     enable-sounds-notifications: "通知"
+    enable-queue-jammed: "Job Queueが詰まったとき音を鳴らす"
+    enable-queue-jammed-desc: "Job Queue(v12タイプ)ウィジェットが使用されている場合のみ有効です"
     enable-speech: "読み上げを有効にする"
     enable-speech-desc: "投稿が到着したときに読み上げます。この設定はブラウザに記憶されます。"
     volume: "ボリューム"
@@ -343,6 +351,11 @@ common:
     preview: "プレビュー"
     home-profile: "ホームのプロファイル"
     deck-profile: "デッキのプロファイル"
+    hasDisconnectedAction: "サーバーから切断されていたとき"
+    _hasDisconnectedAction:
+      reload: "自動でリロードする"
+      notify: "通知のみ"
+      nothing: "なにもしない"
     room: "ルーム"
     _room:
       graphicsQuality: "グラフィックの品質"
@@ -353,6 +366,10 @@ common:
         low: "低"
         cheep: "最低"
       useOrthographicCamera: "平行投影カメラを使用"
+    mascot: "マスコット"
+    _mascot:
+      widget-url: "ウィジェットのURL"
+      widget-url-desc: "信用できるサーバー以外使用しないでください。藍ウィジェットで使用するサーバーのURLを設定します。"
 
   search: "検索"
   delete: "削除"
@@ -362,6 +379,10 @@ common:
   update-available-title: "更新があります"
   update-available: "Misskeyの新しいバージョンがあります({newer}。現在{current}を利用中)。ページを再度読み込みすると更新が適用されます。"
   my-token-regenerated: "あなたのトークンが更新されたのでサインアウトします。"
+  admin-user: "管理者"
+  lady-user: "お嬢様"
+  bot-user: "Bot"
+  cat-user: "猫(=^・・^=)"
   verified-user: "公式アカウント"
   premium-user: "プレミアムユーザー"
   hide-password: "パスワードを隠す"
@@ -417,6 +438,7 @@ common:
     tips: "ヒント"
     hashtags: "ハッシュタグ"
     queue: "キュー"
+    ai: "藍"
 
   dev: "アプリの作成に失敗しました。再度お試しください。"
   ai-chan-kawaii: "藍ちゃかわいい"
@@ -892,6 +914,7 @@ common/views/components/profile-editor.vue:
   auto-accept-followed: "フォローしているユーザーからのフォローを自動承認する"
   no-crawle: "クローラーによるインデックスを拒否"
   isExplorable: "みつけるに表示する"
+  hide-online-status: "オンライン状態を隠す"
   advanced: "その他"
   privacy: "プライバシー"
   save: "保存"
@@ -1307,6 +1330,7 @@ common/views/components/api-settings.vue:
 
 desktop/views/components/settings.apps.vue:
   no-apps: "連携しているアプリケーションはありません"
+  revokeTokenConfirm: "このアプリへのアクセス許可を削除しますか？"
 
 common/views/components/drive-settings.vue:
   max: "容量"
@@ -1343,6 +1367,9 @@ common/views/components/post-form-attaches.vue:
   mark-as-sensitive: "閲覧注意に設定"
   unmark-as-sensitive: "閲覧注意を解除"
 
+common/views/components/tag-cloud.vue:
+  empty: "タグは空っぽのようです"
+  
 desktop/views/components/sub-note-content.vue:
   private: "この投稿は非公開です"
   deleted: "この投稿は削除されました"
@@ -1379,6 +1406,7 @@ desktop/views/components/ui.header.account.vue:
   follow-requests: "フォロー申請"
   admin: "管理"
   room: "ルーム"
+  follow-request-true: 新着
 
 desktop/views/components/ui.header.nav.vue:
   game: "ゲーム"
@@ -1511,6 +1539,7 @@ admin/views/instance.vue:
   object-storage-set-public-read: "アップロード時に'public-read'を設定する"
   object-storage-s3-info: "Amazon S3をオブジェクトストレージとして使用する場合の「エンドポイント」と「リージョン」の設定については{0}をご確認ください。"
   object-storage-s3-info-here: "こちら"
+  object-storage-s3-force-path-style: "S3ForcePathStyle"
   object-storage-gcs-info: "Google Cloud Storageをオブジェクトストレージとして使用する場合、「エンドポイント」は storage.googleapis.com に設定し、「リージョン」は空欄にします。"
   cache-remote-files: "リモートのファイルをキャッシュする"
   cache-remote-files-desc: "この設定を無効にすると、リモートファイルをキャッシュせず直リンクするようになります。そのためサーバーのストレージを節約できますが、プライバシー設定で直リンクを無効にしているユーザーにはファイルが見えなくなったり、サムネイルが生成されないので通信量が増加します。通常はこの設定をオンにするか次のリモートファイルのプロキシを有効にすることをおすすめします。"
@@ -1833,6 +1862,7 @@ desktop/views/pages/welcome.vue:
   photos: "最近の画像"
   powered-by-misskey: "Powered by <b>Misskey</b>."
   info: "情報"
+  not-found-maintainerName: "メンテナが設定されていません"
 
 desktop/views/pages/drive.vue:
   title: "Misskey Drive"
@@ -2491,6 +2521,7 @@ room:
     cardboard-box3: "段ボール箱3"
     book: "本"
     book2: "本2"
+    book3: "本3"
     piano: "ピアノ"
     facial-tissue: "ティッシュボックス"
     server: "サーバー"

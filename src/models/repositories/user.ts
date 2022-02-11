@@ -1,14 +1,15 @@
 import $ from 'cafy';
 import { EntityRepository, Repository, In, Not } from 'typeorm';
 import { User, ILocalUser, IRemoteUser } from '../entities/user';
-import { Emojis, Notes, NoteUnreads, FollowRequests, Notifications, MessagingMessages, UserNotePinings, Followings, Blockings, Mutings, UserProfiles, UserSecurityKeys, UserGroupJoinings, Pages, Instances, DriveFiles, Antennas, AntennaNotes } from '..';
+import { Emojis, Notes, NoteUnreads, FollowRequests, Notifications, MessagingMessages, UserNotePinings, Followings, Blockings, Mutings, UserProfiles, UserSecurityKeys, UserGroupJoinings, Pages, Instances, DriveFiles, Announcements, AnnouncementReads, Antennas, AntennaNotes, ChannelFollowings  } from '..';
 import { ensure } from '../../prelude/ensure';
 import config from '../../config';
-import { SchemaType } from '../../misc/schema';
+import { Packed } from '../../misc/schema';
 import { awaitAll } from '../../prelude/await-all';
 import { toPunyNullable } from '../../misc/convert-host';
-
-export type PackedUser = SchemaType<typeof packedUserSchema>;
+import { Emoji } from '../entities/emoji';
+import { getAntennas } from '../../misc/antenna-cache';
+import { USER_ACTIVE_THRESHOLD, USER_ONLINE_THRESHOLD } from '@/const';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -84,9 +85,8 @@ export class UserRepository extends Repository<User> {
 
 		return withUser || withGroups.some(x => x);
 	}
-	// 使うかも？
-	/*
-		public async getHasUnreadAnnouncement(userId: User['id']): Promise<boolean> {
+
+	public async getHasUnreadAnnouncement(userId: User['id']): Promise<boolean> {
 		const reads = await AnnouncementReads.find({
 			userId: userId
 		});
@@ -97,21 +97,18 @@ export class UserRepository extends Repository<User> {
 
 		return count > 0;
 	}
-	*/
 
 	public async getHasUnreadAntenna(userId: User['id']): Promise<boolean> {
-		const antennas = await Antennas.find({ userId });
+		const myAntennas = (await getAntennas()).filter(a => a.userId === userId);
 
-		const unread = antennas.length > 0 ? await AntennaNotes.findOne({
-			antennaId: In(antennas.map(x => x.id)),
+		const unread = myAntennas.length > 0 ? await AntennaNotes.findOne({
+			antennaId: In(myAntennas.map(x => x.id)),
 			read: false
 		}) : null;
 
 		return unread != null;
 	}
 
-	// 使うかも？
-	/*
 	public async getHasUnreadChannel(userId: User['id']): Promise<boolean> {
 		const channels = await ChannelFollowings.find({ followerId: userId });
 
@@ -122,7 +119,6 @@ export class UserRepository extends Repository<User> {
 
 		return unread != null;
 	}
-	*/
 
 	public async getHasUnreadNotification(userId: User['id']): Promise<boolean> {
 		const mute = await Mutings.find({
@@ -150,15 +146,38 @@ export class UserRepository extends Repository<User> {
 		return count > 0;
 	}
 
+	public getOnlineStatus(user: User): string {
+		if (user.hideOnlineStatus == null) return 'unknown';
+		if (user.lastActiveDate == null) return 'unknown';
+		const elapsed = Date.now() - user.lastActiveDate.getTime();
+		return (
+			elapsed < USER_ONLINE_THRESHOLD ? 'online' :
+			elapsed < USER_ACTIVE_THRESHOLD ? 'active' :
+			'offline'
+		);
+	}
+
+	public getAvatarUrl(user: User): string {
+		if (user.avatarUrl) {
+			return user.avatarUrl;
+		} else {
+			return `${config.url}/random-avatar/${user.id}`;
+		}
+	}
+
 	public async pack(
 		src: User['id'] | User,
 		me?: User['id'] | User | null | undefined,
 		options?: {
 			detail?: boolean,
 			includeSecrets?: boolean,
+			// TODO: remove
 			includeHasUnreadNotes?: boolean
+			_hint_?: {
+				emojis: Emoji[] | null;
+			};
 		}
-	): Promise<PackedUser> {
+	): Promise<Packed<'User'>> {
 		const opts = Object.assign({
 			detail: false,
 			includeSecrets: false
@@ -185,6 +204,34 @@ export class UserRepository extends Repository<User> {
 		}) : [];
 		const profile = opts.detail ? await UserProfiles.findOne(user.id).then(ensure) : null;
 
+		let emojis: Emoji[] = [];
+		if (user.emojis.length > 0) {
+			// 与えられたhintだけで十分(=新たにクエリする必要がない)かどうかを表すフラグ
+			let enough = true;
+			if (options?._hint_?.emojis) {
+				for (const name of user.emojis) {
+					const matched = options._hint_.emojis.find(x => x.name === name && x.host === user.host);
+					if (matched) {
+						emojis.push(matched);
+					} else {
+						enough = false;
+					}
+				}
+			} else {
+				enough = false;
+			}
+
+			if (!enough) {
+				emojis = await Emojis.find({
+					where: {
+						name: In(user.emojis),
+						host: user.host
+					},
+					select: ['name', 'host', 'url', 'aliases']
+				});
+			}
+		}
+
 		const falsy = opts.detail ? false : undefined;
 
 		const packed = {
@@ -192,7 +239,7 @@ export class UserRepository extends Repository<User> {
 			name: user.name,
 			username: user.username,
 			host: user.host,
-			avatarUrl: user.avatar ? DriveFiles.getPublicUrl(user.avatar, true) : config.url + '/avatar/' + user.id,
+			avatarUrl: this.getAvatarUrl(user),
 			avatarBlurhash: user.avatarBlurhash,
 			avatarColor: null, // 後方互換性のため
 			isAdmin: user.isAdmin || falsy,
@@ -212,13 +259,7 @@ export class UserRepository extends Repository<User> {
 			} : undefined) : undefined,
 
 			// カスタム絵文字添付
-			emojis: user.emojis.length > 0 ? Emojis.find({
-				where: {
-					name: In(user.emojis),
-					host: user.host
-				},
-				select: ['name', 'host', 'url', 'aliases']
-			}) : [],
+			emojis: emojis,
 
 			...(opts.includeHasUnreadNotes ? {
 				hasUnreadSpecifiedNotes: NoteUnreads.count({
@@ -231,8 +272,11 @@ export class UserRepository extends Repository<User> {
 				}).then(count => count > 0),
 			} : {}),
 
+			onlineStatus: this.getOnlineStatus(user),
+
 			...(opts.detail ? {
 				url: profile!.url,
+				uri: user.uri,
 				createdAt: user.createdAt.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
 				bannerUrl: user.banner ? DriveFiles.getPublicUrl(user.banner, false) : null,
@@ -285,11 +329,21 @@ export class UserRepository extends Repository<User> {
 				carefulBot: profile!.carefulBot,
 				carefulMassive: profile!.carefulMassive,
 				autoAcceptFollowed: profile!.autoAcceptFollowed,
+				hasUnreadSpecifiedNotes: NoteUnreads.count({
+					where: { userId: user.id, isSpecified: true },
+					take: 1
+				}).then(count => count > 0),
+				hasUnreadMentions: NoteUnreads.count({
+					where: { userId: user.id, isMentioned: true },
+					take: 1
+				}).then(count => count > 0),
 				noCrawle: profile!.noCrawle,
 				isExplorable: user.isExplorable,
-				//hasUnreadAnnouncement: this.getHasUnreadAnnouncement(user.id),
+				isDeleted: user.isDeleted,
+				hideOnlineStatus: user.hideOnlineStatus,
+				hasUnreadAnnouncement: this.getHasUnreadAnnouncement(user.id),
 				hasUnreadAntenna: this.getHasUnreadAntenna(user.id),
-				//hasUnreadChannel: this.getHasUnreadChannel(user.id),
+				hasUnreadChannel: this.getHasUnreadChannel(user.id),
 				hasUnreadMessagingMessage: this.getHasUnreadMessagingMessage(user.id),
 				hasUnreadNotification: this.getHasUnreadNotification(user.id),
 				pendingReceivedFollowRequestsCount: this.getHasPendingReceivedFollowRequest(user.id),
@@ -330,6 +384,7 @@ export class UserRepository extends Repository<User> {
 		options?: {
 			detail?: boolean,
 			includeSecrets?: boolean,
+			// TODO: remove
 			includeHasUnreadNotes?: boolean
 		}
 	) {
@@ -346,10 +401,8 @@ export class UserRepository extends Repository<User> {
 
 	//#region Validators
 	public validateLocalUsername = $.str.match(/^\w{1,20}$/);
-	public validateRemoteUsername = $.str.match(/^\w([\w-]*\w)?$/);
 	public validatePassword = $.str.min(1);
 	public validateName = $.str.min(1).max(50);
-	public validateRemoteName = $.str.min(1).max(128);
 	public validateDescription = $.str.min(1).max(500);
 	public validateLocation = $.str.min(1).max(50);
 	public validateBirthday = $.str.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/);
@@ -367,22 +420,22 @@ export const packedUserSchema = {
 			description: 'The unique identifier for this User.',
 			example: 'xxxxxxxxxx',
 		},
-		username: {
-			type: 'string' as const,
-			nullable: false as const, optional: false as const,
-			description: 'The screen name, handle, or alias that this user identifies themselves with.',
-			example: 'ai'
-		},
 		name: {
 			type: 'string' as const,
 			nullable: true as const, optional: false as const,
 			description: 'The name of the user, as they’ve defined it.',
 			example: '藍'
 		},
-		url: {
+		username: {
 			type: 'string' as const,
-			format: 'url',
-			nullable: true as const, optional: true as const,
+			nullable: false as const, optional: false as const,
+			description: 'The screen name, handle, or alias that this user identifies themselves with.',
+			example: 'ai'
+		},
+		host: {
+			type: 'string' as const,
+			nullable: true as const, optional: false as const,
+			example: 'misskey.example.com'
 		},
 		avatarUrl: {
 			type: 'string' as const,
@@ -393,34 +446,73 @@ export const packedUserSchema = {
 			type: 'any' as const,
 			nullable: true as const, optional: false as const,
 		},
-		bannerUrl: {
-			type: 'string' as const,
-			format: 'url',
-			nullable: true as const, optional: true as const,
-		},
-		bannerBlurhash: {
+		avatarColor: {
 			type: 'any' as const,
-			nullable: true as const, optional: true as const,
+			nullable: true as const, optional: false as const,
+			default: null
+		},
+		isAdmin: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+			default: false,
+			description: 'Whether this account is the admin.'
+		},
+		isModerator: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+			default: false,
+			description: 'Whether this account is a moderator.'
+		},
+		isVerified: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+		},
+		isBot: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+			description: 'Whether this account is a bot.'
+		},
+		isCat: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+			description: 'Whether this account is a cat.'
+		},
+		isLady: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+			description: 'Whether this account is a Lady.'
 		},
 		emojis: {
 			type: 'any' as const,
 			nullable: true as const, optional: false as const,
+			properties: {
+				name: {
+					type: 'string' as const,
+					nullable: false as const, optional: false as const
+				},
+				host: {
+					type: 'string' as const,
+					nullable: true as const, optional: false as const
+				},
+				url: {
+					type: 'string' as const,
+					nullable: false as const, optional: false as const,
+					format: 'url'
+				},
+				aliases: {
+					type: 'array' as const,
+					nullable: false as const, optional: false as const,
+					items: {
+						type: 'string' as const,
+						nullable: false as const, optional: false as const
+					}
+				}
+			}
 		},
-		host: {
+		url: {
 			type: 'string' as const,
-			nullable: true as const, optional: false as const,
-			example: 'misskey.example.com'
-		},
-		description: {
-			type: 'string' as const,
+			format: 'url',
 			nullable: true as const, optional: true as const,
-			description: 'The user-defined UTF-8 string describing their account.',
-			example: 'Hi masters, I am Ai!'
-		},
-		birthday: {
-			type: 'string' as const,
-			nullable: true as const, optional: true as const,
-			example: '2018-03-12'
 		},
 		createdAt: {
 			type: 'string' as const,
@@ -433,9 +525,62 @@ export const packedUserSchema = {
 			nullable: true as const, optional: true as const,
 			format: 'date-time',
 		},
+		bannerUrl: {
+			type: 'string' as const,
+			format: 'url',
+			nullable: true as const, optional: true as const,
+		},
+		bannerBlurhash: {
+			type: 'any' as const,
+			nullable: true as const, optional: true as const,
+		},
+		bannerColor: {
+			type: 'any' as const,
+			nullable: true as const, optional: true as const,
+			default: null
+		},
+		isLocked: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+		},
+		isSuspended: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+			example: false
+		},
+		description: {
+			type: 'string' as const,
+			nullable: true as const, optional: true as const,
+			description: 'The user-defined UTF-8 string describing their account.',
+			example: 'Hi masters, I am Ai!'
+		},
 		location: {
 			type: 'string' as const,
 			nullable: true as const, optional: true as const,
+		},
+		birthday: {
+			type: 'string' as const,
+			nullable: true as const, optional: true as const,
+			example: '2018-03-12'
+		},
+		fields: {
+			type: 'array' as const,
+			nullable: false as const, optional: true as const,
+			items: {
+				type: 'object' as const,
+				nullable: false as const, optional: false as const,
+				properties: {
+					name: {
+						type: 'string' as const,
+						nullable: false as const, optional: false as const
+					},
+					value: {
+						type: 'string' as const,
+						nullable: false as const, optional: false as const
+					}
+				},
+				maxLength: 4
+			}
 		},
 		followersCount: {
 			type: 'number' as const,
@@ -452,11 +597,6 @@ export const packedUserSchema = {
 			nullable: false as const, optional: true as const,
 			description: 'The number of Notes (including renotes) issued by the user.'
 		},
-		isBot: {
-			type: 'boolean' as const,
-			nullable: false as const, optional: true as const,
-			description: 'Whether this account is a bot.'
-		},
 		pinnedNoteIds: {
 			type: 'array' as const,
 			nullable: false as const, optional: true as const,
@@ -472,36 +612,62 @@ export const packedUserSchema = {
 			items: {
 				type: 'object' as const,
 				nullable: false as const, optional: false as const,
-				ref: 'Note'
+				ref: 'Note' as const,
 			}
 		},
-		isCat: {
-			type: 'boolean' as const,
-			nullable: false as const, optional: true as const,
-			description: 'Whether this account is a cat.'
+		pinnedPageId: {
+			type: 'string' as const,
+			nullable: true as const, optional: true as const
 		},
-		isLady: {
-			type: 'boolean' as const,
-			nullable: false as const, optional: true as const,
-			description: 'Whether this account is a Lady.'
+		pinnedPage: {
+			type: 'object' as const,
+			nullable: true as const, optional: true as const,
+			ref: 'Page' as const,
 		},
-		isAdmin: {
+		twoFactorEnabled: {
 			type: 'boolean' as const,
 			nullable: false as const, optional: true as const,
-			description: 'Whether this account is the admin.'
+			default: false
 		},
-		isModerator: {
+		usePasswordLessLogin: {
 			type: 'boolean' as const,
 			nullable: false as const, optional: true as const,
-			description: 'Whether this account is a moderator.'
+			default: false
 		},
-		isVerified: {
+		securityKeys: {
 			type: 'boolean' as const,
 			nullable: false as const, optional: true as const,
+			default: false
 		},
-		isLocked: {
+		avatarId: {
+			type: 'string' as const,
+			nullable: true as const, optional: true as const,
+			format: 'id'
+		},
+		bannerId: {
+			type: 'string' as const,
+			nullable: true as const, optional: true as const,
+			format: 'id'
+		},
+		autoWatch: {
 			type: 'boolean' as const,
-			nullable: false as const, optional: true as const,
+			nullable: false as const, optional: true as const
+		},
+		injectFeaturedNote: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const
+		},
+		alwaysMarkNsfw: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const
+		},
+		carefulBot: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const
+		},
+		autoAcceptFollowed: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const
 		},
 		hasUnreadSpecifiedNotes: {
 			type: 'boolean' as const,
@@ -511,5 +677,69 @@ export const packedUserSchema = {
 			type: 'boolean' as const,
 			nullable: false as const, optional: true as const,
 		},
+		hasUnreadAnnouncement: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+		},
+		hasUnreadAntenna: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+		},
+		hasUnreadChannel: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+		},
+		hasUnreadMessagingMessage: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+		},
+		hasUnreadNotification: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+		},
+		hasPendingReceivedFollowRequest: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: true as const,
+		},/*
+		integrations: {
+			type: 'object' as const,
+			nullable: false as const, optional: true as const
+		},
+		mutedWords: {
+			type: 'array' as const,
+			nullable: false as const, optional: true as const
+		},*/
+		mutingNotificationTypes: {
+			type: 'array' as const,
+			nullable: false as const, optional: true as const
+		},
+		isFollowing: {
+			type: 'boolean' as const,
+			optional: true as const, nullable: false as const
+		},
+		hasPendingFollowRequestFromYou: {
+			type: 'boolean' as const,
+			optional: true as const, nullable: false as const
+		},
+		hasPendingFollowRequestToYou: {
+			type: 'boolean' as const,
+			optional: true as const, nullable: false as const
+		},
+		isFollowed: {
+			type: 'boolean' as const,
+			optional: true as const, nullable: false as const
+		},
+		isBlocking: {
+			type: 'boolean' as const,
+			optional: true as const, nullable: false as const
+		},
+		isBlocked: {
+			type: 'boolean' as const,
+			optional: true as const, nullable: false as const
+		},
+		isMuted: {
+			type: 'boolean' as const,
+			optional: true as const, nullable: false as const
+		}
 	},
 };

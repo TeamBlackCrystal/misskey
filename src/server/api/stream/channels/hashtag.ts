@@ -2,7 +2,7 @@ import autobind from 'autobind-decorator';
 import shouldMuteThisNote from '../../../../misc/should-mute-this-note';
 import Channel from '../channel';
 import { Notes } from '../../../../models';
-import { PackedNote } from '../../../../models/repositories/note';
+import { Packed } from '@/misc/schema';
 import { normalizeTag } from '../../../../misc/normalize-tag';
 
 export default class extends Channel {
@@ -22,7 +22,7 @@ export default class extends Channel {
 	}
 
 	@autobind
-	private async onNote(note: PackedNote) {
+	private async onNote(note: Packed<'Note'>) {
 		const noteTags = note.tags ? note.tags.map((t: string) => t.toLowerCase()) : [];
 		const matched = this.q.some(tags => tags.every(tag => noteTags.includes(normalizeTag(tag))));
 		if (!matched) return;
@@ -36,6 +36,8 @@ export default class extends Channel {
 
 		// 流れてきたNoteがミュートしているユーザーが関わるものだったら無視する
 		if (shouldMuteThisNote(note, this.muting)) return;
+
+		this.connection.cacheNote(note);
 
 		this.send('note', note);
 	}

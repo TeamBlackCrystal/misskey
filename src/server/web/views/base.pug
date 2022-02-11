@@ -12,7 +12,8 @@ html
 		meta(name='referrer' content='origin')
 		meta(name='theme-color' content='#26D9B4')
 		meta(name='theme-color-orig' content='#ff8324')
-		meta(property='og:site_name' content= instanceName || 'Misskey')
+		meta(property='twitter:card' content='summary')
+		meta(property='og:site_name' content= instanceName || 'Ayuskey')
 		meta(name='viewport' content='width=device-width, initial-scale=1')
 		link(rel='icon' href= icon || '/favicon.ico')
 		link(rel='apple-touch-icon' href= icon || '/apple-touch-icon.png')
@@ -28,7 +29,9 @@ html
 		block meta
 
 		block og
-			meta(property='og:image' content=img)
+			meta(property='og:title'       content= title || 'Ayuskey') 
+			meta(property='og:description' content= desc || '✨🌎✨ A federated blogging platform ✨🚀✨') 
+			meta(property='og:image'       content= img)
 
 		style
 			include ./../../../../built/client/assets/init.css

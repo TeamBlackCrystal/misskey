@@ -1,11 +1,11 @@
 //import { ObjectID } from 'mongodb';
 import * as httpSignature from 'http-signature';
-import { ILocalUser } from '../models/entities/user';
+import { ILocalUser, User } from '../models/entities/user';
 import { IActivity } from '../remote/activitypub/type';
 
 export type DeliverJobData = {
 	/** Actor */
-	user: ILocalUser;
+	user: User;
 	/** Activity */
 	content: any;
 	/** inbox URL to deliver */
@@ -17,10 +17,15 @@ export type InboxJobData = {
 	signature: httpSignature.IParsedSignature;
 };
 
-export type DbJobData = DbUserJobData | DbUserImportJobData;
+export type DbJobData = DbUserJobData | DbUserImportJobData | DbUserDeleteJobData;
 
 export type DbUserJobData = {
 	user: ILocalUser;
+};
+
+export type DbUserDeleteJobData = {
+	user: ThinUser;
+	soft?: boolean;
 };
 
 export type DbUserImportJobData = {
@@ -35,3 +40,7 @@ export type DeleteObjectStorageFileJobData = {
 };
 
 export type CleanRemoteFilesJobData = {};
+
+export type ThinUser = {
+	id: User['id'];
+};

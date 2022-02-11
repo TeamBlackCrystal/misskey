@@ -33,6 +33,7 @@ import Vue from 'vue';
 import i18n from '../../../i18n';
 import XMessage from './messaging-room.message.vue';
 import XForm from './messaging-room.form.vue';
+import * as sound from '../../../common/scripts/sound';
 import { url } from '../../../config';
 import { faArrowCircleDown, faFlag } from '@fortawesome/free-solid-svg-icons';
 
@@ -191,9 +192,7 @@ export default Vue.extend({
 		onMessage(message) {
 			// サウンドを再生する
 			if (this.$store.state.device.enableSounds) {
-				const sound = new Audio(`${url}/assets/waon.mp3`);
-				sound.volume = this.$store.state.device.soundVolume;
-				sound.play();
+				sound.play('chatBg');
 			}
 
 			const isBottom = this.isBottom();

@@ -85,7 +85,13 @@ export default define(meta, async (ps, user) => {
 
 	const query = makePaginationQuery(Notifications.createQueryBuilder('notification'), ps.sinceId, ps.untilId)
 		.andWhere(`notification.notifieeId = :meId`, { meId: user.id })
-		.leftJoinAndSelect('notification.notifier', 'notifier');
+		.leftJoinAndSelect('notification.notifier', 'notifier')
+		.leftJoinAndSelect('notification.note', 'note')
+		.leftJoinAndSelect('note.user', 'user')
+		.leftJoinAndSelect('note.reply', 'reply')
+		.leftJoinAndSelect('note.renote', 'renote')
+		.leftJoinAndSelect('reply.user', 'replyUser')
+		.leftJoinAndSelect('renote.user', 'renoteUser');
 
 	query.andWhere(`notification.notifierId NOT IN (${ mutingQuery.getQuery() })`);
 	query.setParameters(mutingQuery.getParameters());
@@ -97,9 +103,9 @@ export default define(meta, async (ps, user) => {
 		query.setParameters(followingQuery.getParameters());
 	}
 
-	if (ps.includeTypes?.length > 0) {
+	if (ps.includeTypes && ps.includeTypes.length > 0) {
 		query.andWhere(`notification.type IN (:...includeTypes)`, { includeTypes: ps.includeTypes });
-	} else if (ps.excludeTypes?.length > 0) {
+	} else if (ps.excludeTypes && ps.excludeTypes.length > 0) {
 		query.andWhere(`notification.type NOT IN (:...excludeTypes)`, { excludeTypes: ps.excludeTypes });
 	}
 
@@ -110,5 +116,5 @@ export default define(meta, async (ps, user) => {
 		readNotification(user.id, notifications.map(x => x.id));
 	}
 
-	return await Notifications.packMany(notifications);
+	return await Notifications.packMany(notifications, user.id);
 });

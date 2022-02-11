@@ -67,6 +67,7 @@
 			</div>
 		</template>
 	</div>
+	<div class="bottom"></div>
 </div>
 </template>
 
@@ -330,6 +331,7 @@ export default Vue.extend({
 <style lang="stylus" scoped>
 .prlncendiewqqkrevzeruhndoakghvtx
 	width 350px
+	border-radius 6px
 	background var(--face)
 
 	> header
@@ -412,5 +414,8 @@ export default Vue.extend({
 					font-size 28px
 					transition transform 0.2s ease
 					pointer-events none
+
+	> .bottom
+		margin-bottom: 10px;
 
 </style>

@@ -88,7 +88,7 @@
 					<div>
 						<div v-if="meta" class="body">
 							<p>Version: <b>{{ meta.version }}</b></p>
-							<p>Maintainer: <b><a :href="'mailto:' + meta.maintainerEmail" target="_blank">{{ meta.maintainerName }}</a></b></p>
+							<p>Maintainer: <b><a :href="'mailto:' + meta.maintainerEmail" target="_blank">{{ meta.maintainerName || $t('not-found-maintainerName') }}</a></b></p>
 						</div>
 					</div>
 				</div>
@@ -349,6 +349,7 @@ export default Vue.extend({
 			color var(--text)
 			background var(--face)
 			overflow auto
+			border-radius: 0.5em
 
 			> header
 				z-index 1

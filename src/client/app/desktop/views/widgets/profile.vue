@@ -54,6 +54,12 @@ export default define({
 });
 </script>
 
+<style lang="stylus">
+
+.mk-avatar /*アバターが初期状態の際 テーマと合わせれる為に必要*/
+	color: var(--link)
+</style>
+
 <style lang="stylus" scoped>
 .egwyvoaaryotefqhqtmiyawwefemjfsd-body
 	&[data-compact]
@@ -70,7 +76,6 @@ export default define({
 			border none
 			border-radius 100%
 			box-shadow 0 0 16px rgba(#000, 0.5)
-
 		> .name
 			position absolute
 			top 0

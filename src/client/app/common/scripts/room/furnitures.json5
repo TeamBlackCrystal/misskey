@@ -140,6 +140,10 @@
 		place: "floor"
 	},
 	{
+		id: "book3",
+		place: "floor"
+	},
+	{
 		id: "piano",
 		place: "floor"
 	},
