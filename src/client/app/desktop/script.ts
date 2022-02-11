@@ -19,6 +19,7 @@ import MkMessagingRoom from './views/pages/messaging-room.vue';
 import MkReversi from './views/pages/games/reversi.vue';
 import MkShare from '../common/views/pages/share.vue';
 import MkFollow from '../common/views/pages/follow.vue';
+import MkResetPassword from '../common/views/pages/reset-password.vue';
 import MkNotFound from '../common/views/pages/not-found.vue';
 import MkSettings from './views/pages/settings.vue';
 import DeckColumn from '../common/views/deck/deck.column-template.vue';
@@ -195,6 +196,7 @@ init(async (launch, os) => {
 			{ path: '/share', component: MkShare },
 			{ path: '/games/reversi/:game?', component: MkReversi },
 			{ path: '/authorize-follow', component: MkFollow },
+			{ path: '/reset-password/:token', component: MkResetPassword, props: true },
 			{ path: '/deck', redirect: '/' },
 			{ path: '/flags', component: () => import('../common/views/pages/flags.vue').then(m => m.default) },
 			{ path: '*', component: MkNotFound }

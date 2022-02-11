@@ -10,9 +10,9 @@
 		<ui-input v-model="password" type="password" :with-password-toggle="true" v-if="!user || user && !user.usePasswordLessLogin" required>
 			<span>{{ $t('password') }}</span>
 			<template #prefix><fa icon="lock"/></template>
-			<template #desc><button class="_textButton" @click="resetPassword">{{ $t('forgot-password') }}</button></template>
 		</ui-input>
 		<ui-button type="submit" :disabled="signing">{{ signing ? $t('signing-in') : $t('@.signin') }}</ui-button>
+		<p style="margin: 8px 0;"><a @click="onReminder">{{ $t('@.reminder') }}</a></p>
 		<p v-if="meta && meta.enableTwitterIntegration" style="margin: 8px 0;"><a :href="`${apiUrl}/signin/twitter`"><fa :icon="['fab', 'twitter']"/> {{ $t('signin-with-twitter') }}</a></p>
 		<p v-if="meta && meta.enableGithubIntegration"  style="margin: 8px 0;"><a :href="`${apiUrl}/signin/github`"><fa :icon="['fab', 'github']"/> {{ $t('signin-with-github') }}</a></p>
 		<p v-if="meta && meta.enableDiscordIntegration" style="margin: 8px 0;"><a :href="`${apiUrl}/signin/discord`"><fa :icon="['fab', 'discord']"/> {{ $t('signin-with-discord') /* TODO: Make these layouts better */ }}</a></p>
@@ -41,10 +41,6 @@
 			<ui-button type="submit" :disabled="signing">{{ signing ? $t('signing-in') : $t('@.signin') }}</ui-button>
 		</div>
 	</div>
-	<modal name="resetPassword" class="modal" width="370px" height="auto" scrollable>
-		<header class="formHeader">{{ $t('@.forgot-assword') }}</header>
-		<mk-signup class="form"/>
-	</modal>
 </form>
 </template>
 
@@ -183,8 +179,8 @@ export default Vue.extend({
 				});
 			}
 		},
-		resetPassword() {
-			this.$modal.show('resetPassword');
+		onReminder() {
+			this.$emit('reminder');
 		},
 		onFlush() {
 			const r = confirm('ブラウザに保存されたキャッシュをクリアしますか？');

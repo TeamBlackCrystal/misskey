@@ -30,9 +30,9 @@ common:
   featured-notes: "ハイライト"
   dark-mode: "ダークモード"
   signin: "ログイン"
-  forgot-assword: "パスワードを忘れた"
   signup: "新規登録"
   signout: "ログアウト"
+  reminder: "パスワードを忘れた"
   reload-to-apply-the-setting: "この設定を反映するにはページをリロードする必要があります。今すぐリロードしますか？"
   fetching-as-ap-object: "連合に照会中"
   unfollow-confirm: "{name}さんをフォロー解除しますか？"
@@ -778,7 +778,6 @@ common/views/components/signin.vue:
   login-failed: "ログインできませんでした。ユーザー名とパスワードを確認してください。"
   tap-key: "セキュリティキーをクリックしてログイン"
   enter-2fa-code: "認証コードを入力してください"
-  forgot-assword: "パスワードを忘れた"
 
 common/views/components/signup.vue:
   invitation-code: "招待コード"
@@ -806,11 +805,11 @@ common/views/components/signup.vue:
   create: "アカウント作成"
   some-error: "何らかの原因によりアカウントの作成に失敗しました。再度お試しください。"
 
-common/views/components/forgot-password.vue:
+common/views/components/reminder.vue:
   username: "ユーザー名"
-  email-address: "メールアドレス"
-  send: "送信"
-  enter-email: "アカウントに登録したメールアドレスを入力してください。そのアドレス宛てに、パスワードリセット用のリンクが送信されます。"
+  email: "登録したメールアドレス"
+  desc: "アカウントに登録したメールアドレスを入力してください。そのアドレス宛てに、パスワードリセット用のリンクが送信されます。"
+  submit: "送信"
   if-no-email: "メールアドレスを登録していない場合は、管理者までお問い合わせください。"
   contact-admin: "このインスタンスではメールがサポートされていないため、パスワードリセットを行う場合は管理者までお問い合わせください。"
 
@@ -1061,6 +1060,10 @@ common/views/pages/follow-requests.vue:
   received-follow-requests: "フォロー申請"
   accept: "承認"
   reject: "拒否"
+
+common/views/pages/reset-password.vue:
+  password: "新しいパスワード"
+  save: "保存"
 
 desktop:
   banner-crop-title: "バナーとして表示する部分を選択"
