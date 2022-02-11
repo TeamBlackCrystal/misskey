@@ -51,7 +51,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import i18n from '../../../../i18n';
-import * as age from 's-age';
+import { calcAge } from '../../../../../../misc/calc-age';
 import XUserMenu from '../../../../common/views/components/user-menu.vue';
 import XIntegrations from '../../../../common/views/components/integrations.vue';
 
@@ -71,7 +71,7 @@ export default Vue.extend({
 		},
 
 		age(): number {
-			return age(this.user.birthday);
+			return calcAge(this.user.birthday);
 		}
 	},
 	mounted() {

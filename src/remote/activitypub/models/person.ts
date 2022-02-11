@@ -139,7 +139,7 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 	const isBot = getApType(object) === 'Service';
 
-	const bday = person['vcard:bday']?.match(/^\d{4}-\d{2}-\d{2}/);
+	const bday = person['vcard:bday']?.match(/^[0-9]{4,8}-\d{2}-\d{2}/);
 
 	// Create user
 	let user: IRemoteUser;
@@ -329,7 +329,7 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 
 	const tags = extractApHashtags(person.tag).map(tag => normalizeTag(tag)).splice(0, 32);
 
-	const bday = person['vcard:bday']?.match(/^\d{4}-\d{2}-\d{2}/);
+	const bday = person['vcard:bday']?.match(/^[0-9]{4,8}-\d{2}-\d{2}/);
 
 	const updates = {
 		lastFetchedAt: new Date(),

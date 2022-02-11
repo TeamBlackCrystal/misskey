@@ -405,7 +405,7 @@ export class UserRepository extends Repository<User> {
 	public validateName = $.str.min(1).max(50);
 	public validateDescription = $.str.min(1).max(500);
 	public validateLocation = $.str.min(1).max(50);
-	public validateBirthday = $.str.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/);
+	public validateBirthday = $.str.match(/^([0-9]{4,8})-([0-9]{2})-([0-9]{2})$/);
 	//#endregion
 }
 
