@@ -114,7 +114,7 @@
 		"@types/webpack-stream": "3.2.12",
 		"@types/websocket": "1.0.5",
 		"@types/ws": "8.2.2",
-		"@typescript-eslint/parser": "5.11.0",
+		"@typescript-eslint/parser": "5.12.1",
 		"@vue/composition-api": "1.4.6",
 		"abort-controller": "3.0.0",
 		"animejs": "3.2.1",
