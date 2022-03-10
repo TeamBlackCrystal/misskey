@@ -6106,10 +6106,10 @@ jsprim@^2.0.2:
     json-schema "0.4.0"
     verror "1.10.0"
 
-jsrsasign@10.5.8:
-  version "10.5.8"
-  resolved "https://registry.yarnpkg.com/jsrsasign/-/jsrsasign-10.5.8.tgz#df269e5694ebb53245c4dadfca68ee2fc8aa41ec"
-  integrity sha512-ewFUGPZJujIR9j84Q5LEzPTG4D1qQZ4CjJrgHfMEAAiArkC3xfdgNP0ZAXXxXbb+K8Phw15soOIJ8bX3+usEdQ==
+jsrsasign@10.5.10:
+  version "10.5.10"
+  resolved "https://registry.yarnpkg.com/jsrsasign/-/jsrsasign-10.5.10.tgz#82379cabc27a5a765e1ede3c754a3ab801070a82"
+  integrity sha512-iwLwWdJVfMjC9ShDvkn1fco9qrjF9J8r4tzeIcgevmSq9Uy+7nSusKQtXCHaY1flffI46DhYuG8wkjn0Ie4HCQ==
 
 jstransformer@1.0.0:
   version "1.0.0"
