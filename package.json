@@ -113,7 +113,7 @@
 		"@types/webpack": "5.28.0",
 		"@types/webpack-stream": "3.2.12",
 		"@types/websocket": "1.0.5",
-		"@types/ws": "8.5.1",
+		"@types/ws": "8.5.3",
 		"@typescript-eslint/parser": "5.13.0",
 		"@vue/composition-api": "1.4.9",
 		"abort-controller": "3.0.0",
