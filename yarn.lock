@@ -7927,8 +7927,9 @@ pgpass@1.x:
     split2 "^3.1.1"
 
 "photoswipe@git://github.com/dimsemenov/photoswipe#v5-beta":
-  version "5.1.7"
-  resolved "git://github.com/dimsemenov/photoswipe#60040164333bd257409669e715e4327afdb3aec7"
+  version "5.2.0-beta.2"
+  uid a74b86c384dbccbe4fa506cecaadc9372806a0d5
+  resolved "git://github.com/dimsemenov/photoswipe#a74b86c384dbccbe4fa506cecaadc9372806a0d5"
 
 picocolors@^1.0.0:
   version "1.0.0"
