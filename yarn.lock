@@ -10289,10 +10289,10 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
-three@0.134.0:
-  version "0.134.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.134.0.tgz#d7ad4d85d050da0861bf39749b06ddfb5f17157f"
-  integrity sha512-LbBerg7GaSPjYtTOnu41AMp7tV6efUNR3p4Wk5NzkSsNTBuA5mDGOfwwZL1jhhVMLx9V20HolIUo0+U3AXehbg==
+three@0.139.1:
+  version "0.139.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.139.1.tgz#1603d6d1f33b6cef44b15b4f859c7b4ca6774efb"
+  integrity sha512-7mV5mk7k9CyNnRBXBo8VDWw0haONMh+czKfGFCaYhKq79br2z+4TxZe4JurM6/IGsLU3VaP8CydfDsifvZvg8w==
 
 throttle-debounce@3.0.1:
   version "3.0.1"
