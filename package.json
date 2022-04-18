@@ -126,7 +126,7 @@
 		"bcryptjs": "2.4.3",
 		"blurhash": "1.1.5",
 		"bootstrap-vue": "2.22.0",
-		"broadcast-channel": "4.10.0",
+		"broadcast-channel": "4.11.0",
 		"bull": "3.29.3",
 		"cacheable-lookup": "6.0.4",
 		"cafy": "15.2.1",
