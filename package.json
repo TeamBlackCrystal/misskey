@@ -280,7 +280,7 @@
 		"ws": "8.5.0"
 	},
 	"devDependencies": {
-		"@redocly/openapi-core": "1.0.0-beta.85",
+		"@redocly/openapi-core": "1.0.0-beta.94",
 		"npm-run-all": "4.1.5",
 		"webpack-dev-server": "4.8.1"
 	}
