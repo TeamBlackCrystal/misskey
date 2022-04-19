@@ -939,10 +939,10 @@
   resolved "https://registry.yarnpkg.com/@types/three/-/three-0.134.0.tgz#22ae9892f4490faaf35f0ccea127df18407b8ab3"
   integrity sha512-4YB+99Rgqq27EjiYTItEoZtdjLnTh8W9LxowgpC9eWsjaQJIL4Kn/ZcUKAnW3gB/jS4hqGN8iqmid+RcUZDzpA==
 
-"@types/throttle-debounce@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@types/throttle-debounce/-/throttle-debounce-2.1.0.tgz#1c3df624bfc4b62f992d3012b84c56d41eab3776"
-  integrity sha512-5eQEtSCoESnh2FsiLTxE121IiE60hnMqcb435fShf4bpLRjEu1Eoekht23y6zXS9Ts3l+Szu3TARnTsA0GkOkQ==
+"@types/throttle-debounce@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/throttle-debounce/-/throttle-debounce-4.0.0.tgz#ae62a652c914f46276c78730f53fab85b4825f09"
+  integrity sha512-BZ1Y2nf1U3qj9MNWrlTG3+FWfFS8xfG2DA0ypiZ1pBUiO8WEvEjNTmQuecnYDtQvegRojeKh+iwNK2NjJ8a3YQ==
 
 "@types/tinycolor2@1.4.3":
   version "1.4.3"
