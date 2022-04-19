@@ -19,10 +19,10 @@
     require-all "3.0.0"
     trace-redirect "1.0.6"
 
-"@ayuskey/xev@2.0.1-rei0784.1":
-  version "2.0.1-rei0784.1"
-  resolved "https://registry.yarnpkg.com/@ayuskey/xev/-/xev-2.0.1-rei0784.1.tgz#a0dd1869c8be8910d0e0e2c8cc8efc99231debdf"
-  integrity sha512-AKan2xk1iWIDAk3H27HWEmiTfJ2bq33wrRQUvIbEqW62u9TOgaNv4xkg+q0YTUosFNurNxGtoa6qIzk+U7ZspA==
+"@ayuskey/xev@2.0.1-rei0784.2":
+  version "2.0.1-rei0784.2"
+  resolved "https://registry.yarnpkg.com/@ayuskey/xev/-/xev-2.0.1-rei0784.2.tgz#c56cedf7d5e2a4c64797a2180e6ee74284397800"
+  integrity sha512-C8m9Kq1aNoBLM6srZ6qXuLb+rrOKX55eb/K1XE8IVj9qrPdC4FXLKHltyE+7H1tP0mRdOlQFiL+gfQLkbr3YLw==
 
 "@babel/code-frame@^7.0.0":
   version "7.12.11"
