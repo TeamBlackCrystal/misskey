@@ -51,7 +51,7 @@
 		"@fortawesome/vue-fontawesome": "2.0.6",
 		"@koa/cors": "3.3.0",
 		"@koa/multer": "3.0.0",
-		"@koa/router": "8.0.8",
+		"@koa/router": "9.4.0",
 		"@types/animejs": "3.1.4",
 		"@types/bcryptjs": "2.4.2",
 		"@types/bull": "3.15.8",
