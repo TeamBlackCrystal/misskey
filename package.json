@@ -126,7 +126,7 @@
 		"blurhash": "1.1.5",
 		"bootstrap-vue": "2.22.0",
 		"broadcast-channel": "4.11.0",
-		"bull": "4.8.1",
+		"bull": "4.8.2",
 		"cacheable-lookup": "6.0.4",
 		"cafy": "15.2.1",
 		"cbor": "8.1.0",
