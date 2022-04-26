@@ -5856,10 +5856,10 @@ jsprim@^2.0.2:
     json-schema "0.4.0"
     verror "1.10.0"
 
-jsrsasign@10.5.19:
-  version "10.5.19"
-  resolved "https://registry.yarnpkg.com/jsrsasign/-/jsrsasign-10.5.19.tgz#61cd378190c3e65bd1a26a088696736e4437a806"
-  integrity sha512-GgOdly2Ee9nS+qxOjLkQKaoSTKqlk6lFKcKLPlNJOApoOUcqL2z+l4dAcBzYnZkA3tg+LwFOyQnqbuFn5IPdvw==
+jsrsasign@10.5.20:
+  version "10.5.20"
+  resolved "https://registry.yarnpkg.com/jsrsasign/-/jsrsasign-10.5.20.tgz#515a854a47c309cb350f32860dd37bfad1b81800"
+  integrity sha512-YHL6y8o6cnRoxwUY0eGpfvwj0pm9o0NToD4KXVp2UJC19oXSR2RgnSdSMplIRRKFovLAJGrAHqdb5MMznnhQDQ==
 
 jstransformer@1.0.0:
   version "1.0.0"
