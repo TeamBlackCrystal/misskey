@@ -43,7 +43,7 @@
 	"dependencies": {
 		"@ayuskey/summaly": "2.5.0-rei0784.3",
 		"@ayuskey/xev": "2.0.1-rei0784.2",
-		"@elastic/elasticsearch": "7.17.0",
+		"@elastic/elasticsearch": "8.1.0",
 		"@fortawesome/fontawesome-svg-core": "6.1.1",
 		"@fortawesome/free-brands-svg-icons": "6.1.1",
 		"@fortawesome/free-regular-svg-icons": "6.1.1",
