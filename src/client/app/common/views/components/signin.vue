@@ -49,6 +49,7 @@ import i18n from '../../../i18n';
 import { apiUrl, host } from '../../../config';
 import { toUnicode } from 'punycode';
 import { hexifyAB, byteify } from '../../scripts/2fa';
+import { $i } from '../../../account';
 
 export default Vue.extend({
 	i18n: i18n('common/views/components/signin.vue'),
@@ -124,6 +125,7 @@ export default Vue.extend({
 				});
 			}).then(res => {
 				localStorage.setItem('i', res.i);
+				document.cookie = `token=${$i.token}; path=/; max-age=31536000`; // bull dashboardの認証とかで使う
 				location.reload();
 			}).catch(err => {
 				if (err === null) return;
@@ -168,6 +170,7 @@ export default Vue.extend({
 					token: this.user && this.user.twoFactorEnabled ? this.token : undefined
 				}).then(res => {
 					localStorage.setItem('i', res.i);
+					document.cookie = `token=${$i.token}; path=/; max-age=31536000`; // bull dashboardの認証とかで使う
 					location.reload();
 				}).catch(() => {
 					this.$root.dialog({

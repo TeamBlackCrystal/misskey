@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - アカウント登録にメールアドレスの設定を必須にするオプション (ayu5-email)
 - パスワードリマインダー(パスワードリセット)
-- birthdayに謎の値(02/32など)が設定できるように(なったはず)
+- Bull Dashboardを組み込み、ジョブキューの確認や操作を行えるように
 
 ## [Unreleased]
 
@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - renoteはnoindex
 - update nodejs for docker
 - メンションのアバターを調整
+- birthdayに謎の値(02/32など)が設定できるように(なったはず)
 
 ### Fixed
 

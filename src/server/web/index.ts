@@ -9,6 +9,9 @@ import * as Router from '@koa/router';
 import * as send from 'koa-send';
 import * as favicon from 'koa-favicon';
 import * as views from 'koa-views';
+import { createBullBoard } from '@bull-board/api';
+import { BullAdapter  } from '@bull-board/api/bullAdapter.js';
+import { KoaAdapter } from '@bull-board/koa';
 
 import docs from './docs';
 import packFeed from './feed';
@@ -21,6 +24,7 @@ import getNoteSummary from '../../misc/get-note-summary';
 import { ensure } from '../../prelude/ensure';
 import { getConnection } from 'typeorm';
 import { redisClient } from '../../db/redis';
+import { queues } from '@/queue/queues';
 
 const env = process.env.NODE_ENV;
 
@@ -33,6 +37,37 @@ const app = new Koa();
 const setCache = (ctx: Koa.ParameterizedContext, onProduction: string) => {
 	ctx.set('Cache-Control', env === 'production' ? onProduction : 'no-store');
 };
+
+//#region Bull Dashboard
+const bullBoardPath = '/queue';
+
+// Authenticate
+app.use(async (ctx, next) => {
+	if (ctx.path === bullBoardPath || ctx.path.startsWith(bullBoardPath + '/')) {
+		const token = ctx.cookies.get('token');
+		if (token == null) {
+			ctx.status = 401;
+			return;
+		}
+		const user = await Users.findOne({ token });
+		if (user == null || !(user.isAdmin || user.isModerator)) {
+			ctx.status = 403;
+			return;
+		}
+	}
+	await next();
+});
+
+const serverAdapter = new KoaAdapter();
+
+createBullBoard({
+	queues: queues.map(q => new BullAdapter(q)),
+	serverAdapter,
+});
+
+serverAdapter.setBasePath(bullBoardPath);
+app.use(serverAdapter.registerPlugin());
+//#endregion
 
 // Init renderer
 app.use(views(__dirname + '/views', {
