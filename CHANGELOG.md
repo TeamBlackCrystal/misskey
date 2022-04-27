@@ -15,15 +15,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Twemojiをインスタンスで配信
+
 ### Fixed
 
 - 依存関係が更新されました。脆弱性が修正されている場合があります。
+- antenna, clip, listのパフォーマンス悪いのを修正
+  - *ayuskeyではantenna, clipのapiのみを提供しています。*
 
 ## Changed
 
-- パフォーマンスが良くなる
 - bull@4へ移行
 - fortawesome@6へ移行
+- emojilistを更新
+- 一部クエリを最適化
 
 ## [11.37.1-rei0784-5.20.0] 2022-04-19
 
