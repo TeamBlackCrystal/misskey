@@ -59,6 +59,7 @@ jobs:
       working-directory: ./e2e
     
     - name: Upload E2E ScreenShots
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: ScreenShots-${{ matrix.node-version }}
