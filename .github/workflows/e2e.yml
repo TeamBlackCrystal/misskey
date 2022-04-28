@@ -55,7 +55,7 @@ jobs:
       working-directory: ./e2e
 
     - name: Run E2E Test
-      run: pytest run.py
+      run: pytest run.py --maxfail=1
       working-directory: ./e2e
     
     - name: Upload E2E ScreenShots
