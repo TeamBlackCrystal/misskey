@@ -112,7 +112,7 @@ id: 'meid'
 
 # If enabled:
 #  The first account created is automatically marked as Admin.
-# autoAdmin: true
+autoAdmin: true
 
 # Number of worker processes
 #clusterLimit: 1
