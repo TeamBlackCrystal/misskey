@@ -161,7 +161,7 @@ export default Vue.extend({
 					password: this.password
 				}).then(res => {
 					localStorage.setItem('i', res.i);
-					document.cookie = `token=${$i.token}; path=/; max-age=31536000`; // bull dashboardの認証とかで使う
+					document.cookie = `token=${res.i}; path=/; max-age=31536000`; // bull dashboardの認証とかで使う
 					location.href = '/';
 				});
 			}).catch(() => {
