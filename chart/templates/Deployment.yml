@@ -19,7 +19,7 @@ spec:
           image: okteto.dev/ayuskey:latest
           volumeMounts:
             - name: config-file
-              mountPath: /ayuskey/.config
+              mountPath: /misskey/.config
               readOnly: true
           ports:
             - containerPort: 3000
