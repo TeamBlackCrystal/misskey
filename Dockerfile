@@ -1,7 +1,5 @@
 FROM node:16.14.2-alpine3.15 AS base
 
-ENV NODE_ENV=production
-
 WORKDIR /misskey
 
 FROM base AS builder
@@ -21,9 +19,12 @@ RUN apk add --no-cache \
     zlib-dev \
 		git
 
-COPY package.json yarn.lock ./
-RUN yarn install
 COPY . ./
+
+RUN yarn install
+
+ENV NODE_ENV=production
+
 RUN yarn build
 
 FROM base AS runner
