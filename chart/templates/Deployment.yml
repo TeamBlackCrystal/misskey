@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ayuskey.fullname" . }}
+  labels:
+		{{- include "ayuskey.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+			{{- include "ayuskey.selectorLabels" . | nindent 6 }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+				{{- include "ayuskey.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: ayuskey
+          image: okteto.dev/ayuskey:latest
+          volumeMounts:
+            - name: config-file
+              mountPath: /ayuskey/.config
+              readOnly: true
+          ports:
+            - containerPort: 3000
+        - name: postgres
+          image: postgres:14-alpine
+          env:
+            - name: POSTGRES_USER
+              value: "example-misskey-user"
+            - name: POSTGRES_PASSWORD
+              value: "example-misskey-pass"
+            - name: POSTGRES_DB
+              value: "misskey"
+          ports:
+            - containerPort: 5432
+        - name: redis
+          image: redis:alpine
+          ports:
+            - containerPort: 6379
+      volumes:
+        - name: config-file
+          configMap:
+            name: {{ include "ayuskey.fullname" . }}-config-file
