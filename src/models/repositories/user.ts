@@ -239,9 +239,9 @@ export class UserRepository extends Repository<User> {
 			name: user.name,
 			username: user.username,
 			host: user.host,
-			avatarUrl: this.getAvatarUrl(user),
-			avatarBlurhash: user.avatarBlurhash,
-			avatarColor: null, // 後方互換性のため
+			avatarUrl: user.avatar ? DriveFiles.getPublicUrl(user.avatar, true) : config.url + '/avatar/' + user.id,
+			avatarBlurhash: user.avatar?.blurhash || null,
+			avatarColor: null,
 			isAdmin: user.isAdmin || falsy,
 			isBot: user.isBot || falsy,
 			isCat: user.isCat || falsy,
