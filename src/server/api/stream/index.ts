@@ -13,6 +13,7 @@ import { Users, Followings, Mutings, UserProfiles, ChannelFollowings } from '../
 import { publishChannelStream } from '../../../services/stream';
 import { UserProfile } from '../../../models/entities/user-profile';
 import { Packed } from '@/misc/schema';
+import { deprecate } from 'util';
 
 /**
  * Main stream connection
@@ -164,6 +165,7 @@ export default class Connection {
 	}
 
 	/**
+	 * @deprecated
 	 * APIリクエスト要求時
 	 */
 	@autobind
@@ -172,6 +174,8 @@ export default class Connection {
 		const user = this.user ? await Users.findOne(this.user.id) : null;
 
 		const endpoint = payload.endpoint || payload.ep; // alias
+
+		this.sendMessageToWs(`api:${payload.id}`, { msg: "deprecated. use http(s)." })
 
 		// 呼び出し
 		call(endpoint, user, this.app, payload.data).then(res => {

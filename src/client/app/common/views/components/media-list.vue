@@ -16,9 +16,9 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, PropType, ref } from '@vue/composition-api';
-import PhotoSwipeLightbox from 'photoswipe/dist/photoswipe-lightbox.esm.js';
-import PhotoSwipe from 'photoswipe/dist/photoswipe.esm.js';
-import 'photoswipe/dist/photoswipe.css';
+import PhotoSwipeLightbox from 'photoswipe/lightbox';
+import PhotoSwipe from 'photoswipe';
+import 'photoswipe/style.css';
 import XBanner from './media-banner.vue';
 import XImage from './media-image.vue';
 

@@ -1,6 +1,6 @@
 import * as cluster from 'cluster';
 import * as chalk from 'chalk';
-import Xev from 'xev';
+import Xev from '@ayuskey/xev';
 
 import Logger from '../services/logger';
 import { program } from '../argv';

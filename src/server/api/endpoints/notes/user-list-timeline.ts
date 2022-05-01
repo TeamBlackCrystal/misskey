@@ -124,18 +124,14 @@ export default define(meta, async (ps, user) => {
 	}
 
 	//#region Construct query
-	const listQuery = UserListJoinings.createQueryBuilder('joining')
-		.select('joining.userId')
-		.where('joining.userListId = :userListId', { userListId: list.id });
-
 	const query = makePaginationQuery(Notes.createQueryBuilder('note'), ps.sinceId, ps.untilId)
-		.andWhere(`note.userId IN (${ listQuery.getQuery() })`)
-		.leftJoinAndSelect('note.user', 'user')
+		.innerJoin(UserListJoinings.metadata.targetName, 'userListJoining', 'userListJoining.userId = note.userId')
+		.innerJoinAndSelect('note.user', 'user')
 		.leftJoinAndSelect('note.reply', 'reply')
 		.leftJoinAndSelect('note.renote', 'renote')
 		.leftJoinAndSelect('reply.user', 'replyUser')
 		.leftJoinAndSelect('renote.user', 'renoteUser')
-		.setParameters(listQuery.getParameters());
+		.andWhere('userListJoining.userListId = :userListId', { userListId: list.id });
 
 	generateVisibilityQuery(query, user);
 

@@ -10,8 +10,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - アカウント登録にメールアドレスの設定を必須にするオプション (ayu5-email)
+- パスワードリマインダー(パスワードリセット)
+- birthdayに謎の値(02/32など)が設定できるように(なったはず)
 
 ## [Unreleased]
+
+### Added
+
+- Twemojiをインスタンスで配信
+
+### Fixed
+
+- 依存関係が更新されました。脆弱性が修正されている場合があります。
+- antenna, clip, listのパフォーマンス悪いのを修正
+  - *ayuskeyではantenna, clipのapiのみを提供しています。*
+
+## Changed
+
+- bull@4へ移行
+- fortawesome@6へ移行
+- emojilistを更新
+- 一部クエリを最適化
+
+## [11.37.1-rei0784-5.20.0] 2022-04-19
+
+### Fixed
+
+- 依存関係が更新されました。脆弱性が修正されている場合があります。
+
+### Changed
+
+- node 12をドロップ
+  - **BREAKING CHANGE: node 12は利用できません。**
+
+## [11.37.1-rei0784-5.19.1] 2022-04-19
+
+### Fixed
+
+- 依存関係が更新されました。脆弱性が修正されている場合があります。
+
+## [11.37.1-rei0784-5.19.0] 2022-04-19
 
 ### Added
 
@@ -24,12 +62,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Unifying Misskey-specific IRIs in JSON-LD `@context`
 - ノートに添付できるファイルの数が16に増えました
 - renoteはnoindex
+- update nodejs for docker
+- メンションのアバターを調整
 
 ### Fixed
 
 - 依存関係が更新されました。脆弱性が修正されている場合があります。
 - Fix Twitter embed
 - toolsが動かないのを修正
+- deliver delayed
+- ログアウトできない
+- katexがおかしい
 
 ## [11.37.1-rei0784-5.18.1] 2022-01-25
 
@@ -259,7 +302,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docker環境においてfilesをマウントするように
 - 内部的な修正をたくさん
 
-[Unreleased]: https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.18.0...HEAD
+[Unreleased]: https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.20.0...HEAD
+[11.37.1-rei0784-5.20.0]:        https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.19.1...11.37.1-rei0784-5.20.0
+[11.37.1-rei0784-5.19.1]:        https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.19.0...11.37.1-rei0784-5.19.1
+[11.37.1-rei0784-5.19.0]:        https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.18.1...11.37.1-rei0784-5.19.0
 [11.37.1-rei0784-5.18.1]:        https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.18.0...11.37.1-rei0784-5.18.1
 [11.37.1-rei0784-5.18.0]:        https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.17.2...11.37.1-rei0784-5.18.0
 [11.37.1-rei0784-5.17.2]:        https://github.com/TeamBlackCrystal/misskey/compare/11.37.1-rei0784-5.17.1...11.37.1-rei0784-5.17.2

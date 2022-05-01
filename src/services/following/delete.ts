@@ -43,12 +43,11 @@ export default async function(follower: User, followee: User, silent = false) {
 }
 
 export async function decrementFollowing(follower: User, followee: User) {
-	//#region Decrement following count
-	Users.decrement({ id: follower.id }, 'followingCount', 1);
-	//#endregion
-
-	//#region Decrement followers count
-	Users.decrement({ id: followee.id }, 'followersCount', 1);
+	//#region Decrement following / followers counts
+	await Promise.all([
+		Users.decrement({ id: follower.id }, 'followingCount', 1),
+		Users.decrement({ id: followee.id }, 'followersCount', 1),
+	]);
 	//#endregion
 
 	//#region Update instance stats

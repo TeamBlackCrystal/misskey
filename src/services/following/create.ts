@@ -53,8 +53,10 @@ export async function insertFollowingDoc(followee: User, follower: User) {
 	if (alreadyFollowed) return;
 
 	//#region Increment counts
-	Users.increment({ id: follower.id }, 'followingCount', 1);
-	Users.increment({ id: followee.id }, 'followersCount', 1);
+	await Promise.all([
+		Users.increment({ id: follower.id }, 'followingCount', 1),
+		Users.increment({ id: followee.id }, 'followersCount', 1),
+	]);
 	//#endregion
 
 	//#region Update instance stats

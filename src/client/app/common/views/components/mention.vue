@@ -93,7 +93,7 @@ export default Vue.extend({
 		//width: 1.5em;
 		height 1.25em
 		margin: 0 0.2em;
-		vertical-align: bottom;
+		vertical-align: middle;
 		border-radius: 100%;
 
 	> .main

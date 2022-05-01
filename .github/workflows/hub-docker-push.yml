@@ -1,0 +1,52 @@
+name: Publish DockerHub image
+
+on:
+#  release:
+#    types: [published]
+  workflow_dispatch:
+    inputs:
+      buildVersion:
+        description: 'input build version. ex: 11.37.1-rei0784-5.99.0'
+        required: true
+        default: ''
+      buildId:
+        description: 'input build id. ex: 1'
+        required: true
+        default: ''
+      confirm:
+        description: 'If run flow, input "run".'
+        required: true
+        default: ''
+
+jobs:
+  push_to_registry:
+    if: github.event.inputs.confirm == 'run'
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: sousuke0422/misskey
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and Push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+#          tags: ${{ steps.meta.outputs.tags }}
+          tags: sousuke0422/misskey:latest,sousuke0422/misskey:11,sousuke0422/misskey:${{ github.event.inputs.buildVersion }}-${{ github.event.inputs.buildId }}
+          labels: ${{ steps.meta.outputs.labels }}

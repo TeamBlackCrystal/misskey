@@ -111,7 +111,7 @@ export default define(meta, async (ps, user) => {
 			.where(`note.userId IN (${ followingQuery.getQuery() })`)
 			.orWhere('note.userId = :meId', { meId: user.id });
 		}))
-		.leftJoinAndSelect('note.user', 'user')
+		.innerJoinAndSelect('note.user', 'user')
 		.leftJoinAndSelect('note.reply', 'reply')
 		.leftJoinAndSelect('note.renote', 'renote')
 		.leftJoinAndSelect('reply.user', 'replyUser')

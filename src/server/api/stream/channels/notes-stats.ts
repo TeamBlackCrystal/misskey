@@ -1,5 +1,5 @@
 import autobind from 'autobind-decorator';
-import Xev from 'xev';
+import Xev from '@ayuskey/xev';
 import Channel from '../channel';
 
 const ev = new Xev();

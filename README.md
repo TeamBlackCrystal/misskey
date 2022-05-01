@@ -10,6 +10,7 @@ JA | [EN](README.en-US.md)
 
 [![][fork-of-badge]][fork-of-link]
 [![][summaly-badge]][summaly-link]
+[![][xev-badge]][xev-link]
 [![][mfmjs-badge]][mfmjs-link]
 
 Ayuskeyはこの世界のどこかで生まれたMisskey v11のフォークです。
@@ -22,7 +23,6 @@ Fediverseの世界に漂うため、Misskeyをはじめとした他のソーシ�
 ## 公式インスタンス
 
 * <https://kr.akirin.xyz>
-* <https://ne.akarinext.org>
 
 ## ドキュメント
 
@@ -34,18 +34,33 @@ Fediverseの世界に漂うため、Misskeyをはじめとした他のソーシ�
 * [TenCha](https://github.com/coke12103/TenCha)
   * isLadyをサポート
 
-## ライブラリ
+## ライブラリ（Ayuskey動作保証）
 
-* [Mi.py](https://github.com/yupix/Mi.py)
-  * **プレビュー版**
+* - [MiPA(Mi.py互換)](https://github.com/yupix/mipa)
   * bot向けフレームワーク
-  * ayuskey動作保証、misskey(v12)対応
+  * misskey(v12)対応
+* - [MiPAC](https://github.com/yupix/mipac)
+  * [MiPA](https://github.com/yupix/mipa)の内部APIです。
+  * MisskeyのAPI Wrapperであり、オブジェクト的にAPIを操作することができます
+  * misskey(v12)対応
+* ~~[Mi.py](https://github.com/yupix/Mi.py)~~
+  * **開発終了の為非推奨**
+  * bot向けフレームワーク
+  * misskey(v12)対応
+  * 今後新たにBOTを作成する場合は [MiPA](https://github.com/yupix/mipa) をご利用ください
+
+## ライブラリ（Ayuskey動作未保障）
+
+* [Misskey.py](https://github.com/YuzuRyo61/Misskey.py)
 
 <details>
 <summary>内部</summary>
 
 * [@ayuskey/summaly](https://github.com/TeamBlackCrystal/summaly)
   * 微調整が施されたsummaly
+
+* [@ayuskey/xev](https://github.com/TeamBlackCrystal/xev)
+  * 本家がesm化されたため、cjsで保守
 
 </details>
 
@@ -84,5 +99,7 @@ Fediverseの世界に漂うため、Misskeyをはじめとした他のソーシ�
 [fork-of-badge]: https://img.shields.io/badge/fork%20of-misskey--dev%2Fmisskey-important.svg?style=flat-square
 [summaly-link]:  https://www.npmjs.com/package/@ayuskey/summaly
 [summaly-badge]: https://img.shields.io/badge/summaly-%40ayuskey%2Fsummaly-blue.svg?style=flat-square
+[xev-link]:  https://www.npmjs.com/package/@ayuskey/xev
+[xev-badge]: https://img.shields.io/badge/xev-%40ayuskey%2Fxev-blue.svg?style=flat-square
 [mfmjs-link]:    https://github.com/TeamBlackCrystal/misskey/issues/222
 [mfmjs-badge]:   https://img.shields.io/badge/mfm.js-none(%23222)-blue.svg?style=flat-square

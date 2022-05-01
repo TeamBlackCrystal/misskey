@@ -53,18 +53,22 @@ export default define(meta, async (ps, user) => {
 		throw new ApiError(meta.errors.noSuchAntenna);
 	}
 
+	/* old
 	const antennaQuery = AntennaNotes.createQueryBuilder('joining')
 		.select('joining.noteId')
 		.where('joining.antennaId = :antennaId', { antennaId: antenna.id });
+	*/
 
 	const query = makePaginationQuery(Notes.createQueryBuilder('note'), ps.sinceId, ps.untilId)
-		.andWhere(`note.id IN (${ antennaQuery.getQuery() })`)
+		//.andWhere(`note.id IN (${ antennaQuery.getQuery() })`)
+		.innerJoin(AntennaNotes.metadata.targetName, 'antennaNote', 'antennaNote.noteId = note.id')
 		.leftJoinAndSelect('note.user', 'user')
 		.leftJoinAndSelect('note.reply', 'reply')
 		.leftJoinAndSelect('note.renote', 'renote')
 		.leftJoinAndSelect('reply.user', 'replyUser')
 		.leftJoinAndSelect('renote.user', 'renoteUser')
-		.setParameters(antennaQuery.getParameters());
+		.andWhere('antennaNote.antennaId = :antennaId', { antennaId: antenna.id });
+		//.setParameters(antennaQuery.getParameters());
 
 	generateVisibilityQuery(query, user);
 	generateMutedUserQuery(query, user);

@@ -1,5 +1,5 @@
 import * as Deque from 'double-ended-queue';
-import Xev from 'xev';
+import Xev from '@ayuskey/xev';
 import { deliverQueue, inboxQueue, dbQueue, objectStorageQueue } from '../queue/queues';
 
 const ev = new Xev();

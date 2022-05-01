@@ -1,6 +1,6 @@
 import * as childProcess from 'child_process';
 import * as Deque from 'double-ended-queue';
-import Xev from 'xev';
+import Xev from '@ayuskey/xev';
 
 const ev = new Xev();
 
