@@ -1807,10 +1807,10 @@ autwh@0.1.0:
   dependencies:
     oauth "0.9.15"
 
-aws-sdk@2.1121.0:
-  version "2.1121.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1121.0.tgz#381510f7216f1d177b01620612f60014fa48e562"
-  integrity sha512-SEbPk0cFxiqhx8s2n9ozPafWyoIH944fg8Tpy9AxqZlq/tSCphWNE0CgKATnNAKoltWdVHBTKeLwnOAK/7OX7A==
+aws-sdk@2.1129.0:
+  version "2.1129.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1129.0.tgz#c01dced8d45c4ee1113ea74f7e4af4c2e6bf4a2d"
+  integrity sha512-gQZaByfW7zKCg1n/kA+xDdLhI/SauaokRTq+lztK1cCCdFkR5CShcKeK/qUgVxjy43mwB7CkeTh1WUr2NMb0jg==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
