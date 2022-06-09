@@ -9306,10 +9306,10 @@ sockjs@^0.3.21:
     uuid "^3.4.0"
     websocket-driver "^0.7.4"
 
-sonic-channel@1.2.7:
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/sonic-channel/-/sonic-channel-1.2.7.tgz#877d87c7343606c5f712cea7ca8d99c1839c48a4"
-  integrity sha512-w2YnqV1vdLUSZM+L5WN2YGGPo0xc3VdzkYj+4sEqNnFbyDrnc0aJ6j3LkxoTWxgaK9FzQB+bFTGNl3trvAOwlQ==
+sonic-channel@1.2.8:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/sonic-channel/-/sonic-channel-1.2.8.tgz#04a087d0a6f7caa76430ce3f08e4ddcfdfb91705"
+  integrity sha512-7jmgKjt34CPCB7wa+onw6MY1A0PLgaOK5h3mpUDa0PzIHPZ3X62ScUg5Kj0Eimkrx0XdVeDiU0D87yJIqZYxdg==
 
 sort-keys@^2.0.0:
   version "2.0.0"
