@@ -245,7 +245,7 @@
 		"tmp": "0.2.1",
 		"ts-loader": "9.2.8",
 		"ts-node": "10.7.0",
-		"tsc-alias": "1.6.7",
+		"tsc-alias": "1.7.0",
 		"tsconfig-paths": "3.14.1",
 		"tslint": "5.20.1",
 		"tslint-sonarts": "1.9.0",
