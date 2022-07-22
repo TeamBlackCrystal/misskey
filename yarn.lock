@@ -7710,10 +7710,10 @@ pgpass@1.x:
   dependencies:
     split2 "^3.1.1"
 
-photoswipe@5.2.4:
-  version "5.2.4"
-  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.2.4.tgz#918fd64c6b41b6a693743e5d70ee1a59747f491d"
-  integrity sha512-7p+VH7ELUnW9/3rCULCmyXcUCEuZwcsxvxPQYzR4wk3EaXcLCiINMCspc9Qq9AJYNsqYo1qGVL1y1Tch8uKAjw==
+photoswipe@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.3.0.tgz#fe118b147dddaf58ccc17c9403c7d7148805f8d2"
+  integrity sha512-vZMwziQorjiagzX7EvWimVT0YHO0DWNtR9UT6cv3yW1FA199LgsTpj4ziB2oJ/X/197gKmi56Oux5PudWUAmuw==
 
 picocolors@^1.0.0:
   version "1.0.0"
