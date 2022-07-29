@@ -1,23 +1,22 @@
-import * as redis from 'redis';
+import * as Redis from 'ioredis';
 import config from '../config';
 
 export function createConnection() {
 	if (config.redis.path == null) { 
-		return redis.createClient(
-			config.redis.port,
-			config.redis.host,
-			{
+		return new Redis({
+				port: config.redis.port,
+				host: config.redis.host,
+				family: config.redis.family == null ? 0 : config.redis.family,
 				password: config.redis.pass,
-				prefix: config.redis.prefix,
+				keyPrefix: `${config.redis.prefix}:`,
 				db: config.redis.db || 0
 			}
 		);
 	} else {
-		return redis.createClient(
-			config.redis.path,
-			{
+		return new Redis({
+				path: config.redis.path,
 				password: config.redis.pass,
-				prefix: config.redis.prefix,
+				keyPrefix: `${config.redis.prefix}:`,
 				db: config.redis.db || 0
 			}
 		);
@@ -25,6 +24,6 @@ export function createConnection() {
 }
 
 export const subsdcriber = createConnection();
-subsdcriber.subscribe(config.host);
+//subsdcriber.subscribe(config.host);
 
 export const redisClient = createConnection();
