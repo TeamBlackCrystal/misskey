@@ -87,14 +87,14 @@
     ky "^0.25.1"
     ky-universal "^0.8.2"
 
-"@discordapp/twemoji@13.1.1":
-  version "13.1.1"
-  resolved "https://registry.yarnpkg.com/@discordapp/twemoji/-/twemoji-13.1.1.tgz#f750d491ffb740eca619fac0c63650c1de7fff91"
-  integrity sha512-WDnPjWq/trfCcZk7dzQ2cYH5v5XaIfPzyixJ//O9XKilYYZRVS3p61vFvax5qMwanMMbnNG1iOzeqHKtivO32A==
+"@discordapp/twemoji@14.0.2":
+  version "14.0.2"
+  resolved "https://registry.yarnpkg.com/@discordapp/twemoji/-/twemoji-14.0.2.tgz#50cc19f6f3769dc6b36eb251421b5f5d4629e837"
+  integrity sha512-eYJpFsjViDTYwq3f6v+tRu8iRc+yLAeGrlh6kmNRvvC6rroUE2bMlBfEQ/WNh+2Q1FtSEFXpxzuQPOHzRzbAyA==
   dependencies:
     fs-extra "^8.0.1"
     jsonfile "^5.0.0"
-    twemoji-parser "13.1.0"
+    twemoji-parser "14.0.0"
     universalify "^0.1.2"
 
 "@discoveryjs/json-ext@^0.5.0":
@@ -126,11 +126,6 @@
     js-yaml "^4.1.0"
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
-
-"@fortawesome/fontawesome-common-types@6.1.1":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-6.1.1.tgz#7dc996042d21fc1ae850e3173b5c67b0549f9105"
-  integrity sha512-wVn5WJPirFTnzN6tR95abCx+ocH+3IFLXAgyavnf9hUmN0CfWoDjPT/BAWsUVwSlYYVBeCLJxaqi7ZGe4uSjBA==
 
 "@fortawesome/fontawesome-common-types@6.1.2":
   version "6.1.2"
@@ -2078,15 +2073,15 @@ braces@^3.0.1, braces@~3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
-broadcast-channel@4.11.0:
-  version "4.11.0"
-  resolved "https://registry.yarnpkg.com/broadcast-channel/-/broadcast-channel-4.11.0.tgz#b9ebc7ce1326120088e61d2197477496908a1a9e"
-  integrity sha512-4FS1Zk+ttekfXHq5I2R7KhN9AsnZUFVV5SczrTtnZPuf5w+jw+fqM1PJHuHzwEXJezJeCbJxoZMDcFqsIN2c1Q==
+broadcast-channel@4.14.0:
+  version "4.14.0"
+  resolved "https://registry.yarnpkg.com/broadcast-channel/-/broadcast-channel-4.14.0.tgz#cd2ce466128130ec3a93f7c1f1ed01d658575e35"
+  integrity sha512-uNzxOgBQ+boWCRDESLNg3zZWQ3iz/X7j/uD8pAfr4/S7wQerXVvJI/SBKd9J6ckaPt2jil0gq+7l+3b+kuxJYw==
   dependencies:
     "@babel/runtime" "^7.16.0"
     detect-node "^2.1.0"
-    microtime "3.0.0"
-    oblivious-set "1.0.0"
+    microtime "3.1.0"
+    oblivious-set "1.1.1"
     p-queue "6.6.2"
     rimraf "3.0.2"
     unload "2.3.1"
@@ -6895,13 +6890,13 @@ micromatch@^4.0.0, micromatch@^4.0.2, micromatch@^4.0.4:
     braces "^3.0.1"
     picomatch "^2.2.3"
 
-microtime@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/microtime/-/microtime-3.0.0.tgz#d140914bde88aa89b4f9fd2a18620b435af0f39b"
-  integrity sha512-SirJr7ZL4ow2iWcb54bekS4aWyBQNVcEDBiwAz9D/sTgY59A+uE8UJU15cp5wyZmPBwg/3zf8lyCJ5NUe1nVlQ==
+microtime@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/microtime/-/microtime-3.1.0.tgz#599a71250e3116c59f0fe5271dae4cc44321869c"
+  integrity sha512-GcjhfC2y/DF2znac8IRwri7+YUIy34QRHz/iZK3bHrh74qrNNOpAJQwiOMnIG+v1J0K4eiqd+RiGzN3F1eofTQ==
   dependencies:
-    node-addon-api "^1.2.0"
-    node-gyp-build "^3.8.0"
+    node-addon-api "^5.0.0"
+    node-gyp-build "^4.4.0"
 
 mime-db@1.51.0, "mime-db@>= 1.43.0 < 2":
   version "1.51.0"
@@ -7324,11 +7319,6 @@ node-abi@^3.3.0:
   dependencies:
     semver "^7.3.5"
 
-node-addon-api@^1.2.0:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-1.7.2.tgz#3df30b95720b53c24e59948b49532b662444f54d"
-  integrity sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg==
-
 node-addon-api@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-5.0.0.tgz#7d7e6f9ef89043befdb20c1989c905ebde18c501"
@@ -7359,15 +7349,15 @@ node-gyp-build-optional-packages@^4.3.2:
   resolved "https://registry.yarnpkg.com/node-gyp-build-optional-packages/-/node-gyp-build-optional-packages-4.3.2.tgz#82de9bdf9b1ad042457533afb2f67469dc2264bb"
   integrity sha512-P5Ep3ISdmwcCkZIaBaQamQtWAG0facC89phWZgi5Z3hBU//J6S48OIvyZWSPPf6yQMklLZiqoosWAZUj7N+esA==
 
-node-gyp-build@^3.8.0:
-  version "3.9.0"
-  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-3.9.0.tgz#53a350187dd4d5276750da21605d1cb681d09e25"
-  integrity sha512-zLcTg6P4AbcHPq465ZMFNXx7XpKKJh+7kkN699NiQWisR2uWYOWNWqRHAmbnmKiL4e9aLSlmy5U7rEMUXV59+A==
-
 node-gyp-build@^4.2.0:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.2.3.tgz#ce6277f853835f718829efb47db20f3e4d9c4739"
   integrity sha512-MN6ZpzmfNCRM+3t57PTJHgHyw/h4OWnZ6mR8P5j/uZtqQr46RRuDE/P+g3n0YR/AiYXeWixZZzaip77gdICfRg==
+
+node-gyp-build@^4.4.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.5.0.tgz#7a64eefa0b21112f89f58379da128ac177f20e40"
+  integrity sha512-2iGbaQBV+ITgCz76ZEjmhUKAKVf7xfY1sRl4UiKQspfZMH2h06SyhNsnSVy50cwkFQDGLyif6m/6uFXHkOZ6rg==
 
 node-object-hash@^1.2.0:
   version "1.4.2"
@@ -7598,10 +7588,10 @@ object.values@^1.1.0:
     es-abstract "^1.18.0-next.1"
     has "^1.0.3"
 
-oblivious-set@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/oblivious-set/-/oblivious-set-1.0.0.tgz#c8316f2c2fb6ff7b11b6158db3234c49f733c566"
-  integrity sha512-z+pI07qxo4c2CulUHCDf9lcqDlMSo72N/4rLUpRXf6fu+q8vjt8y0xS+Tlf8NTJDdTXHbdeO1n3MlbctwEoXZw==
+oblivious-set@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/oblivious-set/-/oblivious-set-1.1.1.tgz#d9d38e9491d51f27a5c3ec1681d2ba40aa81e98b"
+  integrity sha512-Oh+8fK09mgGmAshFdH6hSVco6KZmd1tTwNFWj35OvzdmJTMZtAkbn05zar2iG3v6sDs1JLEtOiBGNb6BHwkb2w==
 
 obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"
@@ -10621,10 +10611,10 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
 
-twemoji-parser@13.1.0:
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/twemoji-parser/-/twemoji-parser-13.1.0.tgz#65e7e449c59258791b22ac0b37077349127e3ea4"
-  integrity sha512-AQOzLJpYlpWMy8n+0ATyKKZzWlZBJN+G0C+5lhX7Ftc2PeEVdUU/7ns2Pn2vVje26AIZ/OHwFoUbdv6YYD/wGg==
+twemoji-parser@14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/twemoji-parser/-/twemoji-parser-14.0.0.tgz#13dabcb6d3a261d9efbf58a1666b182033bf2b62"
+  integrity sha512-9DUOTGLOWs0pFWnh1p6NF+C3CkQ96PWmEFwhOVmT3WbecRC+68AIqpsnJXygfkFcp4aXbOp8Dwbhh/HQgvoRxA==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
