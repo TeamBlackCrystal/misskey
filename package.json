@@ -161,7 +161,7 @@
 		"rimraf": "3.0.2",
 		"rndstr": "1.0.0",
 		"sass": "1.54.0",
-		"sass-loader": "12.6.0",
+		"sass-loader": "13.0.2",
 		"seedrandom": "3.0.5",
 		"sharp": "0.30.7",
 		"showdown": "2.1.0",
