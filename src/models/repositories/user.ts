@@ -157,6 +157,8 @@ export class UserRepository extends Repository<User> {
 		);
 	}
 
+	// 何とかしたい
+	/*
 	public getAvatarUrl(user: User): string {
 		if (user.avatarUrl) {
 			return user.avatarUrl;
@@ -164,6 +166,7 @@ export class UserRepository extends Repository<User> {
 			return `${config.url}/random-avatar/${user.id}`;
 		}
 	}
+	*/
 
 	public async pack(
 		src: User['id'] | User,
@@ -239,7 +242,7 @@ export class UserRepository extends Repository<User> {
 			name: user.name,
 			username: user.username,
 			host: user.host,
-			avatarUrl: user.avatar ? DriveFiles.getPublicUrl(user.avatar, true) : config.url + '/avatar/' + user.id,
+			avatarUrl: user.avatar ? DriveFiles.getPublicUrl(user.avatar, true) : config.url + '/random-avatar/' + user.id,
 			avatarBlurhash: user.avatar?.blurhash || null,
 			avatarColor: null,
 			isAdmin: user.isAdmin || falsy,
@@ -280,7 +283,7 @@ export class UserRepository extends Repository<User> {
 				createdAt: user.createdAt.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
 				bannerUrl: user.banner ? DriveFiles.getPublicUrl(user.banner, false) : null,
-				bannerBlurhash: user.bannerBlurhash,
+				bannerBlurhash: user.avatar?.blurhash || null,
 				bannerColor: null, // 後方互換性のため
 				isLocked: user.isLocked,
 				isModerator: user.isModerator || falsy,
