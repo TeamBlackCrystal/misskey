@@ -60,6 +60,7 @@ import { Channel } from '../models/entities/channel';
 import { ChannelFollowing } from '../models/entities/channel-following';
 import { ChannelNotePining } from '../models/entities/channel-note-pining';
 import { RegistryItem } from '../models/entities/registry-item';
+import { PasswordResetRequest } from '../models/entities/password-reset-request';
 import { ClientOpts } from 'redis';
 
 const sqlLogger = dbLogger.createSubLogger('sql', 'white', false);
@@ -153,6 +154,7 @@ export const entities = [
 	ChannelFollowing,
 	ChannelNotePining,
 	RegistryItem,
+	PasswordResetRequest,
 	...charts as any
 ];
 
