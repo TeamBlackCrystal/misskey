@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - アカウント登録にメールアドレスの設定を必須にするオプション (ayu5-email)
 - パスワードリマインダー(パスワードリセット)
-- birthday に謎の値(02/32 など)が設定できるように(なったはず)
 
 ## [Unreleased]
 
