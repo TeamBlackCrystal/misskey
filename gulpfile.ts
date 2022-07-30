@@ -118,4 +118,6 @@ gulp.task('build', gulp.parallel(
 	'doc'
 ));
 
+// TS2345が出る
+// @ts-ignore
 gulp.task('default', gulp.task('build'));
