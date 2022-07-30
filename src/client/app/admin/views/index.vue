@@ -35,6 +35,8 @@
 			<li><router-link to="/abuse" active-class="active"><fa :icon="faExclamationCircle" fixed-width/>{{ $t('abuse') }}</router-link></li>
 		</ul>
 		<div class="back-to-misskey">
+			<!--邪道な気がするけど動くと思うからヨシ-->
+			<a href="/queue"><fa :icon="faChartLine"/> {{ $t('queue') }} {{ $t('dashboard') }}</a>
 			<a href="/"><fa :icon="faArrowLeft"/> {{ $t('back-to-misskey') }}</a>
 		</div>
 		<div class="version">
@@ -83,7 +85,7 @@ import XFederation from './federation.vue';
 import XFederationClassic from './federation-classic.vue';
 import XRelays from "./relays.vue";
 
-import { faHeadset, faArrowLeft, faGlobe, faProjectDiagram, faExclamationCircle, faTasks, faStream, faDatabase } from '@fortawesome/free-solid-svg-icons';
+import { faHeadset, faArrowLeft, faGlobe, faProjectDiagram, faExclamationCircle, faTasks, faStream, faDatabase, faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { faGrin } from '@fortawesome/free-regular-svg-icons';
 
 // Detect the user agent
@@ -126,6 +128,7 @@ export default Vue.extend({
 			faTasks,
 			faStream,
 			faDatabase,
+			faChartLine,
 		};
 	},
 	computed: {
