@@ -74,8 +74,10 @@ router.get('/notes/:note', async (ctx, next) => {
 
 	const note = await Notes.findOne({
 		id: ctx.params.note,
-		visibility: In(['public', 'home']),
+		visibility: In(['public' as const, 'home' as const]),
 		localOnly: false
+	}, {
+		relations: ['user']
 	});
 
 	if (note == null) {
@@ -103,8 +105,10 @@ router.get('/notes/:note/activity', async ctx => {
 	const note = await Notes.findOne({
 		id: ctx.params.note,
 		userHost: null,
-		visibility: In(['public', 'home']),
+		visibility: In(['public' as const, 'home' as const]),
 		localOnly: false
+	}, {
+		relations: ['user']
 	});
 
 	if (note == null) {
@@ -175,6 +179,8 @@ router.get('/users/:user', async (ctx, next) => {
 		id: userId,
 		host: null,
 		isSuspended: false
+	}, {
+		relations: ['avatar', 'banner'],
 	});
 
 	await userInfo(ctx, user);
@@ -187,6 +193,8 @@ router.get('/@:user', async (ctx, next) => {
 		usernameLower: ctx.params.user.toLowerCase(),
 		host: null,
 		isSuspended: false
+	}, {
+		relations: ['avatar', 'banner'],
 	});
 
 	await userInfo(ctx, user);

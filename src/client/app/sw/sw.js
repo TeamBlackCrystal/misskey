@@ -3,7 +3,7 @@
  */
 
 import composeNotification from './compose-notification';
-import { version } from '../config'
+import { version } from '../config';
 
 // インストールされたとき
 self.addEventListener('install', ev => {
@@ -48,15 +48,15 @@ self.addEventListener('notificationclick', function(event) {
 
 	// This looks to see if the current is already open and
 	// focuses if it is
-	event.waitUntil(clients.matchAll({
-		type: "window"
+	event.waitUntil(self.clients.matchAll({
+		type: 'window'
 	}).then(function(clientList) {
 		for (var i = 0; i < clientList.length; i++) {
 			var client = clientList[i];
 			if (client.url == '/' && 'focus' in client)
 				return client.focus();
 		}
-		if (clients.openWindow)
-			return clients.openWindow('/');
+		if (self.clients.openWindow)
+			return self.clients.openWindow('/');
 	}));
 });

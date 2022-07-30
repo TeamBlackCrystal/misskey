@@ -195,7 +195,7 @@ export const packedDriveFileSchema = {
 			type: 'string' as const,
 			optional: false as const, nullable: true as const,
 			description: 'The blurhash of image.',
-			example: 'ySFzz31U1?=nZO,+JOofR*oHnhjYX6S50J=n]DEol8JEw}R*xaNgXTW=ruxBxbWZS2obe.n~bFaxR%s*aKoIW.WY=}NgOAs*enoIWU',
+			example: 'yGCOe55x1Y]^Uw=UAmoMR+oHnif6baR:0J=m|}A3pwE.,wR*xGR;S~kCiy$d=}NgJPxAa0w@O9fQR%s*nOf6XRNg=zNgNsskaKoIa#',
 		},
 		properties: {
 			type: 'object' as const,

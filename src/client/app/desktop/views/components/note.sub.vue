@@ -1,5 +1,5 @@
 <template>
-<div class="tkfdzaxtkdeianobciwadajxzbddorql" :class="{ mini: narrow }" :title="title">
+<div class="tkfdzaxtkdeianobciwadajxzbddorql" :class="{ mini: narrow }" :title="title" style="border-left: solid 2px var(--primary)">
 	<mk-avatar class="avatar" :user="note.user"/>
 	<div class="main">
 		<mk-note-header class="header" :note="note"/>

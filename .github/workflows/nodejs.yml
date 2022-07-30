@@ -9,20 +9,20 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 17.x, 18.x]
+        node-version: [14.x, 16.x, 18.x]
 
     services:
       postgres:
-        image: postgres:10-alpine
+        image: postgres:11.2-alpine
         ports:
           - 54311:5432
         env:
           POSTGRES_DB: test-misskey
           POSTGRES_HOST_AUTH_METHOD: trust
       redis:
-        image: redis:alpine
+        image: redis:4.0-alpine
         ports:
-          - 6379:6379
+          - 56311:6379
 
     steps:
     - uses: actions/checkout@v2
@@ -34,6 +34,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - run: node devtools/diag-environment.js
+    - run: sudo apt-get install -y ffmpeg
     - run: yarn install
     - run: yarn build
     - run: cp test/test.yml .config

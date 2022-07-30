@@ -85,7 +85,7 @@ export default define(meta, async (ps, user) => {
 
 	const query = makePaginationQuery(Notifications.createQueryBuilder('notification'), ps.sinceId, ps.untilId)
 		.andWhere(`notification.notifieeId = :meId`, { meId: user.id })
-		.leftJoinAndSelect('notification.notifier', 'notifier')
+		.innerJoinAndSelect('notification.notifier', 'notifier')
 		.leftJoinAndSelect('notification.note', 'note')
 		.leftJoinAndSelect('note.user', 'user')
 		.leftJoinAndSelect('note.reply', 'reply')

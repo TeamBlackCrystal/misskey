@@ -34,12 +34,24 @@ Fediverseの世界に漂うため、Misskeyをはじめとした他のソーシ�
 * [TenCha](https://github.com/coke12103/TenCha)
   * isLadyをサポート
 
-## ライブラリ
+## ライブラリ（Ayuskey動作保証）
 
-* ~~[Mi.py](https://github.com/yupix/Mi.py)~~
-  * **開発終了**
+* [MiPA(Mi.py互換)](https://github.com/yupix/mipa)
   * bot向けフレームワーク
-  * ayuskey動作保証、misskey(v12)対応
+  * misskey(v12)対応
+* [MiPAC](https://github.com/yupix/mipac)
+  * [MiPA](https://github.com/yupix/mipa)の内部APIです。
+  * MisskeyのAPI Wrapperであり、オブジェクト的にAPIを操作することができます
+  * misskey(v12)対応
+* ~~[Mi.py](https://github.com/yupix/Mi.py)~~
+  * **開発終了の為非推奨**
+  * bot向けフレームワーク
+  * misskey(v12)対応
+  * 今後新たにBOTを作成する場合は [MiPA](https://github.com/yupix/mipa) をご利用ください
+
+## ライブラリ（Ayuskey動作未保障）
+
+* [Misskey.py](https://github.com/YuzuRyo61/Misskey.py)
 
 <details>
 <summary>内部</summary>

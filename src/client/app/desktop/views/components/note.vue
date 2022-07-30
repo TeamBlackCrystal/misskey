@@ -1,7 +1,7 @@
 <template>
 <div
 	class="note"
-	:class="{ mini: narrow }"
+	:class="{ mini: narrow, 'note-reply-frame': appearNote.reply }"
 	v-show="(this.$store.state.settings.remainDeletedNote || appearNote.deletedAt == null) && !hideThisNote"
 	:tabindex="appearNote.deletedAt == null ? '-1' : null"
 	v-hotkey="keymap"
@@ -11,8 +11,8 @@
 	<div class="reply-to" v-if="appearNote.reply && (!$store.getters.isSignedIn || $store.state.settings.showReplyTarget)">
 		<x-sub :note="appearNote.reply"/>
 	</div>
-	<mk-renote class="renote" v-if="isRenote" :note="note"/>
-	<article class="article">
+	<mk-renote class="renote" v-if="isRenote" :note="note" :class="{'reply-border': appearNote.reply}"/>
+	<article class="article" :class="{'reply-border': appearNote.reply}">
 		<mk-avatar class="avatar" :user="appearNote.user"/>
 		<div class="main">
 			<mk-note-header class="header" :note="appearNote" :mini="narrow"/>
@@ -154,12 +154,23 @@ export default Vue.extend({
 });
 </script>
 
+<style lang="css" scoped>
+.reply-border {
+	border-left: solid 2px var(--primary)
+}
+
+.note-reply-frame {
+	border: solid 1px var(--primaryAlpha03) !important
+}
+</style>
+
 <style lang="stylus" scoped>
 .note
 	margin 0
 	padding 0
 	overflow hidden
 	background var(--face)
+	border-radius 6px
 	border-bottom solid var(--lineWidth) var(--faceDivider)
 
 	&.mini
@@ -171,7 +182,6 @@ export default Vue.extend({
 			.avatar
 				width 20px
 				height 20px
-
 		> .article
 			padding 16px 16px 4px
 

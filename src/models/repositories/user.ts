@@ -1,7 +1,7 @@
 import $ from 'cafy';
 import { EntityRepository, Repository, In, Not } from 'typeorm';
 import { User, ILocalUser, IRemoteUser } from '../entities/user';
-import { Emojis, Notes, NoteUnreads, FollowRequests, Notifications, MessagingMessages, UserNotePinings, Followings, Blockings, Mutings, UserProfiles, UserSecurityKeys, UserGroupJoinings, Pages, Instances, DriveFiles, Announcements, AnnouncementReads, Antennas, AntennaNotes, ChannelFollowings  } from '..';
+import { Emojis, Notes, NoteUnreads, FollowRequests, Notifications, MessagingMessages, UserNotePinings, Followings, Blockings, Mutings, UserProfiles, UserSecurityKeys, UserGroupJoinings, Pages, Instances, DriveFiles, Users, Announcements, AnnouncementReads, Antennas, AntennaNotes, ChannelFollowings  } from '..';
 import { ensure } from '../../prelude/ensure';
 import config from '../../config';
 import { Packed } from '../../misc/schema';
@@ -157,6 +157,8 @@ export class UserRepository extends Repository<User> {
 		);
 	}
 
+	// 何とかしたい
+	/*
 	public getAvatarUrl(user: User): string {
 		if (user.avatarUrl) {
 			return user.avatarUrl;
@@ -164,6 +166,7 @@ export class UserRepository extends Repository<User> {
 			return `${config.url}/random-avatar/${user.id}`;
 		}
 	}
+	*/
 
 	public async pack(
 		src: User['id'] | User,
@@ -239,9 +242,9 @@ export class UserRepository extends Repository<User> {
 			name: user.name,
 			username: user.username,
 			host: user.host,
-			avatarUrl: this.getAvatarUrl(user),
-			avatarBlurhash: user.avatarBlurhash,
-			avatarColor: null, // 後方互換性のため
+			avatarUrl: user.avatar ? DriveFiles.getPublicUrl(user.avatar, true) : config.url + '/random-avatar/' + user.id,
+			avatarBlurhash: user.avatar?.blurhash || null,
+			avatarColor: null,
 			isAdmin: user.isAdmin || falsy,
 			isBot: user.isBot || falsy,
 			isCat: user.isCat || falsy,
@@ -280,7 +283,7 @@ export class UserRepository extends Repository<User> {
 				createdAt: user.createdAt.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
 				bannerUrl: user.banner ? DriveFiles.getPublicUrl(user.banner, false) : null,
-				bannerBlurhash: user.bannerBlurhash,
+				bannerBlurhash: user.avatar?.blurhash || null,
 				bannerColor: null, // 後方互換性のため
 				isLocked: user.isLocked,
 				isModerator: user.isModerator || falsy,
@@ -319,6 +322,8 @@ export class UserRepository extends Repository<User> {
 					username: profile!.discordUsername,
 					discriminator: profile!.discordDiscriminator
 				} : null,
+				movedToUserId: user.movedToUserId,
+				movedToUser: user.movedToUserId ? Users.pack(user.movedToUserId) : null,
 			} : {}),
 
 			...(opts.detail && meId === user.id ? {

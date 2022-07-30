@@ -26,8 +26,8 @@ block meta
 	meta(name='misskey:user-id' content=user.id)
 	meta(name='misskey:page-id' content=page.id)
 
-	//if user.host
-	//	meta(name='robots' content='noindex')
+	if user.host
+		meta(name='robots' content='noindex')
 
 	// todo
 	if user.twitter

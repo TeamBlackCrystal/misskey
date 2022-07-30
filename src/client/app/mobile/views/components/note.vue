@@ -3,7 +3,7 @@
 	class="note"
 	v-show="appearNote.deletedAt == null && !hideThisNote"
 	:tabindex="appearNote.deletedAt == null ? '-1' : null"
-	:class="{ renote: isRenote, smart: $store.state.device.postStyle == 'smart', mini: narrow }"
+	:class="{ renote: isRenote, smart: $store.state.device.postStyle == 'smart', mini: narrow, 'note-reply-frame': appearNote.reply }"
 	v-hotkey="keymap"
 >
 	<x-sub v-for="note in conversation" :key="note.id" :note="note"/>
@@ -11,7 +11,7 @@
 		<x-sub :note="appearNote.reply"/>
 	</div>
 	<mk-renote class="renote" v-if="isRenote" :note="note"/>
-	<article class="article">
+	<article class="article" :class="{'reply-border': appearNote.reply}">
 		<mk-avatar class="avatar" :user="appearNote.user" v-if="$store.state.device.postStyle != 'smart'"/>
 		<div class="main">
 			<mk-note-header class="header" :note="appearNote" :mini="true"/>
@@ -146,10 +146,22 @@ export default Vue.extend({
 });
 </script>
 
+
+<style lang="css" scoped>
+.reply-border {
+	border-left: solid 2px var(--primary)
+}
+
+.note-reply-frame {
+	border: solid 1px var(--primaryAlpha03) !important
+}
+</style>
+
 <style lang="stylus" scoped>
 .note
 	overflow hidden
 	font-size 13px
+	border-radius 6px
 	border-bottom solid var(--lineWidth) var(--faceDivider)
 
 	&:last-of-type

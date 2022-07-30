@@ -1,5 +1,5 @@
 <template>
-<div class="zlrxdaqttccpwhpaagdmkawtzklsccam" :class="{ smart: $store.state.device.postStyle == 'smart', mini: narrow }">
+<div class="zlrxdaqttccpwhpaagdmkawtzklsccam" :class="{ smart: $store.state.device.postStyle == 'smart', mini: narrow }" style="border-left: solid 2px var(--primary)">
 	<mk-avatar class="avatar" :user="note.user" v-if="$store.state.device.postStyle != 'smart'"/>
 	<div class="main">
 		<mk-note-header class="header" :note="note" :mini="true"/>
