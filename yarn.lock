@@ -72,13 +72,20 @@
   dependencies:
     redis-info "^3.0.8"
 
-"@bull-board/koa@3.10.7":
-  version "3.10.7"
-  resolved "https://registry.yarnpkg.com/@bull-board/koa/-/koa-3.10.7.tgz#90095d2197dde057caf717b4c182d178cf06de93"
-  integrity sha512-TljOlCmXg8L69sLISy+AAjwPuafipZ+FPVBt58FeC3HKX7VM58p23o37k1QAa6TezJGeh8v6MCRKwRlIuL40NA==
+"@bull-board/api@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bull-board/api/-/api-4.1.1.tgz#138364357ff8a6e6c9c94a64d325d8334275181f"
+  integrity sha512-xpezACPl80Emry/uY+T2GoKllTQlKYaWTUWZnBq0J1ak9Zzo00JHP5v+hI7CgPjbCJVGarrTKywUEpL7S8aRXw==
   dependencies:
-    "@bull-board/api" "3.10.7"
-    "@bull-board/ui" "3.10.7"
+    redis-info "^3.0.8"
+
+"@bull-board/koa@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bull-board/koa/-/koa-4.1.1.tgz#32887977a3999794df3ae58acf30d252323e330c"
+  integrity sha512-GWfMYHPl+ePU77pPigFLd1wMr4UWYlfcJd6XsdS9QBpgeLkqEPrsi3SmtwT0fk+DOohLD+sdAo5VeFYvxcOz+w==
+  dependencies:
+    "@bull-board/api" "4.1.1"
+    "@bull-board/ui" "4.1.1"
     ejs "^3.1.7"
     koa "^2.13.1"
     koa-mount "^4.0.0"
@@ -86,12 +93,12 @@
     koa-static "^5.0.0"
     koa-views "^7.0.1"
 
-"@bull-board/ui@3.10.7":
-  version "3.10.7"
-  resolved "https://registry.yarnpkg.com/@bull-board/ui/-/ui-3.10.7.tgz#70ac8763d43c01b3c6bbb65fa48fa2342588ec7e"
-  integrity sha512-veeTseCnM0b/q0aXTmVobdmC/O3/xzrK+tONFEoBluWSr/Zb8hJorbaDSp0uJhyBa9WlD6lRyax8dKFkq9Eubg==
+"@bull-board/ui@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@bull-board/ui/-/ui-4.1.1.tgz#71d415f8b93ef1a215819cbdc5c7fd577e873fbe"
+  integrity sha512-qyfrC0XkQNXTuC8g9BEjHLAbzOVW4Qw5rDo65oGqDBd4lpLmTa2MCFh1lm6GDZ9ak/ltH3aayvacNoH0L6ldZw==
   dependencies:
-    "@bull-board/api" "3.10.7"
+    "@bull-board/api" "4.1.1"
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
