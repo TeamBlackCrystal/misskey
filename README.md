@@ -1,5 +1,13 @@
 JA | [EN](README.en-US.md)
 
+**引っ越しました(I moved in.)** https://github.com/TeamBlackCrystal/ayuskey
+
+```
+git remote set-url origin git@github.com:TeamBlackCrystal/ayuskey.git
+# or
+git remote set-url origin https://github.com/TeamBlackCrystal/ayuskey.git
+```
+
 ----------------------------------------------------------------
 
 <h1 align="center">Ayuskey</h1>
