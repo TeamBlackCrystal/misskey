@@ -22,6 +22,7 @@ export type Source = {
 		path: string;
 		host: string;
 		port: number;
+		family?: number;
 		pass: string;
 		db?: number;
 		prefix?: string;

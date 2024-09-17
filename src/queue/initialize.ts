@@ -8,12 +8,14 @@ if (config.redis.path == null) {
 	redisOpts = {
 		port:  config.redis.port,
 		host: config.redis.host,
+		family: config.redis.family == null ? 0 : config.redis.family,
 		password: config.redis.pass,
 		db: config.redis.db || 0,
 	}
 } else {
 	redisOpts = {
 		path: config.redis.path,
+		family: config.redis.family == null ? 0 : config.redis.family,
 		password: config.redis.pass,
 		db: config.redis.db || 0,
 	}
