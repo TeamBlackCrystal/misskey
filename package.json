@@ -46,7 +46,7 @@
 		"@bull-board/api": "4.1.1",
 		"@bull-board/koa": "4.1.1",
 		"@discordapp/twemoji": "14.0.2",
-		"@elastic/elasticsearch": "7.17.0",
+		"@elastic/elasticsearch": "8.2.1",
 		"@fortawesome/fontawesome-svg-core": "6.1.2",
 		"@fortawesome/free-brands-svg-icons": "6.1.2",
 		"@fortawesome/free-regular-svg-icons": "6.1.2",
