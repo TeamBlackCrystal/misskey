@@ -186,7 +186,7 @@
 		"ts-node": "10.9.1",
 		"tsc-alias": "1.7.0",
 		"tsconfig-paths": "4.0.0",
-		"typeorm": "0.2.44",
+		"typeorm": "0.3.7",
 		"typescript": "4.7.4",
 		"ulid": "2.3.0",
 		"url-loader": "4.1.1",
